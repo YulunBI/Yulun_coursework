@@ -1,0 +1,74 @@
+---
+title: 'STAD80: Homework #Example'
+author: "Qiang Sun"
+date: 'Due: Yesterday'
+header-includes:
+   - \usepackage{amsmath}
+output:
+  pdf_document:
+    keep_tex: true
+    toc: yes
+    toc_depth: 2
+---
+\uses
+## Question 1 (30 Points) Conceptual Challenges
+
+(1) Let $\{X_i\}^n_{i=1} \overset{\mathrm{i.i.d.}}{\sim} p_θ(x)$ be n random samples (Let X be their population variable). We denote their realizations (or outcomes) to be $\{x_i\}^n_{i=1}$. Select all the WRONG statements.
+(2) Unbiasedness and Consistency. Select all the wrong statement:
+(3) Law of Large Numbers (LLN) and Central Limit Theorem (CLT). Select all the WRONG statements:
+(4) Linear Regression and Ordinary Least Squares (OLS). Select all the WRONG statements:
+(5) Assuming the true distribution of the data follows a linear model $Y = \beta_0 + \beta_1X + \epsilon$. We fit an ordinary least squares regression using this true model on the data, as the number of data points goes to infinity, your estimator will have
+(6) Select all the WRONG statements:
+
+### Answer: 
+
+(1) B,C,E
+(2) A,B,C,E
+(3) C
+(4) A
+(5) A,F
+(6) A,E
+
+## Question 2 (20 Points) Maximum Likelihood Estimator (MLE) and Asymptotic Normality
+
+### Answer: 
+
+Part 1:
+
+Part 2:
+(a) $$\prod_{i=1}^{n} (\theta - 1)x_i^{-\theta}1(x_i\geq 1) = n\log(\theta - 1)-\theta\sum_{i=1}^{n}\log(x_i)+c $$
+We can ignore c part because it will disappear after taking derivative anyway.
+\begin{equation}
+\begin{split}
+\frac{\partial}{\partial \theta} \prod_{i=1}^{n} (\theta - 1)x_i^{-\theta}1(x_i\geq 1) = \frac{n}{\theta - 1}-\sum_{i=1}^{n}\log(x_i)=0
+\Leftrightarrow \frac{n}{\sum_{i=1}^{n}\log(x_i)}=\theta - 1
+\Leftrightarrow \widehat{\theta}_n = \frac{n}{\sum_{i=1}^{n}\log(x_i)} +1 
+\end{split}
+\end{equation}
+The MLE $\widehat{\theta}_n$ is $\frac{n}{\sum_{i=1}^{n}\log(x_i)} +1$.
+
+(b) $$Var(\sqrt{n}(\widehat{\theta}_n-\theta)) = \frac{1}{I(\theta)} = (\frac{1}{(\theta-1)^2})^{-1} = (\theta-1)^2$$
+$$\log(p_\theta(X)) = \log(\theta-1) -\theta\log(X)$$
+$$\frac{\partial^2}{\partial \theta^2} \log(p_\theta(X)) = \frac{\partial}{\partial \theta}\frac{1}{\theta-1}-\log(X)=-\frac{1}{(\theta-1)^2}$$
+$$I(\theta)=\mathbb{E}_\theta(-\frac{\partial^2}{\partial \theta^2}\log(p_\theta(X)))=\int_{1}^{\infty}\frac{1}{(\theta-1)^2}(\theta - 1)x^{-\theta}dx=$$
+
+```{r}
+  # construct the function 
+  fibonacci <- function(n)
+  {
+    x = numeric(n)
+    x[1:2] = c(1,1)
+    for(i in 3:n) x[i] = x[i-1] + x[i-2]
+    return(x)
+  }
+
+  # test the function 
+  fibonacci(10)
+```
+
+$$\Sigma = \begin{pmatrix}
+  1 & 0.5 \\
+  0.5 & 2
+ \end{pmatrix}$$
+Write an R function that outputs the first $n$ terms in the Fibonacci sequence, where $n$ is the only input value of the function. 
+

@@ -1,0 +1,392 @@
+---
+title: "C67 Case Study Report - DETERMINANTS OF THE SYSTOLIC BLOOD PRESSURE"
+author: "Group 18: Yunrong Liu(1005732735), Yulun Wu(1004912785), Yuanxin Su(1005754015)"
+date: "2022-4-8"
+output:
+  pdf_document: default
+  html_document: default
+  word_document: default
+number_sections: true
+---
+```{r, setup, include=FALSE}
+knitr::opts_chunk$set(fig.height = 5)
+```
+<font size= '3'>**Suprrvisor: Dr. Sohee Kang (sohee.kang@utoronto.ca)**</font>    
+<font size= '3'>University of Toronto Scarborough</font>  
+<font size= '3'>Toronto, Ontario, Canada</font>    
+<font size= '3'>{ yunrong.liu, yulunbblythe.wu, yuanxin.su }@mail.utoronto.ca</font>     
+
+<br />
+<font size= '1'>**Yunrong Liu** (1005732735): Schedule the case study, help the coders to finish coding, Consulting the supervisor about the research method, write the report.  
+**Yulun Wu** (1004912785): Do the presentation of the case study, do the coding for the analyzing data, building model part, writing the report.  
+**Yuanxin Su** (1005754015): Do the coding for the analyzing model part, plot part.               
+
+<br /> 
+       
+\newpage  
+
+<font size= '3'>**RESEARCH BACKGROUND DESCRIPTION**</font>          
+<font size= '1'>Systolic blood pressure is the pressure exerted when the heart beats and blood is ejected into the arteries.researchers want to find out what determines the systolic blood pressure. Researchers want to find out what determines the systolic blood pressure, so we can prevent diseases such as hypertension.
+
+</font>  
+
+<br /> 
+
+<font size= '3'>**GOAL OF STUDY**</font>  
+<font size= '1'>The aim of this study is to determine which factors have impact on systolic blood pressure (SBP). We will analyze the relationship between SBP and gender, marital status, smoking status, age, weight, height, Body Mass Index (BMI), overweight status, race, exercise level, alcohol use, stress level, salt (NaCl) intake level, childbearing potential, income level, education level, treatment (for hypertension) status. We will come up with a model to predict SBP given selected predictors.</font>
+
+<br />
+<font size= '3'>**RESEARCH OBJECTIVE**</font>  
+<font size= '1'>Analyze the factors that determine the systolic blood pressure of human’s body. Building a statistical model. Then optimal the model using *Akaike information criterion (1974)*. Do the model diagnostic about outlying points, influential points, multicollinearity problem and regression assumptions. The final model should have no above problem and gives an acceptable accuracy rate. 
+  </font>
+
+<br />
+
+<font size= '3'>**DATA DESCRIPTION**</font>   
+Based on Data set *Factors Affecting Systolic Blood Pressure (SBP) *^1^:  
+<font size= '2'>**Categorical Data:**</font>  
+    <font size= '1'>Gender: sex of the observee (M=Male, F=Female)
+Marital Status: whether the observee is married
+Smoking Status: whether the observee smokes
+Overweight: whether the observee is overweight (1=Normal, 2=Overweight, 3=Obese)
+ Race: observee’s race 
+Exercise level: how much exercise the observee does (1=low, 2=medium, 3=high)
+Alcohol Use: alcohol drinking level of the observee (1=low, 2=medium, 3=high).
+Stress Level: the stress level of the observee (1=low, 2=medium, 3=high)
+Salt(NaCl) Intake Level: the level of salt intake of the observee in diet (1=low, 2=medium, 3=high)
+Childbearing Potential: whether the observee is capable to pregnant (1=Male, 2=Able Female, 3=Unable Female)
+Income Level: the level of observee’s income (1=low, 2=medium, 3=high)
+Education Level: the level of observee’s education (1=low, 2=medium, 3=high)
+Treatment: whether the observee is treated for hypertension </font>  
+<font size= '2'>**Quantitative Data:**</font>   
+<font size= '1'>SBP: Systolic Blood Pressure. This is response variable
+Age : age of the patient (in years)
+Weight : the patient’s weight (in lbs)
+Height: how tall the patient is (in inches)
+BMI : the Body Mass Index of the patient, is calculated by (weight/$height^2$) x 703</font> 
+
+<br />
+<font size= '2'>**GENERAL RESEARCH DESIGN**</font>     
+1.	Cleaning the data  
+2.	Fit the regression model and analyze data  
+3.	Consider interaction and use AIC *(Akaike information criterion,1974)* method to find the optimal model.  
+4.	Do the model diagnostic about outlying points, influential points, multicollinearity problem and regression assumptions.  
+5.	Test the accuracy  
+6.  Discuss our result, limitation and the future work can be done  
+
+# Clean Data
+```{r, echo=FALSE, results='hide', warning=FALSE, message=FALSE}
+library(tidyverse)
+library(readxl)
+library(GGally)
+library(MPV)
+library(ggpubr)
+library(olsrr)
+library(car)
+library(lmtest)
+```
+
+```{r}
+BloodPressure = read_excel("BloodPressure.xlsx")
+```
+```{r, echo=FALSE, results='hide'}
+a = head(BloodPressure,20)
+a
+# out put first 20 line to observation
+```
+# Change categorical to dummy variables
+```{r, echo=FALSE, results='hide'}
+BloodPressure %>%
+  mutate(gender = factor(gender), 
+         married = factor(married),
+         smoke = factor(smoke),
+         exercise = factor(exercise),
+         overwt = factor(overwt),
+         race = factor(race),
+         alcohol = factor(alcohol),
+         trt = factor(trt),
+         stress = factor(stress),
+         salt = factor(salt),
+         chldbear = factor(chldbear),
+         income = factor(income),
+         educatn = factor(educatn),
+         ) -> BloodPressure
+data.frame(mean(BloodPressure$sbp),mean(BloodPressure$height),mean(BloodPressure$weight),mean(BloodPressure$bmi),mean(BloodPressure$age))
+data.frame(sd(BloodPressure$sbp),sd(BloodPressure$height),sd(BloodPressure$weight),sd(BloodPressure$bmi),sd(BloodPressure$age))
+```
+# Seperate training and validation set
+```{r, echo=FALSE, results='hide'}
+set.seed(1005732735)
+# sample() doesn't work for me, but base::sample() works, Google said there
+# is package installed in my RStudio which also has sample()
+BloodPressure.cv.samp = base::sample(1:500, size = 250, replace=FALSE)
+BloodPressure.cv.train =BloodPressure[BloodPressure.cv.samp,] 
+BloodPressure.cv.vali =BloodPressure[-BloodPressure.cv.samp,]
+BloodTrain = BloodPressure.cv.train
+BloodValid = BloodPressure.cv.vali
+```
+# BloodTrain is training,BloodValid  is validation
+
+# Scatter plot matrix of response variable and quantitative variables in training set
+```{r}
+ggpairs(BloodTrain,columns = c(1,6,7,8,13))
+```
+No multicollinearity observed from the scatter plot matrix. Also, response variable v.s. any of quantitative variables don't show evidence of polynomial relationship. 
+
+# Fit model with training,first use all main effect
+
+```{r}
+Blood_Main_All = lm(sbp~., data = BloodTrain)
+summary(Blood_Main_All)
+```
+# Drop 1
+```{r}
+drop1(Blood_Main_All, test = 'Chisq')
+```
+# From here we can see only 4 main effect matters
+```{r, results='hide'}
+#Blood_Main_Best is obly main effect AIC
+Blood_Main_Best = step(Blood_Main_All, direction = 'both')
+```
+# AIC will decreases whereever a parameter is removed from the model, and increases otherwise.
+```{r}
+AIC(Blood_Main_Best)
+summary(Blood_Main_Best)
+```
+```{r}
+# check if we can further drop
+drop1(Blood_Main_Best,test = "Chisq")
+```
+# Note that validation set is called: BloodValid
+# Validation process, use cross-validation
+```{r}
+anova(Blood_Main_Best)
+pred.cv.out = predict(Blood_Main_Best,BloodValid[,c(4,5,8,11,12,13)])
+delta.cv.out =BloodPressure$sbp[-BloodPressure.cv.samp]-pred.cv.out
+n.star=dim(BloodValid)[1]
+MSPR = sum((delta.cv.out)^2)/n.star
+MSPR
+PRESS(Blood_Main_Best)
+Blood_Main_Best.validation = lm(sbp ~ smoke + exercise + height + alcohol + trt + bmi,data = BloodValid)
+summary(Blood_Main_Best.validation)
+```
+MSE of Blood_Main_Best is 560.9, and MSPR is 744.0471. Since there ratio is 744.0471/560.9 = 1.326524 < 3, we say MSE is close to MSPR, so validate this model. The PRESS statistic for this model is 144822.3.  
+
+# Add interaction terms
+```{r}
+# pick out data of main effect
+BloodTrain %>%
+  select(c(smoke,exercise,height,alcohol,trt,bmi,sbp)) -> BloodTrain_main
+# that's 6 mains I want
+```
+```{r}
+Blood_Main_Inter_All = lm(sbp~.^2, data=BloodTrain_main)
+
+summary(Blood_Main_Inter_All)
+```
+```{r, results='hide'}
+Blood_Main_Inter_Best = step(Blood_Main_Inter_All,direction = "both")
+```
+```{r}
+AIC(Blood_Main_Inter_Best)
+summary(Blood_Main_Inter_Best)
+```
+# Check if model with interaction term is better than model with only main effect
+```{r}
+anova(Blood_Main_Best,Blood_Main_Inter_Best, test = "Chisq")
+```
+# The p-value is very small, reject H0: the simpler model, which means the complexer model(model2 with interaction) fits better.
+
+# Because R code both, forward,backward are trash, so double check
+
+```{r}
+Blood_null = lm(sbp~1 , data = BloodTrain)
+summary(Blood_null)
+```
+
+
+```{r, results='hide'}
+Blood_Main_Inter_Forward = step(Blood_null,scope =~(smoke+exercise+height+alcohol+trt+bmi)^2, direction = "forward",test="Chisq")
+```
+```{r, results='hide'}
+Blood_Main_Inter_Backward = step(Blood_Main_Inter_All)
+```
+```{r}
+AIC(Blood_Main_Inter_All)
+AIC(Blood_Main_All)
+length(Blood_Main_Best$coefficients)
+```
+AIC:Blood_Main_All:2330.825
+AIC:Blood_Main_Inter_All: 2320.673
+AIC:Blood_Main_Best = 1591.22
+AIC:Blood_Main_Inter_Best(both_direction) = 1583.08
+AIC:Blood_Main_Inter_Backward =1583.08
+AIC:Blood_Main_Inter_Forward = 1583.08
+
+coefficients of Blood_Main_Best: 9
+coefficients of Blood_Main_Inter_Best: 13
+# Cross-validation for sbp ~ smoke + exercise + height + alcohol + trt + bmi + smoke:trt + alcohol:trt + trt:bmi
+```{r}
+summary(Blood_Main_Inter_Forward)
+anova(Blood_Main_Inter_Forward)
+pred.cv.out.i = predict(Blood_Main_Inter_Forward,BloodValid[,c(4,5,8,11,12,13)])
+delta.cv.out.i =BloodPressure$sbp[-BloodPressure.cv.samp]-pred.cv.out.i
+n.star=dim(BloodValid)[1]
+MSPR.i = sum((delta.cv.out.i)^2)/n.star
+MSPR.i
+PRESS(Blood_Main_Inter_Forward)
+Blood_Main_Inter_Best.validation = lm(formula = sbp ~ bmi + trt + alcohol + smoke + exercise + height + bmi:trt + trt:alcohol + trt:smoke, data = BloodValid)
+summary(Blood_Main_Inter_Best.validation)
+```
+MSE of Blood_Main_Inter_Forward is 534.7, and MSPR is 730.9055. Since 730.9055/534.7 = 1.366945 < 3, we say MSE is close to MSPR, so validate this model. The PRESS statistic for this model is 137213.9.
+
+# Model Selection Decision
+```{r}
+PRECC.v = c(PRESS(Blood_Main_Best),PRESS(Blood_Main_Inter_Forward)) 
+Cp.v = c(ols_mallows_cp(Blood_Main_Best, Blood_Main_All), ols_mallows_cp(Blood_Main_Inter_Forward, Blood_Main_Inter_All))
+AIC.v = c(AIC(Blood_Main_Best),AIC(Blood_Main_Inter_Forward))
+model_selection = data.frame(PRECC.v,Cp.v,AIC.v)
+colnames(model_selection) = c("PRESS","Cp","AIC")
+rownames(model_selection) = c("Blood_Main_Best","Blood_Main_Inter_Forward")
+model_selection
+```
+From the above table, we select Blood_Main_Inter_Forward which give the minimum PRESS statistic and AIC as our model.
+
+# Model Diagnosis
+```{r}
+ols_plot_added_variable(Blood_Main_Inter_Forward)
+```
+No polynomial relationship observed between response variable and predictors, no need to consider polynomial regression.
+
+# Outlying Obsevation
+```{r}
+hii = hatvalues(Blood_Main_Inter_Forward)
+hii = round(hii,2)
+which(hii > 2*10/250)
+which(hii > 0.5)
+ols_plot_resid_lev(Blood_Main_Inter_Forward)
+```
+We find 37 outlying points.
+
+# Influencial Obeservation
+```{r}
+ggarrange(ols_plot_cooksd_chart(Blood_Main_Inter_Forward),ols_plot_dffits(Blood_Main_Inter_Forward), ols_plot_resid_stud_fit(Blood_Main_Inter_Forward))
+```
+From Cook's distance chart and DFFITS graph, we can see that observation 32, 71, 116, 153, 244, 249 cause major change to fitted regression model.
+From deleted studentized residual v.s. predicted value graph, we can see that 13 observations can cause major change to fitted regression model.
+
+# Former Multicollinearity Check
+```{r}
+VIF = vif(Blood_Main_Inter_Forward)
+VIF
+VIFbar = mean(VIF)
+VIFbar
+```
+We can ignore the high VIF of interaction term, because high VIF of interaction term is expected. Since trt is a categorical variable, we can ignore its high VIF as well. The rest terms all have VIF < 10, therefore, no multicollinearity detected in this model.
+
+# Check Regression Assumption
+## Check Normal Population Assumption
+```{r}
+shapiro.test(Blood_Main_Inter_Forward$residuals)
+```
+p-value = 0.08001 > 0.05, so we fail to reject the null hypothesis that the sample is from normal population.
+
+## Check Equal Variance Assumption
+```{r}
+bptest(Blood_Main_Inter_Forward)
+```
+p-value = 0.0004164 < 0.05, so we reject the null hypothesis that the residuals are distributed with equal variance.  
+Do weighted least square
+```{r}
+resid = rstandard(Blood_Main_Inter_Forward)
+ggplot(data=BloodTrain,aes(x=bmi,y=resid,color="red")) + geom_point() + geom_smooth(method="lm",se=FALSE)
+ggplot(data=BloodTrain,aes(x= height,y=resid,color="red")) + geom_point() + geom_smooth(method="lm",se=FALSE)
+s.hat = abs(resid)
+s.hat_X = lm(s.hat ~ bmi + trt + alcohol + smoke + exercise + height + 
+    bmi:trt + trt:alcohol + trt:smoke, data = BloodTrain)
+var.s = (predict(s.hat_X))^2
+Blood_Main_Inter_Best = lm(sbp ~ bmi + trt + alcohol + smoke + exercise + height + 
+    bmi:trt + trt:alcohol + trt:smoke, weights=1/var.s,data = BloodTrain)
+```
+## After apply WLS, the summary of model is
+```{r}
+summary(Blood_Main_Inter_Forward)
+summary(Blood_Main_Inter_Best)
+anova(Blood_Main_Inter_Best)
+anova(Blood_Main_Inter_Forward)
+pred.cv.out.ib = predict(Blood_Main_Inter_Best,BloodValid[,c(4,5,8,11,12,13)])
+delta.cv.out.ib =BloodPressure$sbp[-BloodPressure.cv.samp]-pred.cv.out.ib
+MSPR.ib = sum((delta.cv.out.ib)^2)/n.star
+MSPR.ib
+PRESS(Blood_Main_Inter_Best)
+cbind(AIC(Blood_Main_Inter_Forward),AIC(Blood_Main_Inter_Best))
+```
+$R^2$ for Blood_Main_Inter_Forward is 0.2954, and $R^2$ for Blood_Main_Inter_Best is 0.3455, we see a improvement in $R^2$ after applying WLS. The MSPR for WLS model is 732.2964 and MSE is 765.2. Since 765.2/732.2964 = 1.044932 < 3, we validate this model. PRESS statistic for WLS model is 135834.8 < 137213.9 from OLS model. 
+
+## Compare OLS coefficients and WLS coefficients
+```{r}
+cbind(coefficients(Blood_Main_Inter_Forward),coefficients(Blood_Main_Inter_Best))
+```
+The coefficients of Blood_Main_Inter_Best is not significantly different from the coefficients of Blood_Main_Inter_Forward.
+
+# Plot of residual after WLS v.s. quantitative variable
+```{r}
+resid.2 = rstandard(Blood_Main_Inter_Best)
+ggplot(data=BloodTrain,aes(x=bmi,y=resid.2,color="red")) + geom_point() + geom_smooth(method="lm",se=FALSE)
+ggplot(data=BloodTrain,aes(x= height,y=resid.2,color="red")) + geom_point() + geom_smooth(method="lm",se=FALSE)
+```
+The plots don't change much compare the the plots before applying WLS.
+
+```{r}
+bptest(Blood_Main_Inter_Forward,studentize=F)
+bptest(Blood_Main_Inter_Best,studentize=F)
+```
+The bptest remains the same for two model. We will talk about this problem in discussion section.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

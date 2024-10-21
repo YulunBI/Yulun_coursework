@@ -1,0 +1,242 @@
+---
+title: "STAD80: Homework #1"
+author: "Yulun Wu"
+date: "Due: 2023-02-02"
+header-includes:
+   - \usepackage{amsmath}
+output:
+  pdf_document:
+    keep_tex: true
+    toc: yes
+    toc_depth: 2
+---
+## Question 1 (30 Points) Conceptual Challenges
+
+(1) Let $\{X_i\}^n_{i=1} \overset{\mathrm{i.i.d.}}\sim p_\theta(x)$ be n random samples (Let X be their population variable). We denote their realizations (or outcomes) to be $\{x_i\}^n_{i=1}$. Select all the WRONG statements.
+(2) Unbiasedness and Consistency. Select all the wrong statement:
+(3) Law of Large Numbers (LLN) and Central Limit Theorem (CLT). Select all the WRONG statements:
+(4) Linear Regression and Ordinary Least Squares (OLS). Select all the WRONG statements:
+(5) Assuming the true distribution of the data follows a linear model $Y = \beta_0 + \beta_1X + \epsilon$. We fit an ordinary least squares regression using this true model on the data, as the number of data points goes to infinity, your estimator will have
+(6) Select all the WRONG statements:
+
+### Answer: 
+
+(1) B,C,E
+(2) A,B,C,E
+(3) C
+(4) A
+(5) A,F
+(6) A,E
+
+## Question 2 (20 Points) Maximum Likelihood Estimator (MLE) and Asymptotic Normality
+
+### Answer: 
+
+Part 1:
+
+Part 2:
+(a) $$\prod_{i=1}^{n} (\theta - 1)x_i^{-\theta}1(x_i\geq 1) = n\log(\theta - 1)-\theta\sum_{i=1}^{n}\log(x_i)+c $$
+We can ignore c part because it will disappear after taking derivative anyway.
+\begin{equation}
+\begin{split}
+\frac{\partial}{\partial \theta} \prod_{i=1}^{n} (\theta - 1)x_i^{-\theta}1(x_i\geq 1) &= \frac{n}{\theta - 1}-\sum_{i=1}^{n}\log(x_i)=0 \\
+&\Leftrightarrow \frac{n}{\sum_{i=1}^{n}\log(x_i)}=\theta - 1 \\
+&\Leftrightarrow \widehat{\theta}_n = \frac{n}{\sum_{i=1}^{n}\log(x_i)} +1 
+\end{split}
+\end{equation}
+The MLE $\widehat{\theta}_n$ is $\frac{n}{\sum_{i=1}^{n}\log(x_i)} +1$.
+
+(b) 
+$$\log(p_\theta(X)) = \log(\theta-1) -\theta\log(X)$$
+$$\frac{\partial^2}{\partial \theta^2} \log(p_\theta(X)) = \frac{\partial}{\partial \theta}\frac{1}{\theta-1}-\log(X)=-\frac{1}{(\theta-1)^2}$$
+\begin{equation}
+\begin{split}
+I(\theta)&=\mathbb{E}_\theta(-\frac{\partial^2}{\partial \theta^2}\log(p_\theta(X))) \\
+&=\int_{1}^{\infty}\frac{1}{(\theta-1)^2}(\theta - 1)x^{-\theta}dx \\
+&= \int_{1}^{\infty}\frac{x^{-\theta}}{\theta-1}dx \\
+&= \frac{1}{\theta-1}\int_{1}^{\infty}x^{-\theta}dx \\
+&= \frac{1}{\theta-1} \frac{x^{1-\theta}}{1-\theta}\arrowvert_{1}^{\infty} \\
+&= -\frac{x^{1-\theta}}{(\theta-1)^2}\arrowvert_{1}^{\infty}  \\
+&= -0+\frac{1}{(\theta-1)^2} , given \theta>1 \\
+&= \frac{1}{(\theta-1)^2}
+\end{split}
+\end{equation}
+\begin{equation}
+\begin{split}
+Var(\sqrt{n}(\widehat{\theta}_n-\theta)) &= \frac{1}{I(\theta)} \\
+&= (\frac{1}{(\theta-1)^2})^{-1} \\
+&= (\theta-1)^2
+\end{split}
+\end{equation}
+
+(c)
+\begin{equation}
+\begin{split}
+I(\widehat{\theta}_n)&=\frac{1}{(\widehat{\theta}_n-1)^2} \\
+&= \frac{1}{(\frac{n}{\sum_{i=1}^{n}\log(x_i)} +1-1)^2} \\
+&= \frac{(\sum_{i=1}^{n}\log(x_i))^2}{n^2}
+\end{split}
+\end{equation}
+```{r}
+alpha_q2 = 0.05
+z_q2 = qnorm(1-alpha_q2/2,0,1)
+z_q2
+```
+\begin{equation}
+\begin{split}
+\widehat{\theta}_n &\pm \frac{z_{\alpha/2}}{\sqrt{nI(\widehat{\theta}_n)}}\\
+&\Leftrightarrow \frac{n}{\sum_{i=1}^{n}\log(x_i)}+1 \pm \frac{1.959964}{\sqrt{\frac{(\sum_{i=1}^{n}\log(x_i))^2}{n}}} \\
+&\Leftrightarrow \frac{n}{\sum_{i=1}^{n}\log(x_i)}+1 \pm \frac{1.959964}{\frac{\sum_{i=1}^{n}\log(x_i)}{\sqrt{n}}} \\
+&\Leftrightarrow \frac{n}{\sum_{i=1}^{n}\log(x_i)}+1 \pm \frac{1.959964\sqrt{n}}{\sum_{i=1}^{n}\log(x_i)}
+\end{split}
+\end{equation}
+$$C_n = [\frac{n-1.959964\sqrt{n}}{\sum_{i=1}^{n}\log(x_i)}+1,\frac{n+1.959964\sqrt{n}}{\sum_{i=1}^{n}\log(x_i)}+1] $$
+
+(d)
+\begin{equation}
+\begin{split}
+\int_{1}^{x}(\theta-1)t^{-\theta}dt &= (\theta-1)\int_{1}^{x}t^{-\theta}dt \\
+&= (\theta-1)\frac{t^{1-\theta}}{1-\theta}\arrowvert_{1}^{x}\\
+&=-t^{1-\theta}\arrowvert_{1}^{x}\\
+&=-x^{1-\theta}+1
+\end{split}
+\end{equation}
+CDF is $$x^{1-\theta}+1$$
+```{r}
+N_q2 = 10000
+n_q2=100
+theta_q2=2
+count_contain_theta = 0
+CIcalc_q2 = function(x,z,n){
+  CI_low = (n-z*sqrt(n))/(sum(log(x)))+1
+  CI_up = (n+z*sqrt(n))/(sum(log(x)))+1
+  CI = cbind(CI_low,CI_up)
+  #print(x)
+  return(CI)
+}
+q2cdf = function(x,theta){
+  return(-x^(1-theta)) # Is this correct
+}
+for (i in 1:N_q2){
+  U_q2 = runif(n_q2,min=0,max=1)
+  U_cdf = q2cdf(U_q2,theta_q2)
+  X_q2 = U_cdf^(-1) # Do I need this?
+  CI_q2 = CIcalc_q2(X_q2,z_q2,n_q2)
+  if ((CI[1]<=theta_q2)&(CI[2]>=theta_q2)){
+    count_contain_theta = count_contain_theta+1
+  }
+}
+count_contain_theta/N_q2
+```
+
+## Question 3 (20 Points) Law of Large Numbers and Central Limit Theorem
+
+### Answer: 
+```{r,warning=FALSE}
+generate_xhat_q3 = function(n){
+  x = runif(n)
+  x=replace(x,x<0.5,-1)
+  x=replace(x,x>=0.5,1)
+  xhat = mean(x)
+  varx = var(x)
+  return(list(xhat,varx))
+}
+N_q3 = 10000
+n_q3 = c(10,100,1000,10000)
+# row 1 is mean, row 2 is variance
+meanVar_10 <- replicate(N_q3,generate_xhat_q3(n_q3[1]))
+meanVar_100 <- replicate(N_q3,generate_xhat_q3(n_q3[2]))
+meanVar_1000 <- replicate(N_q3,generate_xhat_q3(n_q3[3])) 
+meanVar_10000 <- replicate(N_q3,generate_xhat_q3(n_q3[4]))
+```
+
+```{r}
+mu_q3 = 0.5*(1-1)
+sigma_q3 = ((1-mu_q3)^2)*0.5+((-1-mu_q3)^2)*0.5
+y_q3 = c(meanVar_10[1,1],meanVar_100[1,1],meanVar_1000[1,1],meanVar_10000[1,1])
+y_q3 = unlist(y_q3)-mu_q3
+curve(log10(x),from=1,to=10000,log="x",ylab="log10(n)",xlab="n",col="green",ylim=c(-3,5))
+abline(h = 0, lty = 2,col="red")
+points(n_q3,y_q3)
+```
+This plot shows that as $$n \rightarrow \infty$$, $$\overline{X}_n^{(1)} -\mu \rightarrow 0$$.
+
+(b)
+```{r}
+elp_q3 = c(0.5,0.1,0.05)
+sum_ind1 = c((1/N_q3)*sum(abs(unlist(meanVar_10[1,])-mu_q3)>elp_q3[1]),(1/N_q3)*sum(abs(unlist(meanVar_100[1,])-mu_q3)>elp_q3[1]),(1/N_q3)*sum(abs(unlist(meanVar_1000[1,])-mu_q3)>elp_q3[1]),(1/N_q3)*sum(abs(unlist(meanVar_10000[1,])-mu_q3)>elp_q3[1]))
+sum_ind2 = c((1/N_q3)*sum(abs(unlist(meanVar_10[1,])-mu_q3)>elp_q3[2]),(1/N_q3)*sum(abs(unlist(meanVar_100[1,])-mu_q3)>elp_q3[2]),(1/N_q3)*sum(abs(unlist(meanVar_1000[1,])-mu_q3)>elp_q3[2]),(1/N_q3)*sum(abs(unlist(meanVar_10000[1,])-mu_q3)>elp_q3[2]))
+sum_ind3 = c((1/N_q3)*sum(abs(unlist(meanVar_10[1,])-mu_q3)>elp_q3[3]),(1/N_q3)*sum(abs(unlist(meanVar_100[1,])-mu_q3)>elp_q3[3]),(1/N_q3)*sum(abs(unlist(meanVar_1000[1,])-mu_q3)>elp_q3[3]),(1/N_q3)*sum(abs(unlist(meanVar_10000[1,])-mu_q3)>elp_q3[3]))
+curve(log10(x),from=1,to=10000,log="x",ylab="log10(n)",xlab="n",col="green",ylim=c(-3,5))
+abline(h = 0, lty = 2,col="red")
+points(n_q3,sum_ind1)
+points(n_q3,sum_ind2,col="yellow")
+points(n_q3,sum_ind3,col="blue3")
+```
+This plot shows that $$\forall\epsilon,\forall i\in \{1,...,N\} \lim_{n\to\infty} P(|\overline{X}_n^{(i)}-\mu|>\epsilon)=0$$ which illustrates the law of large numbers. 
+
+(c)
+```{r}
+par(mfrow=c(1,2))
+CLT1_q3 = sqrt(n_q3[1])*(unlist(meanVar_10[1,])-mu_q3)/sqrt(sigma_q3)
+hist(CLT1_q3,main="Histogram of n=10",xlab="sqrt(n)*(Xbar_n-mu)/sigma")
+qqnorm(CLT1_q3, pch = 1, frame = FALSE,main="Normal Q-Q plot of n=10")
+qqline(CLT1_q3, col = "steelblue", lwd = 2)
+par(mfrow=c(1,2))
+CLT2_q3 = sqrt(n_q3[3])*(unlist(meanVar_1000[1,])-mu_q3)/sqrt(sigma_q3)
+hist(CLT2_q3,main="Histogram of n=1000",xlab="sqrt(n)*(Xbar_n-mu)/sigma")
+qqnorm(CLT2_q3, pch = 1, frame = FALSE,main="Normal Q-Q plot of n=1000")
+qqline(CLT2_q3, col = "steelblue", lwd = 2)
+par(mfrow=c(1,2))
+CLT3_q3 = sqrt(n_q3[4])*(unlist(meanVar_10000[1,])-mu_q3)/sqrt(sigma_q3)
+hist(CLT3_q3,main="Histogram of n=10000",xlab="sqrt(n)*(Xbar_n-mu)/sigma")
+qqnorm(CLT3_q3, pch = 1, frame = FALSE,main="Normal Q-Q plot of n=10000")
+qqline(CLT3_q3, col = "steelblue", lwd = 2)
+```
+These plots shows that as $$n\rightarrow \infty$$, the histograms of $$\sqrt{n}(\overline{X}_n^{(i)}-\mu)/\sigma $$ are more look like the histograms of standard Normal Distribution which has $\mu = 0$ and $\sigma^2=1$ and the Normal Q-Q plots are more close to the line of $y=x$, which means as $$n\rightarrow \infty$$, $$\sqrt{n}(\overline{X}_n^{(i)}-\mu)/\sigma \xrightarrow{D}N(0,1)$$. This illustrates the Central Limit Theorem.
+
+(d)
+```{r}
+Y_q3 = rnorm(N_q3,0,1)
+point1_q3 = (1/N_q3)*sum(abs(sqrt(n_q3[1])*(unlist(meanVar_10[1,])-mu_q3)/sqrt(sigma_q3)-Y_q3)>0.001)
+point2_q3 = (1/N_q3)*sum(abs(sqrt(n_q3[2])*(unlist(meanVar_100[1,])-mu_q3)/sqrt(sigma_q3)-Y_q3)>0.001)
+point3_q3 = (1/N_q3)*sum(abs(sqrt(n_q3[3])*(unlist(meanVar_1000[1,])-mu_q3)/sqrt(sigma_q3)-Y_q3)>0.001)
+point4_q3 = (1/N_q3)*sum(abs(sqrt(n_q3[4])*(unlist(meanVar_10000[1,])-mu_q3)/sqrt(sigma_q3)-Y_q3)>0.001)
+curve(log10(x),from=1,to=10000,log="x",ylab="log10(n)",xlab="n",col="green",ylim=c(-2,4))
+abline(h = 0, lty = 2,col="red")
+points(n_q3,c(point1_q3,point2_q3,point3_q3,point4_q3),col="blue3")
+```
+This plot shows that for $$\epsilon=0.001,\forall i\in \{1,...,N\} \lim_{n\to\infty} P(|\sqrt{n}(\overline{X}_n^{(i)}-\mu)/\sigma|>\epsilon)=1 \Longrightarrow \sqrt{n}(\overline{X}_n^{(i)}-\mu)/\sigma \nrightarrow Y_i$$ in probability.
+
+## Question 4 (20 Points) Basic R Programming for Big Data
+
+### Answer: 
+```{r,eval=FALSE}
+library(bigmemory)
+X = read.big.matrix("ratings.dat", sep = ",", type = "integer",shared = TRUE, col.names = c("UserID", "ProfileID", "Rating"))
+# Below are just copy and pasted from AveRating.r, thank to whoever write this
+N=3000000		# number of rating records
+Nu=135359		# maximum of UserID
+Np=220970		# maximum of ProfileID
+user.rat=rep(0,Nu)		# user.rat[i] denotes the sum of ratings given by user i
+user.num=rep(0,Nu)		# user.num[i] denotes the number of ratings given by user i
+profile.rat=rep(0,Np)		# profile.rat[i] denotes the sum of ratings given to profile i
+profile.num=rep(0,Np)		# user.rat[i] denotes the number of ratings given to profile i
+for (i in 1:N){	# In each iteration, we update the four arrays, i.e. user.rat, user.num, profile.rat, profile.num, using one rating record.
+	user.rat[X[i,'UserID']]=user.rat[X[i,'UserID']]+X[i,'Rating'] # The matrix X here comes from the file 'ratings.dat'
+	user.num[X[i,'UserID']]=user.num[X[i,'UserID']]+1
+	profile.rat[X[i,'ProfileID']]=profile.rat[X[i,'ProfileID']]+X[i,'Rating']
+	profile.num[X[i,'ProfileID']]=profile.num[X[i,'ProfileID']]+1
+	if (i %% 10000==0) print(i/10000)
+}
+user.ave=user.rat/user.num
+profile.ave=profile.rat/profile.num
+X1=big.matrix(nrow=nrow(X), ncol=ncol(X), type= "double", dimnames=list(NULL, c('UsrAveRat','PrfAveRat','Rat')))
+X1[,'Rat']=X[,'Rating']
+X1[,'UsrAveRat']=user.ave[X[,'UserID']]
+X1[,'PrfAveRat']=profile.ave[X[,'ProfileID']]		# X1 is the new data matrix we will work with in regression.
+```
+
+```{r,eval=FALSE}
+User= load("users.RData")
+```

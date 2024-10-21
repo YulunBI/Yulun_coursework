@@ -1,0 +1,68 @@
+---
+title: 'STAD80: Homework #Example'
+author: "Qiang Sun"
+date: 'Due: Yesterday'
+output:
+  pdf_document:
+    keep_tex: true
+    toc: yes
+    toc_depth: 2
+---
+
+## Directions
+
+Students are encouraged to work together on homework. However, sharing, copying, or providing any part of a homework solution or code is an infraction of the University's rules on Academic Integrity. Any violation will be punished as severely as possible. Final submissions must be uploaded to quercus. Please also submit a hardcopy of the report for grading purposes. No late submissions will be accepted.
+
+- You are required to submit three files:
+    - Your `.tex` file which should be saved as `HW1_lastname firstname.tex` (can be generated from R Markdown). For example, `HW1_Sun Qiang.tex`.
+    - Your `.rmd` RMarkdown (or Python) file which should be saved as `HW1_lastname firstname.Rmd`. For example, `HW1_Sun Qiang.Rmd`.
+    - The result of knitting your RMarkdown file as `HW1_lastname firstname.pdf`. For example, `HW1_Sun Qiang.pdf`. Please note that this must be a `.pdf` file. `.html` format willnot be accepted.
+
+- Your resulting `.pdf` file will be considered as a report which is the material that will determine the majority of your grade. Be sure to visibly include all `R` code and output that is relevant to answering the exercises.
+- If you use the example homework `.Rmd` file (provided in Quercus) as a template, be sure to remove the directions section.
+- Your `.Rmd` file should be written such that, if it is placed in a folder with any data your are asked to import, it will knit properly without modification.
+- Include your Name in your report.
+
+## Question 1 (20 Points) Bivariate Normal Distribution
+
+Generate 100 random variables from the bivariate Normal Distribution ${\cal N}(\mu, \Sigma)$, where $\mu = (1, 2)^\text{T}$ and
+
+$$\Sigma = \begin{pmatrix}
+  1 & 0.5 \\
+  0.5 & 2
+ \end{pmatrix}$$
+
+### Answer: 
+
+This can be done using the `mvrnorm` function in the `MASS` package:
+
+```{r}
+  library(MASS)
+  Sigma <- matrix(c(1,0.5,0.5,2),2,2)
+  mu <- c(1, 2)
+  X <- mvrnorm(n = 100, mu, Sigma)
+  head(X)
+```
+
+## Question 2 (50 Points) Write `R` Functions
+
+Write an R function that outputs the first $n$ terms in the Fibonacci sequence, where $n$ is the only input value of the function. 
+
+### Answer: 
+
+```{r}
+  # construct the function 
+  fibonacci <- function(n)
+  {
+    x = numeric(n)
+    x[1:2] = c(1,1)
+    for(i in 3:n) x[i] = x[i-1] + x[i-2]
+    return(x)
+  }
+
+  # test the function 
+  fibonacci(10)
+```
+
+
+
