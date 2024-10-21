@@ -1,0 +1,603 @@
+---
+header-includes:
+  - \usepackage{geometry}
+  - \usepackage{listings}
+  - \usepackage{enumitem}
+output:
+  pdf_document: default
+---
+
+
+```{=latex}
+% LaTeX title page
+
+    \begingroup
+    \centering
+
+    \vspace*{3cm}
+
+    % Title
+    \vspace{0.1cm}
+    {\Large\textbf{STAC51 Case Study Report}}\\
+    \vspace{0.1cm}
+    {\large Under Instructor: Sohee Kang}\\
+    {\large 10/04/2023}\\
+    \vspace{0.5cm}
+    {\Large\textbf{Factors that are Best Suited in Predicting Credit Risk of Individuals}}\\
+    \vspace{0.1cm}
+
+    % Group Members
+    {\large Group 29}\\
+    \vspace{8cm}
+    {\large\textbf{Primary Contributions}}\\
+    \vspace{0.1cm}
+    \begin{itemize}[noitemsep, label={}]
+       \item Jimmy Deng: Exploratory Data Analysis (\#1006280472)
+        \item Yulun Wu: Modeling and Refinements (\#1004912795)
+        \item Adil Shah: Conclusion and Discussion (\#1004847151)
+        \item Raymond Chan: Editing and Background Research (\#1004432269)
+    \end{itemize}
+
+    % Libraries Used
+    \vspace{0.5cm}
+    \hrule
+    \vspace{0.5cm}
+    {\large\textbf{Libraries Used}}\\
+    \vspace{0.1cm}
+    \begin{center}
+        \begin{minipage}{0.35\textwidth}
+    \begin{center}
+    
+    \begin{lstlisting}
+      library(tidyverse)
+      library(pander)
+      library(ggcorrplot)
+      library(corrr)
+      library(ResourceSelection)
+      library(pROC)
+    \end{lstlisting}
+
+    \end{center}
+\end{minipage}
+\end{center}
+\endgroup
+
+\newpage
+
+```
+
+
+```{r message=FALSE, warning=FALSE, include=FALSE, results="hide"}
+library(tidyverse)
+library(pander)
+library(ggcorrplot)
+library(corrr)
+library(ResourceSelection)
+library(pROC)
+```
+
+# Introduction, Background and Significance
+
+Credit plays a dynamic and pivotal role in all modern banking, shaping trust and economic futures (McLeay, 2014). Composed of both principal and interest, credit is the fundamental aspect of financial stability. Accurate ability to predict credit is key in running an economy with prosperity and fluidity. Such credit is used to provide people with the tools they need in their lives to build wealth, health, and create opportunity. Failure to allocate credit judiciously leads to unpaid debts, asset collapse, and ultimately failure of any modern banking system. Identifying key variables in predicting credit repayment is crucial for effective risk management and financial decision-making. In search for prediction, one may use a vast number of measures to predict and assess whether a debtor is likely to repay their debts. This case study finds and examines the most significant factors in predicting credit in a data set. It will be shown that status, duration, credit history, saving, age, and two interaction variables may strongly predict payment without the need for any additional data.
+
+The primary objective of this case study is to offer valuable insights for assessing a debtor's trustworthiness, to aid lending decisions and minimizing financial risks.
+
+Research Question: What factors are most important when predicting an individual's likelihood of repaying credit?
+
+
+# Exploratory Data Analysis
+
+```{r message=FALSE, warning=FALSE}
+credit_data <- read_csv("./credit.csv")    # Reading in the data set
+```
+
+## Description of dataset
+
+The data contains 1000 observations with 21 variables consisting of a mix of mostly categorical variables including binary, nominal, and ordinal variables, as well as a few continuous variables. The response variable is a binary variable called credit risk. The raw data set labels every variable with numbers and lacks meaningful descriptions, however, descriptions can be gotten through the provided 'CreditVariables-Description.R' script.
+
+After cleaning and mutating data, the descriptions of the data set are as follows:
+
+- Credit_risk (response), Ordinal; 0 = bad credit risk, 1 = good credit risk
+
+- foreign_worker, Ordinal; 0 = not foreign worker, 1 = foreign worker
+- telephone, Ordinal; 0 =  no telephone #, 1 = has telephone # (under customer name)
+- people_liable, Ordinal; 0 = one to two people, 1 = three or more people
+- status, Ordinal; 1 = no acc., 2 = negative balance, 3 = balance >= 200 DM, 4 = 0 <= balance < 200 DM
+- credit_history, Ordinal; 0 = delay in payments previously, 1 =  critical acc./ existing credits, 2 = no credits taken/ fully paid on time, 3 =  existing credits paid until now, 4 = fully paid on time
+- purpose, Categorical; 0 = others, 1 = car (new), 2 = car (used), 3 = furniture/ equipment, 4 = radio/ television, 5 = domestic appliances, 6 = repairs, 8 = vacation, 9 = retraining, 10 = business
+- savings, Ordinal; 1 = unknown/ no savings, 2 = balance < 100 DM, 3 = 100 <= balance < 500 DM, 4 = 500 <= balance < 1000 DM, 5 = balance >= 1000 DM
+- personal_status_sex, Categorical; 1 = male: divorced/separated, 2 = female: non-single or male : single, 3 = male: married/widowed, 4 = female: single
+- other_debtors, Ordinal; 1 = none, 2 = co-applicant, 3 = guarantor
+- other_installment_plans, Categorical; 1 = bank, 2 = stores, 3 = none
+- housing, Ordinal; 1 = for free, 2 = rent, 3 = own
+-  employment_duration, Ordinal/ discretized quantitative; 1 = unemployed, 2 = duration < 1 yr, 3 = 1 <= duration < 4 yrs, 4 = 4 <= duration < 7 yrs, 5 = duration >= 7 yrs
+- installment_rate, Ordinal/ discretized quantitative; 1 = rate >= 35%, 2 = 25 <= rate < 35%, 3 = 20 <= rate <25%, 4 = < 20%
+- present_residence, Ordinal/ discretized quantitative; 1 = duration < 1 yrs, 2 = 1 <= duration < 4 yrs, 3 = 4 <= duration < 7 yrs, 4 = duration >= 7 yrs
+- property, Ordinal; 1 = unknown/ no property, 2 = car or other, 3 = building soc. savings agr./ life insurance, 4 = real estate
+- number_credits, Ordinal; 1 = 1, 2 = 2-3, 3 = 4-5, 4 = >= 6
+- job, Ordinal; 1 = unemployed/ unskilled (non-resident), 2 = unskilled (resident), 3 = skilled employee/ official, 4 = manager/ self empl./ highly qualified employee
+- duration, Quantitative; Credit duration in months
+- amount, Quantitative; Credit amount in DM
+- age, Quantitative; Age of debtor in years
+
+## Cleaning and mutating data
+
+The data set came mostly clean, without any missing or invalid values. However, we changed some values: 1 -  no telephone # => 0 - no telephone #, 2 - has telephone # => 1 - has telephone #, 2 - one to two people => 0 - one to two people to keep consistency, and to experiment with considering some variables as ordinal. Other than this, variables had to be factored appropriately since they were all numbers. We chose to not use the descriptions provided from the script as it was verbose. Also, we choose to treat some nominal variables as ordinal since their levels look like having some order relationship.
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+# Preparing data for modelling
+# Fix order of some ordinal variable
+credit_data[credit_data$foreign_worker == 2,20] = 0 # 0 for not foreign worker
+credit_data[credit_data$telephone == 1,19] = 0 # 0 for no telephone #
+credit_data[credit_data$telephone == 2,19] = 1 # 0 for no telephone #
+credit_data[credit_data$people_liable == 2,18] = 0 # 0 for one to two people
+
+credit_data$purpose = as.factor(credit_data$purpose)
+credit_data$personal_status_sex = as.factor(credit_data$personal_status_sex)
+credit_data$other_debtors = as.factor(credit_data$other_debtors)
+credit_data$other_installment_plans = as.factor(credit_data$other_installment_plans)
+```
+
+
+## Visualizing variables
+
+When looking at data, we decided to look at the distributions of the variables themselves, the distributions of the explanatory variables against response, and looking at correlation between continuous variables.
+
+```{r message=FALSE, warning=FALSE, include=FALSE}
+# Used for graphing
+# NOTE: dataset does not contain ordered class, which may mess up ordinal variables for modelling
+# consider using credit_data instead of credit_data.val
+credit_data.val <- credit_data
+
+credit_data.val <- data.frame(credit_data.val)
+credit_data.val <- dplyr::select(credit_data.val, credit_risk, foreign_worker, telephone, people_liable, status, credit_history, purpose, savings, personal_status_sex, other_debtors, other_installment_plans, housing, employment_duration, installment_rate, present_residence, property, number_credits, job, duration, amount, age)
+credit_data.val <- credit_data.val %>% mutate_at(.vars = vars(credit_risk:job), .funs = funs(factor(., ordered = FALSE)))
+
+```
+
+```{r message=FALSE, warning=FALSE, echo=FALSE}
+# Combining variables of similar type to be plotted together
+bin_vars <- credit_data.val %>% pivot_longer(credit_risk:people_liable,
+                                   names_to = "xname", values_to = "x")
+cat_vars <- credit_data.val %>% pivot_longer(status:housing,
+                                   names_to = "xname", values_to = "x")
+ord_vars <- credit_data.val %>% pivot_longer(employment_duration:job,
+                                    names_to = "xname", values_to = "x")
+cont_vars <- credit_data.val %>% pivot_longer(duration:age,
+                                     names_to = "xname", values_to = "x")
+```
+
+### Distributions of variables
+
+For most of the variables, nothing too notable stands out in the distributions, most variables end up skewed in some way. However, the distribution of the response variable credit_risk should be considered. Credit risk is skewed towards good risk, meaning that most proportions of bad risk will be low, which is important to keep in mind when comparing explanatory variables to the response variable.
+
+```{r echo=FALSE, message=FALSE, warning=FALSE, out.height="30%", fig.align = "center"}
+# OUTPUT FOR REPORT
+# Plot of credit_risk distribution
+ggplot(credit_data.val, aes(x = fct_inseq(factor(credit_risk)))) +
+  geom_bar(fill = c("lightcoral", "lightseagreen"), alpha = 0.8) +
+  labs(title = "Bar plot of  credit risk", x = "Credit risk") + 
+  geom_text(stat = 'count', aes(label=..count..), size = 4) + theme_bw() +
+  scale_x_discrete(labels = c("Bad", "Good"))
+```
+
+### Distribution of explanatory variables against credit risk
+As mentioned earlier, since observations are skewed towards good credit risk, most proportions of bad risk in categories will be low, so we should look for categories where the proportion is higher than usual. The explanatory variables credit_history and status are two notable examples of this. In categories 1 and 2 for these variables, the proportion of bad risk is close to equal of that for good risk, and even has a higher proportion in the case of credit_history. Given the high proportion of good risk in the data set, this suggests that these variables are more polarized and their categories have a clearer association to credit risk, and may help predict credit risk later on.
+
+
+
+```{r message=FALSE, warning=FALSE, include=FALSE}
+# OUTPUT FOR PRESENTATION
+# Frequencies
+
+# Binary variables
+# Bar plot
+ggplot(bin_vars, aes(x = fct_inseq(factor(x)))) +
+  geom_bar(fill = "lightseagreen", alpha = 0.8) + facet_wrap(~xname, scales = "free") +
+  labs(title = "Bar plots of Binary Variables", x = "categories") + 
+  geom_text(stat = 'count', aes(label=..count..), size = 4) + theme_bw()
+
+# Categorical variables
+# Bar plot
+ggplot(cat_vars, aes(x = fct_inseq(factor(x)))) +
+  geom_bar(fill = "lightseagreen", alpha = 0.8) + facet_wrap(~xname, scales = "free") +
+  labs(title = "Bar plots of Categorical Variables", x = "categories") + 
+  geom_text(stat = 'count', aes(label=..count..), size = 3) + theme_bw()
+
+# Ordinal variables
+# Bar plot
+ggplot(ord_vars, aes(x = fct_inseq(x))) +
+  geom_bar(fill = "lightseagreen", alpha = 0.8) + facet_wrap(~xname, scales = "free") +
+  labs(title = "Bar plots of Ordinal Variables", x = "categories") + 
+  geom_text(stat = 'count', aes(label=..count..), size = 4) + theme_bw()
+```
+
+```{r message=FALSE, warning=FALSE, include=FALSE}
+# OUTPUT FOR PRESENTATION
+# Frequencies
+
+# Continuous variables
+# Histogram plots
+ggplot(cont_vars, aes(x = x)) +
+  geom_histogram(fill = "lightcoral", color = "white", bins = 24) +
+  facet_wrap(~xname, ncol = 2,  scales = "free") +
+  labs(title = "Histograms of Continous Variables") +
+  theme_bw()
+
+# Box plots
+ggplot(cont_vars, aes(y = x)) +
+  geom_boxplot(fill = "lightcoral") +
+  facet_wrap(~xname, scales = "free") +
+  labs(title = "Boxplots of Continous Variables") +
+  theme_bw()
+```
+
+```{r message=FALSE, warning=FALSE, include=FALSE}
+# OUTPUT FOR PRESENTATION
+# Frequency of categories against response 
+bin_vars.t <- credit_data.val %>% dplyr::select(credit_risk:people_liable) %>%
+  pivot_longer(foreign_worker:people_liable, names_to = "xname", values_to = "x")
+
+cat_vars.t <- credit_data.val %>% dplyr::select(credit_risk,status:housing) %>%
+  pivot_longer(status:housing, names_to = "xname", values_to = "x")
+
+ord_vars.t <- credit_data.val %>% dplyr::select(credit_risk,employment_duration:job) %>%
+  pivot_longer(employment_duration:job, names_to = "xname", values_to = "x")
+
+# Categorical Bar graphs against response
+ggplot() +
+  geom_bar(data = bin_vars.t, aes(x = fct_inseq(factor(x)), fill = credit_risk), position = "dodge") +
+  facet_wrap(~xname, ncol = 2,  scales = "free") + labs(title = "Bar graphs of Binary Variables against response") +
+  xlab("Binary category") + theme_bw() +
+  scale_fill_manual(values = c("lightcoral", "lightseagreen"), label = c("bad", "good"))
+
+ggplot() +
+  geom_bar(data = cat_vars.t, aes(x = fct_inseq(factor(x)), fill = credit_risk), position = "dodge") +
+  facet_wrap(~xname,  scales = "free") + labs(title = "Bar graphs of Categorical Variables against response") +
+  xlab("Category") + theme_bw() +
+  scale_fill_manual(values = c("lightcoral", "lightseagreen"), label = c("bad", "good"))
+
+ggplot() +
+  geom_bar(data = ord_vars.t, aes(x = fct_inseq(factor(x)), fill = credit_risk), position = "dodge") +
+  facet_wrap(~xname,  scales = "free") + labs(title = "Bar graphs of Ordinal Variables against response") +
+  xlab("Ordinal category") + theme_bw() +
+  scale_fill_manual(values = c("lightcoral", "lightseagreen"), label = c("bad", "good"))
+```
+
+```{r echo=FALSE, message=FALSE, warning=FALSE, out.height="30%", fig.align = "center"}
+# OUTPUT FOR REPORT
+# Plotting credit_history and status against credit risk
+
+cat_vars.t_ex <- credit_data.val %>% dplyr::select(credit_risk, credit_history, status) %>%
+  pivot_longer(c(credit_history, status), names_to = "xname", values_to = "x")
+
+ggplot() +
+  geom_bar(data = cat_vars.t_ex, aes(x = fct_inseq(factor(x)), fill = credit_risk), position = "dodge") +
+  facet_wrap(~xname,  scales = "free") + labs(title = "Bar graphs of Categorical Variables against response") +
+  xlab("Category") + theme_bw() +
+  scale_fill_manual(values = c("lightcoral", "lightseagreen"), label = c("bad", "good"))
+```
+
+ Comparing continuous variables to credit risk, it is easier to see where bad risk has higher proportions compared to good risk. For both amount and duration, bad risk become more prevalent as x increases, while for age, good risk becomes more prevalent as x increases.
+
+```{r message=FALSE, warning=FALSE, include=FALSE}
+# OUTPUT FOR PRESENTATION
+
+# Frequency of quantitative variables against response
+# Splitting data between response categories
+cont_vars_resp.0 <- credit_data.val %>%
+  dplyr::select(credit_risk,duration:age) %>% filter(credit_risk == '0') %>%
+  pivot_longer(duration:age, names_to = "xname", values_to = "x")
+cont_vars_resp.1 <- credit_data.val %>%
+  dplyr::select(credit_risk,duration:age) %>% filter(credit_risk == '1') %>%                 
+  pivot_longer(duration:age, names_to = "xname", values_to = "x")
+
+cont_vars_resp <- 
+  bind_rows(good = cont_vars_resp.1, bad = cont_vars_resp.0, .id = "credit_risk")
+
+# Continuous histograms against response
+ggplot() +
+  geom_histogram(
+    data = cont_vars_resp.0, aes(x = x, fill = "bad"), alpha = 1,
+    color = "white", position = "identity", bins = 24) +
+  geom_histogram(data = cont_vars_resp.1, aes(x = x, fill = "good"),
+    alpha = 0.4, color = "white", position = "identity", bins = 24) +
+  facet_wrap( ~ xname, ncol = 2,  scales = "free") +
+  labs(title = "Histograms of Continous Variables against response") +
+  theme_bw() + scale_fill_manual(values = c("lightcoral", "lightseagreen"),
+                    name = "credit_risk")
+
+# Boxplot
+ggplot(cont_vars_resp, aes(x=x, fill = credit_risk)) + geom_boxplot() +
+  facet_wrap(~xname, ncol = 2, scales = "free") + 
+  labs(title = "Box plots of Continous Variables against response") +
+  theme_bw() +
+  scale_fill_manual(values = c("lightcoral", "lightseagreen"),
+                    labels = c("bad", "good"))
+
+# Density plot
+ggplot(cont_vars_resp, aes(x=x, col = credit_risk)) +
+  geom_line(stat = "density", size = 0.8) +
+  facet_wrap(~xname, ncol = 2, scales = "free") +
+  labs(title = "Density plots of Continous Variables against response") +
+  theme_bw() + scale_color_manual(values = c("lightcoral", "lightseagreen"),
+                                  labels = c("bad", "good"))
+```
+
+```{r echo=FALSE, message=FALSE, warning=FALSE, out.height="28%"}
+# OUTPUT FOR REPORT
+# Plots of continuous to response
+
+# Continuous histograms against response
+ggplot() +
+  geom_histogram(
+    data = cont_vars_resp.0, aes(x = x, fill = "bad"), alpha = 1,
+    color = "white", position = "identity", bins = 24) +
+  geom_histogram(data = cont_vars_resp.1, aes(x = x, fill = "good"),
+    alpha = 0.4, color = "white", position = "identity", bins = 24) +
+  facet_wrap( ~ xname, ncol = 3,  scales = "free") +
+  labs(title = "Histograms of Continous Variables against response") +
+  theme_bw() + scale_fill_manual(values = c("lightcoral", "lightseagreen"),
+                    name = "credit_risk")
+
+# Density plot
+ggplot(cont_vars_resp, aes(x=x, col = credit_risk)) +
+  geom_line(stat = "density", size = 0.8) +
+  facet_wrap(~xname, ncol = 3, scales = "free") +
+  labs(title = "Density plots of Continous Variables against response") +
+  theme_bw() + scale_color_manual(values = c("lightcoral", "lightseagreen"),
+                                  labels = c("bad", "good"))
+
+```
+
+
+
+## Correlation between continuous variables
+Lastly, we wanted to look at correlation between variables to see if there was any signs of multicolinearity. With techniques learned in this class, we could only compare correlation between continuous variables, so we did so. Between amount and duration, there appears to be significant correlation at 0.625, implying multicolinearity and as such, one of these variables may end up removed during the modelling process. 
+
+```{r echo=FALSE, message=FALSE, warning=FALSE, fig.align = "center", out.height="28%"}
+# OUTPUT FOR REPORT
+# OUTPUT FOR PRESENTATION
+
+# Correlation for quantitative variables
+credit_data.val %>% dplyr::select(duration:age) %>% cor() %>%
+  ggcorrplot(title = "Correlation between continuous variables") + scale_fill_gradientn(colors = c("slategray2", "lightcoral"), name = "Abs. corr")
+```
+```{r echo=FALSE, message=FALSE, warning=FALSE, out.height="28%"}
+# OUTPUT FOR REPORT
+# OUTPUT FOR PRESENTATION
+
+# Table of correlation matrix
+credit_data.val %>% dplyr::select(duration:age) %>% cor() %>% pander()
+```
+
+
+# Model Building
+```{r}
+# Separate data into training set and testing set, training set contains 700 observations, testing set contains 300 observations.
+set.seed(1004912785)
+credit_data.samp = base::sample(1:1000, size = 700, replace=FALSE)
+credit_data.train = credit_data[credit_data.samp,] 
+credit_data.test = credit_data[-credit_data.samp,]
+```
+
+```{r include=FALSE}
+# Fit model with training set, first use only main effects
+credit_data.main.all = glm(credit_risk~.,family=binomial,data=credit_data.train) # All main effect model
+credit_data.null = glm(credit_risk~1,family=binomial,data=credit_data.train) # Null model
+summary(credit_data.main.all)
+```
+
+```{r,echo=FALSE, include=FALSE, r,echo=FALSE}
+#credit_data.main.best is only main effect AIC
+credit_data.main.best.for = step(credit_data.null, scope=list(upper=credit_data.main.all,lower=credit_data.null),direction = 'forward',trace=0,test="Chisq")
+credit_data.main.best.back = step(credit_data.main.all, direction = 'backward',trace=0,test="Chisq")
+credit_data.main.best.both = step(credit_data.main.all, direction = 'both',trace=0,test="Chisq")
+credit_data.main.best.for
+credit_data.main.best.back
+credit_data.main.best.both
+credit_data.main.best = credit_data.main.best.back
+```
+
+```{r}
+credit_data.main.best
+```
+
+Forward, backward and stepwise eliminations give the same model, and its AIC is 706.7 which is smaller than full model (which gives 715.34). Thus, we select main effects: status, duration, credit_history, purpose, amount, savings, employment_duration, installment_rate, present_residence, property, age, housing, telephone.
+
+## Goodness-of-fit Test for Selected Main Effect Model
+Since we have ungrouped data, so using Hosmer-Lemeshow test for Goodness-of-fit test.
+```{r}
+hoslem.test(credit_data.main.best$y,fitted(credit_data.main.best),g=23)
+```
+Since p-value = 0.8909>0.05, we fail to reject the null hypothesis that the current model is as good as saturated model, thus this model fits data well, and consider the current model has less order than the saturated model, we choose this model and can try to add interaction terms to see if we can further improve the performance of our model.
+
+# Model With Interaction Term
+## Further select main effect
+Since we still have too much parameters (22) after elimination, it will be hard to fit a saturated model with all of them, we will further select them to fit the saturated model. We want to divide these main effects into two categories and only use 4 of them with lowest AIC from finance category and 1-2 of them from personal info category.
+```{r}
+# Finance models
+model.status = glm(credit_risk~status,family=binomial,data=credit_data.train)
+model.duration= glm(credit_risk~duration,family=binomial,data=credit_data.train)
+model.credit_history= glm(credit_risk~credit_history,family=binomial,data=credit_data.train)
+model.purpose= glm(credit_risk~purpose,family=binomial,data=credit_data.train)
+model.amount= glm(credit_risk~amount,family=binomial,data=credit_data.train)
+model.savings= glm(credit_risk~savings,family=binomial,data=credit_data.train)
+model.installment_rate= glm(credit_risk~installment_rate,family=binomial,data=credit_data.train)
+model.property= glm(credit_risk~property,family=binomial,data=credit_data.train)
+model.installment_rate= glm(credit_risk~installment_rate,family=binomial,data=credit_data.train)
+model.housing= glm(credit_risk~housing,family=binomial,data=credit_data.train)
+```
+
+```{r}
+# Personal info models
+model.employment_duration= glm(credit_risk~employment_duration,family=binomial,data=credit_data.train)
+model.present_residence= glm(credit_risk~present_residence,family=binomial,data=credit_data.train)
+model.age= glm(credit_risk~age,family=binomial,data=credit_data.train)
+model.telephone= glm(credit_risk~telephone,family=binomial,data=credit_data.train)
+```
+
+```{r,echo=FALSE,results='hide'}
+summary(model.status)
+summary(model.duration)
+summary(model.credit_history)
+summary(model.purpose)
+summary(model.amount)
+summary(model.savings)
+summary(model.installment_rate)
+summary(model.property)
+summary(model.housing)
+```
+AIC of status is 761.21, AIC of duration is 821.4, AIC of credit_history is 821.35, AIC of purpose is 836.05, AIC of amount is 836.93, AIC of savings is 827.07, AIC of installment_rate is 843.28, AIC of property is 832.95, AIC of housing is 845.72. 
+
+4 of them with lowest AIC are: status, duration, credit_history, savings.
+```{r,echo=FALSE,results='hide'}
+summary(model.employment_duration)
+summary(model.present_residence)
+summary(model.age)
+summary(model.telephone)
+```
+AIC of employment_duration is 840.53, AIC of present_residence is 845.78, AIC of age is 839.6, AIC of telephone is 844.05
+
+4 of them with lowest AIC is: age.
+```{r warning=FALSE, include=FALSE}
+# Fit model with training set, with all interaction terms of selected main effects (Saturated model)
+credit_data.sat = glm(credit_risk~status*duration*credit_history*savings*age,family=binomial,data=credit_data.train) # Saturated model
+credit_data.select = glm(credit_risk~status+duration+credit_history+savings+age,family=binomial,data=credit_data.train) # Selected main effect only model
+```
+```{r include=FALSE}
+summary(credit_data.select)
+```
+```{r}
+hoslem.test(credit_data.select$y,fitted(credit_data.select),g=7)
+```
+Since p-value = 0.8696>0.05, we fail to reject the null hypothesis that the current model is as good as saturated model, thus this model fits data well, and consider the current model has less order than the saturated model and less parameters than the model with 31 parameters, we choose this model and can try to add interaction terms to see if we can further improve the performance of our model.
+
+```{r include=FALSE}
+#credit_data.best is the final selected model 
+credit_data.for = step(credit_data.null, scope=list(upper=credit_data.sat,lower=credit_data.null),direction = 'forward',trace=0,test="Chisq")
+credit_data.back = step(credit_data.sat, direction = 'backward',trace=0,test="Chisq")
+credit_data.both = step(credit_data.null,scope=list(upper=credit_data.sat,lower=credit_data.null), direction = 'both',trace=0,test="Chisq")
+credit_data.for
+credit_data.both
+credit_data.back
+credit_data.best = credit_data.for
+```
+
+```{r}
+credit_data.best
+```
+Both stepwise elimination and forward elimination gives the same model with AIC=719.6, but backward elimination gives saturated which has AIC=731.1. Although this model have slightly bigger AIC than the model the select using step function in previous section (the model with 22 parameters has AIC=706.7). We think its worth to sacrifice some AIC for about $1/2$ less parameters. We select this model as our final model: $logit(y) = 0.93182+0.57581\beta_{status}-0.06153\beta_{duration}-0.37548\beta_{credit\_history}-0.18107\beta_{savings}-0.02985\beta_{age}+0.01575\beta_{duration}\beta_{savings}+0.01816\beta_{age}\beta_{credit\_history}$.
+
+## Test for Interaction Term
+```{r echo=FALSE}
+# Test for homogeneous association
+anova(credit_data.select,credit_data.best,test="Chisq")
+```
+Since p-value = 0.001578<0.05, we reject the null hypothesis that the simpler model (model without interaction) fits the data as good as model with interaction. Test statistic is 12.903, degrees of freedom is 2.
+
+## Predictive Probability Curve
+```{r include=FALSE}
+# For duration
+newdata.duration = with(credit_data.test, data.frame(duration = min(credit_data.test$duration):max(credit_data.test$duration), status=mean(status), credit_history=mean(credit_history),savings=mean(savings),age=mean(age)))
+pred_y.duration = predict(credit_data.best, newdata.duration, type="response", se.fit=TRUE) # Predict with se
+pred_fit.duration = pred_y.duration$fit # predicted
+lower.duration = pred_y.duration$fit - (1.96*pred_y.duration$se.fit) # lower bounds
+upper.duration = pred_y.duration$fit + (1.96*pred_y.duration$se.fit) # upper bounds
+
+# For age
+newdata.age = with(credit_data.test, data.frame(age = min(credit_data.test$age):max(credit_data.test$age), status=mean(status), credit_history=mean(credit_history),savings=mean(savings),duration=mean(duration)))
+pred_y.age = predict(credit_data.best, newdata.age, type="response", se.fit=TRUE) # Predict with se
+pred_fit.age = pred_y.age$fit # predicted
+lower.age = pred_y.age$fit - (1.96*pred_y.age$se.fit) # lower bounds
+upper.age = pred_y.age$fit + (1.96*pred_y.age$se.fit) # upper bounds
+```
+```{r echo=FALSE, message=FALSE, warning=FALSE, out.height="28%"}
+par(mfrow=c(1,2))
+plot(min(credit_data.test$duration):max(credit_data.test$duration), pred_fit.duration, type="l", ylab="Predicted Probability to Credit Risk", xlab="Duration", bty="n")
+lines(min(credit_data.test$duration):max(credit_data.test$duration), lower.duration, lty=2)
+lines(min(credit_data.test$duration):max(credit_data.test$duration), upper.duration, lty=2)
+
+plot(min(credit_data.test$age):max(credit_data.test$age), pred_fit.age, type="l", ylab="Predicted Probability to Credit Risk", xlab="Age", bty="n")
+lines(min(credit_data.test$age):max(credit_data.test$age), lower.age, lty=2)
+lines(min(credit_data.test$age):max(credit_data.test$age), upper.age, lty=2)
+```
+
+From the predictive probability curve plotted based on the testing set on two continuous variables duration and age, one can see that as duration increases, the predictive probability of credit_risk decreases when holding other variables unchanged; as age increases, the predictive probability of credit_risk also increases when holding other variables unchanged.
+
+# Model Validation
+## Goodness-of-fit Test for Final Model
+Since we have ungrouped data, so using Hosmer-Lemeshow test for Goodness-of-fit test.
+```{r echo=FALSE}
+hoslem.test(credit_data.best$y,fitted(credit_data.best),g=9)
+```
+Since p-value = 0.8954>0.05, we fail to reject the null hypothesis that the current model is as good as saturated model, thus this model fits data well, and consider the current model has much less order than the saturated model, we choose this model as our final model.
+
+## Predictive Power
+```{r echo=FALSE}
+# Predictive Power on training set
+n.train = nrow(credit_data.train) # Number of samples in training set
+prop.train = sum(credit_data.train$credit_risk)/n.train # because credit_risk is binary
+predicted.train = as.numeric(fitted(credit_data.best)>prop.train)
+xtabs(~credit_data.train$credit_risk+predicted.train)
+```
+```{r include=FALSE}
+(sensitivity.train = 334/(334+163))
+(specificity.train = 149/(149+54))
+(concordance_rate.train = (149+334)/(149+54+334+163))
+```
+Sensitivity of final model on training set is 0.6720322. Specificity of final model on training set is 0.7339901. Concordance rate of final model on training set is 0.69.
+```{r echo=FALSE}
+# Predictive Power on testing set
+pred.test = predict(credit_data.main.best,credit_data.test,type="response") # Predict probability on testing set
+n.test = nrow(credit_data.test) # Number of samples in training set
+prop.test = sum(credit_data.test$credit_risk)/n.test # because credit_risk is binary
+predicted.test = as.numeric(pred.test>prop.test)
+xtabs(~credit_data.test$credit_risk+predicted.test)
+```
+```{r include=FALSE}
+(sensitivity.test = 161/(161+42))
+(specificity.test = 64/(64+33))
+(concordance_rate.test = (64+161)/(64+33+161+42))
+```
+Sensitivity of final model on testing set is 0.7931034. Specificity of final model on testing set is 0.6597938. Concordance rate of final model on testing set is 0.75. From previous section, we see that the training Concordance rate is 0.69, this means our model generalize well on testing set.
+
+## ROC
+```{r echo=FALSE, fig.show="hold", message=FALSE, warning=FALSE, out.width="50%"}
+train_roc = roc(credit_data.best$y~fitted(credit_data.best),plot=T,print.auc=T,main="Training ROC Curve")
+test_roc = roc(credit_data.test$credit_risk~pred.test,plot=T,print.auc=T,main="Testing ROC Curve")
+```
+
+The area under training ROC curve is 0.766 and the area under testing ROC curve is 0.794, this means our model is good.
+
+# Residual Diagnosis
+```{r include=FALSE}
+# On training set
+P_res.train = residuals(credit_data.best,type = "pearson")
+sum(as.numeric(abs(P_res.train)>3)) # Number of |Pearson residual| > 3
+
+sd_res.train = rstandard(credit_data.best)
+sum(as.numeric(abs(sd_res.train)>3)) # Number of |sandardized deviance residual| > 3
+```
+```{r echo=FALSE, fig.show="hold", message=FALSE, warning=FALSE, out.width="50%"}
+plot(credit_data.best$fitted,P_res.train,xlab="Fitted Values",ylab="Pearson Residuals",main="Pearson Residuals v.s. Fitted Values")
+plot(credit_data.best$fitted.values,sd_res.train,ylab="Sandardized Deviance Residuals",xlab="Fitted Values",main="Sandardized Deviance Residuals v.s. Fitted Values")
+```
+
+According to Pearson residual there are 9 outliers which has |Pearson residual| > 3 in training se. According to Standardized Deviance residual, seems like there is no outliers in training set (ie: no |standardized deviance residual| > 3).
+
+# Conclusion, Discussion, and Future Work
+
+The goal of this report was to identify the factors that can affect someone's credit risk, and to predict the status of someone's credit based on those factors. In the final model, we concluded that the most important factors involved are status (the status of the debtor’s checking account), duration (the duration of the credit), savings (debtor's savings), credit history (history of compliance with previous contracts), age and various interaction terms. One interesting fact we find is that if one's status gets worse by 1 level, the predicted probability of this person has good credit risk decreases by $57.6\%$ when holding other variables unchanged, this means the amount of balance in one's account really impact credit risk a lot positively. And surprisingly, since status has such a big positive impact on credit risk, other main effects have a negative impact on credit risk as they increases, this is opposite to our common knowledge. Our finding could impact the field as it can help banks and other financial institutions in limiting credit risk, by helping them to assess which people have good or bad credit risk.
+
+The major challenge we had was originally the model was fitted with Poisson, which gave a model with only status and duration as parameters with an AIC of 1315. However this model did not fit the data well, but due to an error with grouping numbers in the Hosmer-Lemeshow test, it seemed as if it did. After realizing this, we changed the model to binomial, which fit the data much better, and caused the AIC to decrease drastically.
+
+Some limitations of the model are that the model we used to add interaction terms does not include all the significant variables that were found in the main effect model, so we might miss some important interaction terms. Another limitation is that we didn't select the model with the best AIC, as it had many more parameters, which could have led to other issues. Additionally the data is from 1970s Germany, meaning that comparing results derived from this data could be difficult due to differences in culture and the time period. Another issue is that some of the variables look ordinal, but are treated as nominal. For future research it would be interesting to treat these variables as ordinal, and examine how it affects the model, as well as collecting more recent data to determine how the factors affecting credit risk have changed over the last 50 years.
+
+One future work we can do is can try to add interaction terms using the main effect model with all significant variables. This could take long time as the saturated model will be huge. 
+
+# References
+
+Grömping, U. (2019). South German credit data: Correcting a widely used data set (Report No. 4/2019). Beuth University of Applied Sciences Berlin. https://archive.ics.uci.edu/ml/datasets/South+German+Credit+%28UPDATE%29
+
+McLeay, M., Radia, A., & Thomas, R. (2014). Money creation in the modern economy. Bank of England Quarterly Bulletin, 2014 Q1. https://papers.ssrn.com/sol3/papers.cfm?abstract_id=24162341
