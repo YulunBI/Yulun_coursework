@@ -1,0 +1,12 @@
+package commands;
+
+public class CommandPrinter {
+
+    public void printOutput(Command c) {
+        System.out.println(c.getOutput());
+    }
+
+    public void printDocs(Command c){
+        System.out.println(c.getDocs());
+    }
+}

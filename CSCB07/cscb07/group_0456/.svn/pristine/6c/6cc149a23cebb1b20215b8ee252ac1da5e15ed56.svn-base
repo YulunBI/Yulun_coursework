@@ -1,0 +1,13 @@
+Class name: MakeDirectory
+
+Parent Class: Command
+
+Subclasses: None
+
+Responsibilities:
+* Create directory(s) with path(s) specified by the arguments.
+
+Collaborators: 
+* FileSystem
+* Path
+* InvalidParamLengthException

@@ -1,0 +1,171 @@
+// **********************************************************
+// Assignment2:
+// Student1:
+// UTORID user_name: khanyus7
+// UT Student #: 1006330329
+// Author: Yusuf Khan
+//
+// Student2:
+// UTORID user_name: wuyulu10
+// UT Student #: 1004912785
+// Author: Yulun Wu
+//
+// Student3:
+// UTORID user_name: lujia34
+// UT Student #: 1006173196
+// Author: Jia (Arthur) Lu
+//
+// Student4:
+// UTORID user_name:
+// UT Student #:
+// Author:
+//
+//
+// Honor Code: I pledge that this program represents my own
+// program code and that I have coded on my own. I received
+// help from no one in designing and debugging my program.
+// I have also read the plagiarism section in the course info
+// sheet of CSC B07 and understand the consequences.
+// *********************************************************
+
+package commands;
+
+import exceptions.InvalidPathException;
+import java.util.ArrayList;
+import system.Directory;
+import system.File;
+import system.FileSystem;
+import system.JPath;
+import system.Path;
+
+/**
+ * Command for printing contents of directory and name of file(s).
+ * 
+ */
+public class ListFiles extends Command {
+
+  /**
+   * Creates a new ListFiles instance and initializes the command name and docs.
+   */
+  public ListFiles() {
+    this.setName("ls");
+    this.setDocs("ls [PATH ...]\n\tIf no paths are given, print the contents of current directory,"
+        + "\n\twith a new line following each file/directory." + "\n\tOtherwise, for each path p:"
+        + "\n\t\tIf p specifies a file, print p."
+        + "\n\t\tIf p specifies directory, print p + ':' + contents of directory + newline.");
+  }
+
+  /**
+   * Prints the contents of current directory if no argument is given. Otherwise for each given
+   * argument, if that argument specifies a file, print the name of file. If that argument specifies
+   * a directory, print the name of that directory and name of the contents of that directory.
+   * 
+   * @param fs the FileSystem associated with the shell this command is running in
+   * @param arguments the list of arguments provided by the user
+   * @return The output of the command
+   * @throws InvalidPathException If the directory on the stack is not valid for fs.
+   */
+  public String executeCommand(FileSystem fs, ArrayList<String> arguments) {
+    Boolean recursive = false;
+    if (arguments.size() >= 1){
+      if (arguments.get(0).equals("-R")){
+        recursive = true;
+        arguments.remove(0);
+      }
+    }
+    String output = "";
+    try {
+      this.setArguments(arguments);
+
+      if (this.getArguments().size() == 0) {
+        Path curr = new JPath(fs.getDirectory().getPath());
+        output += listDirectory(curr, fs, recursive);
+      } else {
+        for (String s : this.getArguments()) {
+          Path p = new JPath(s);
+
+          if (!s.endsWith("/") && fs.findFile(p) != null) {
+            output += p.getLastElement() + "\n";
+
+          } else if (fs.findDirectory(p) != null) {
+            output += "\n" + listDirectory(p, fs, recursive);
+          }
+        }
+      }
+    } catch (InvalidPathException e) {
+      System.err.println(e.getMessage());
+    }
+    return output;
+  }
+
+  /**
+   * Returns the names of the contents in d.
+   * 
+   * @param d the directory that is needed to find its contents
+   * @return The directories and files in d
+   */
+  private String printContentInCurrentDirectory(Directory d) {
+    // get subDirectory and subFile list from FileSystem
+    // print them one by one each followed by a newline
+    String contents = "";
+    contents += printDirectory(d.getChildren());
+    contents += printFiles(d.getFile());
+    contents += "\n";
+
+    return contents;
+  }
+
+  /**
+   * Returns the names of the directories in list.
+   * 
+   * @param list the list of directories that are needed to converted to a String
+   * @return The directories in list
+   */
+  private String printDirectory(ArrayList<Directory> list) {
+    String dirs = "";
+    for (Directory d : list) {
+      dirs += d.getName() + "\n";
+    }
+    return dirs;
+  }
+
+  /**
+   * Returns the names of the files in list.
+   * 
+   * @param d the list of files that are needed to print
+   * @return The files in list
+   */
+  private String printFiles(ArrayList<File> list) {
+    String files = "";
+    for (File s : list) {
+      files += s.getName() + "\n";
+    }
+
+    return files;
+  }
+
+  /**
+   * Returns the contents in the Directory given by p. If recursive is true,
+   * then the contents are searched recursively.
+   * 
+   * @param p The path of the Directory
+   * @param fs The file system
+   * @param recursive If the contents should be listed recursively
+   * @return The contents in the Directory given by p
+   */
+  private String listDirectory(Path p, FileSystem fs, Boolean recursive) 
+    throws InvalidPathException {
+    Directory d = fs.findDirectory(p);
+
+    String output = "";
+    if(recursive == true){
+      output += fs.recursiveList(d, 0, true);
+    } else {
+      output += d.getPath() + ":" + "\n";
+      output += printContentInCurrentDirectory(d);
+    }
+
+    return output;
+  }
+
+}

@@ -1,0 +1,15 @@
+package commands;
+
+import system.*;
+
+public class PopDirectory extends Command{
+  public PopDirectory() {
+    this.setName("popd");
+    this.setDocs("popd\n\tRemoves top entry from directory stack and performs cd with it.");
+  }
+  
+  public String executeCommand(FileSystem fs) {
+    Directory d = fs.stackPop();
+    return ""; // cd not yet implemented
+  }
+}

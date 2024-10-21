@@ -1,0 +1,12 @@
+What did I work on in the last three days?
+	- added CRC cards for new classes (Copy, Move, Remove)
+    - added classes for new commands (cp, mv, rm)
+    - added entries in hashtable for new commands
+    - adjusted mkdir to work for different numbers of arguments != 2
+
+What do I plan to work in the next three days?
+    - nothing
+
+Am I blocked on anything?
+    - nothing
+    

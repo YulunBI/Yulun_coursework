@@ -1,0 +1,29 @@
+package commands;
+
+import java.util.ArrayList;
+
+import system.FileSystem;
+import system.Path;
+
+public class ChangeDirectory extends Command {
+  public ChangeDirectory() {
+    this.setName("cd");
+    this.setDocs("cd DIR\n\tChange current directory to DIR. Can be full or relative path."
+        + "\n\t'..' refers to parent directory.\n\t'.' refers to current directory.");
+  }
+
+  public void executeCommand(FileSystem fs, ArrayList<String> arguments) {
+    if (arguments.size() != 1) {
+      this.setOutput("Invalid parameter length");
+      return;
+    }
+
+    Path changedPath = new Path(arguments.get(0));
+
+    fs.changeDirectory(changedPath);
+
+    this.setOutput(""); // change CommandPrinter later
+
+  }
+
+}

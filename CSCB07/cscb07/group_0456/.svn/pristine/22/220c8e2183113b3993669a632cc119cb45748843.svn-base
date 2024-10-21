@@ -1,0 +1,112 @@
+package test;
+
+import java.util.ArrayList;
+import javax.naming.InvalidNameException;
+import exceptions.AlreadyExistsException;
+import system.Directory;
+import system.File;
+
+public class MockDirectory implements Directory {
+
+  /**
+   * The name of the directory
+   */
+
+  private String name;
+
+  /**
+   * The path of the directory
+   */
+  private String path;
+
+  /**
+   * The children of the directory
+   */
+  private ArrayList<Directory> children;
+
+  /**
+   * The Files of the directory
+   */
+  private ArrayList<File> file;
+
+  public MockDirectory(String name, String path) {
+    this.name = name;
+    this.path = path;
+    children = new ArrayList<Directory>();
+    file = new ArrayList<File>();
+  }
+
+
+  @Override
+  public String getName() {
+    return name;
+  }
+
+  @Override
+  public ArrayList<Directory> getChildren() {
+    return children;
+  }
+
+  @Override
+  public ArrayList<File> getFile() {
+    return file;
+  }
+
+  @Override
+  public void removeChild(File f) {
+    // TODO Auto-generated method stub
+
+  }
+
+  @Override
+  public void removeChild(Directory d) {
+    // TODO Auto-generated method stub
+
+  }
+
+  @Override
+  public void removeChildren() {
+    // TODO Auto-generated method stub
+
+  }
+
+  @Override
+  public void addSubDictionary(String subDictName)
+      throws InvalidNameException, AlreadyExistsException {
+
+    Directory mock = new MockDirectory(subDictName, "Valid Path");
+    this.children.add(mock);
+
+  }
+
+  @Override
+  public void addSubFile(String subFileName) throws AlreadyExistsException, InvalidNameException {
+    file.add(new MockFile(subFileName, "Valid Path"));
+
+  }
+
+  @Override
+  public Directory getParent() {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  @Override
+  public String getPath() {
+    return path;
+  }
+
+  @Override
+  public Directory getSubDirectory(String name) {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+
+  @Override
+  public void replaceThis(Directory newDir) {
+    // TODO Auto-generated method stub
+    
+  }
+
+}

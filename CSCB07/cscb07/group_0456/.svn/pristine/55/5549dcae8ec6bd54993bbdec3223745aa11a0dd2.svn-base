@@ -1,0 +1,14 @@
+What did I work on in the last three days?
+	- Finished ListFiles for recursive case
+	- Simplified search
+	- Handled invalid parameters for search
+	- Made mock objects
+	- Added junit tests for MakeDirectory, PrintWorkingDirectory, Tree, ChangeDirectory, Search, Concatenation
+
+What do I plan to work in the next three days?
+	- Add junit tests for FileSystem, File and Path
+	- Help group members finish other work (mv, cp)
+
+Am I blocked on anything?
+    - nothing
+    

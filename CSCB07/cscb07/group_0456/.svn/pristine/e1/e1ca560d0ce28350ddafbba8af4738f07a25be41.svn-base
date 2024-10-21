@@ -1,0 +1,17 @@
+package commands;
+
+import system.*;
+
+public class PushDirectory extends Command {
+  public PushDirectory() {
+    this.setName("pushd");
+    this.setDocs("pushd DIR\n\tPushes current working directory to top of stack, then changes " +
+        "working directory to DIR.");
+  }
+  
+  public void executeCommand(FileSystem fs) {
+    fs.stackPush(fs.getDirectory());
+    Path p = new Path(fs.getDirectory().getPath());
+    fs.changeDirectory(p);
+  }
+}

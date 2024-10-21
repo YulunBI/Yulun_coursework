@@ -1,0 +1,12 @@
+Class name: Path
+
+Parent Class: None
+
+Subclasses: None
+
+Responsibilities:
+* Represents a path in the file system
+* Get the parent of the path
+* Get the directory/file name at the specified path 
+
+Collaborators: None

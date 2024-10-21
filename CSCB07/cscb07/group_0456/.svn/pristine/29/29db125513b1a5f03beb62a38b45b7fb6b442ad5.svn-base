@@ -1,0 +1,72 @@
+package commands;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.URL;
+import java.util.ArrayList;
+import javax.naming.InvalidNameException;
+import exceptions.AlreadyExistsException;
+import exceptions.InvalidParamLengthException;
+import exceptions.InvalidPathException;
+import system.FileSystem;
+import system.JPath;
+import system.Path;
+
+public class ClientUrl extends Command{
+  
+  private static final int EXACT_ARG_LENGTH = 1;
+
+  public ClientUrl() {
+    this.setName("curl");
+    this.setDocs("curl URL\n\tRetrieve the file at URL"
+        + "and add it to the current working directory.");
+  }
+
+  public String executeCommand(FileSystem fs, ArrayList<String> arguments)
+      throws InvalidParamLengthException {
+    if (arguments.size() != EXACT_ARG_LENGTH) {
+      throw new InvalidParamLengthException("Invalid parameter length");
+    }
+    try {
+      String fileName = parseFileName(arguments);
+      URL url = new URL(arguments.get(0));
+      BufferedReader in = new BufferedReader(new InputStreamReader(
+          url.openStream()));
+      String text;
+      Path p = new JPath(fs.getDirectory().getPath() + fileName);
+      fs.addFile(p);
+      while ((text = in.readLine()) != null) {
+        fs.redirect(">>", text, fileName);
+      }
+      in.close();
+    } catch (IOException e) {
+      System.err.println(arguments + "Invalid url");
+    } catch (InvalidNameException e) {
+      System.err.println("Invalid file name");
+    } catch (InvalidPathException e) {
+      System.err.println("Invalid path");
+    } catch (AlreadyExistsException e) {
+      System.err.println("File already exist");
+    } 
+    return "";
+  }
+  
+  private String parseFileName(ArrayList<String> arguments) 
+      throws InvalidNameException{
+    String url = arguments.get(0);
+    String[] urlList = url.split("/");
+    String fileName;
+    int lenL = urlList.length;
+    if (url.endsWith("/")) {
+      fileName = urlList[lenL - 2];
+    } else {
+      fileName = urlList[lenL - 1];
+    }
+    if (fileName.indexOf(".") != fileName.lastIndexOf(".")) {
+      throw new InvalidNameException("Invalid file name");
+    }
+    fileName = fileName.replace(".", "");
+    return fileName;
+  }
+}

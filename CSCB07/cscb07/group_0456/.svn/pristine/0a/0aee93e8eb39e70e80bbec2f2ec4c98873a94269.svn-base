@@ -1,0 +1,14 @@
+Class name: CommandPrinter
+
+Parent Class: None
+
+Subclasses: None
+
+Responsibilities:
+* Print result after command executes
+* Print out documentation for command
+* Print message if command is not supported
+* Print error if command fails to execute
+
+Collaborators: 
+* Command

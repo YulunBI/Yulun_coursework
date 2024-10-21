@@ -1,0 +1,14 @@
+Class name: Redirector
+
+Parent Class: None
+
+Subclasses: None
+
+Responsibilities:
+* Removes redirection symbol and file name from user arguments
+* Redirects command output to file
+
+Collaborators: 
+* FileSystem
+* AlreadyExistsException
+* InvalidPathException

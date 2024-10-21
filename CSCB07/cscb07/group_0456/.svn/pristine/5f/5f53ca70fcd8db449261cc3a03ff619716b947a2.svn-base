@@ -1,0 +1,14 @@
+Class name: Echo
+
+Parent Class: Command
+
+Subclasses: None
+
+Responsibilities:
+* Overwrite file at path which user entered text
+* Append file at path which user entered text
+* Print text to shell
+
+Collaborators: 
+* FileSystem
+* InvalidParamLengthException

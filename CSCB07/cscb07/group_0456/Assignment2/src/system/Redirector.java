@@ -1,0 +1,95 @@
+// **********************************************************
+// Assignment2:
+// Student1:
+// UTORID user_name: khanyus7
+// UT Student #: 1006330329
+// Author: Yusuf Khan
+//
+// Student2:
+// UTORID user_name: wuyulu10
+// UT Student #: 1004912785
+// Author: Yulun Wu
+//
+// Student3:
+// UTORID user_name: lujia34
+// UT Student #: 1006173196
+// Author: Jia (Arthur) Lu
+//
+// Student4:
+// UTORID user_name:
+// UT Student #:
+// Author:
+//
+//
+// Honor Code: I pledge that this program represents my own
+// program code and that I have coded on my own. I received
+// help from no one in designing and debugging my program.
+// I have also read the plagiarism section in the course info
+// sheet of CSC B07 and understand the consequences.
+// *********************************************************
+
+package system;
+
+import exceptions.AlreadyExistsException;
+import exceptions.InvalidPathException;
+import java.util.ArrayList;
+import javax.naming.InvalidNameException;
+
+/**
+ * Redirects command output to File.
+ */
+public class Redirector {
+
+  private String specifier;
+  private String fileName;
+
+  public Redirector() {
+    this.specifier = "";
+    this.fileName = "";
+  }
+
+  /**
+   * Removes the redirection specifiers (> or >>) and redirection file name from arguments.
+   * 
+   * @param arguments The arguments the user inputs.
+   */
+  public void removeSymbol(ArrayList<String> arguments) {
+    if (arguments.size() < 2) {
+      return;
+    }
+
+    String last = arguments.get(arguments.size() - 1);
+    String secondLast = arguments.get(arguments.size() - 2);
+
+    if (secondLast.equals(">") || secondLast.equals(">>")) {
+      this.specifier = secondLast;
+      this.fileName = last;
+
+      arguments.remove(arguments.size() - 1);
+      arguments.remove(arguments.size() - 1);
+    }
+  }
+
+  /**
+   * Redirects output to a file if the output is not empty, otherwise the output is returned
+   * unchanged.
+   * 
+   * @param output The output of the command.
+   * @param fs The FileSystem associated with the shell this command is running in
+   * @return The output of the command or an empty string if redirection happens
+   */
+  public String redirectOutput(String output, FileSystem fs) {
+    if (specifier.isBlank() || output.isBlank()) {
+      return output;
+    }
+
+    try {
+      fs.redirect(specifier, output, fileName);
+    } catch (InvalidNameException | IllegalArgumentException | InvalidPathException
+        | AlreadyExistsException e) {
+      System.err.println(e.getMessage());
+    }
+    return "";
+  }
+
+}

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="src" path="group_0391/Assignment1/src"/>
+	<classpathentry kind="src" path="group_0456/Assignment2/src"/>
+	<classpathentry kind="src" path="Quiz0/src"/>
+	<classpathentry kind="src" path="wuyulu10/Assignment0/src"/>
+	<classpathentry kind="src" path="wuyulu10/Assignment2/src"/>
+	<classpathentry kind="src" path="wuyulu10/Labs/Lab10/src"/>
+	<classpathentry kind="src" path="wuyulu10/Labs/Lab2/src"/>
+	<classpathentry kind="src" path="wuyulu10/Labs/Lab4/src"/>
+	<classpathentry kind="src" path="wuyulu10/Labs/Lab5/src"/>
+	<classpathentry kind="src" path="wuyulu10/Labs/Lab6/src"/>
+	<classpathentry kind="src" path="wuyulu10/Labs/Lab7/src"/>
+	<classpathentry kind="src" path="wuyulu10/Labs/Lab8/src"/>
+	<classpathentry kind="src" path="wuyulu10/Labs/Lab9/src"/>
+	<classpathentry kind="output" path="Quiz0/bin"/>
+</classpath>

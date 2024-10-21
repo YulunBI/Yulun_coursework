@@ -1,0 +1,122 @@
+package commands;
+
+import java.util.ArrayList;
+import exceptions.InvalidParamLengthException;
+import system.File;
+import system.FileSystem;
+import system.Path;
+
+public class Echo extends Command{
+  public Echo() {
+    this.setName("echo");
+    this.setDocs("echo STRING [> OUTFILE]\n\tIf OUTFILE is not provided, print STRING in shell." + 
+        "\n\tOtherwise, overwrites content of file OUTFILE with STRING." + 
+        "\n\tCreates OUTFILE if it does not already exist." +
+        "\n\tSTRING is a string of characters surrounded by double quotation marks.");
+  }
+  
+  public void executeCommand(FileSystem fs, ArrayList<String> arguments) {
+    try {
+      setArguments(arguments);
+      int argSize = arguments.size();
+      if (argSize <= 3) {
+        throw new InvalidParamLengthException("Invalid parameter length");
+      }
+      if (arguments.size() >= 3 && isString(argSize - 1)) {
+        printWholeList(arguments);
+      } else {
+        Path p; 
+        File f; 
+        if (arguments.get(argSize - 1).indexOf(">") == 0) {
+          int specfier = arguments.get(argSize - 1).lastIndexOf(">");
+          String fileName = arguments.get(argSize - 1).replace(">", "");
+          p = new Path(fileName);
+          f = fs.findFile(p);
+          if (specfier > 1) {
+            throw new Exception("just space holder right now");
+          } else {
+            if (f == null) {
+              fs.addFile(p);
+              f = fs.findFile(p);
+            }
+            if (specfier == 0) {
+              setText(f,arguments, argSize - 3);
+            } else if (specfier == 1) {
+              appendText(f,arguments, argSize - 3);
+            } else {
+              throw new Exception("just space holder right now");
+            }
+          }
+        } else if (arguments.get(argSize - 2).contains("\">") && isString(argSize - 3)) {
+          String specfier = arguments.get(argSize - 2);
+          p = new Path(arguments.get(argSize - 1));
+          f = fs.findFile(p);
+          if (f == null) {
+            fs.addFile(p);
+            f = fs.findFile(p);
+          }
+          if (specfier.equals(">")) {
+            setText(f,arguments, argSize - 4);
+          } else if (specfier.equals(">>")) {
+            appendText(f,arguments, argSize - 4);
+          } else {
+            throw new Exception("just space holder right now");
+          }
+        }
+      }  
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+  }
+  
+  private void printWholeList(ArrayList<String> arguments) {
+    int length = arguments.size();
+    if (length == 3) {
+      System.out.println("");
+    } else {
+      for (int i = 1; i < length - 2; i++) {
+        System.out.print(arguments.get(i)+" ");
+      }
+      System.out.print(arguments.get(length - 1)+"\n");
+    }
+  }
+  
+  private void setText(File f, ArrayList<String> arguments, int end) {
+    f.setText("");
+    appendText(f, arguments, end);
+  }
+  
+  private void appendText(File f, ArrayList<String> arguments, int end) {
+    int length = end;
+    if (length >= 3) {
+      for (int i = 0; i < end; i++) {
+        f.appendText(arguments.get(i)+" ");
+      }
+      f.appendText(arguments.get(end)+"\n");
+    } else {
+      f.appendText("\n");
+    }
+  }
+  
+  private boolean isString(int end) {
+    String firstStr = getArguments().get(0);
+    String lastStr = getArguments().get(end);
+    if (end == 2) {
+      if (firstStr.equals("\"") && lastStr.equals("\"")) {
+        return true;
+      }
+      return false;
+    } else {
+      if (firstStr.equals("\"") && 
+          lastStr.equals("\"")) {
+        for (int i = 1 ; i < end; i++) {
+          if (getArguments().get(i).contains("\"")) {
+            return false;
+          }
+        }
+      }
+      return true;
+    }
+  }
+}
+  

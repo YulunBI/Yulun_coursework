@@ -1,0 +1,33 @@
+package commands;
+
+import java.util.ArrayList;
+
+import system.FileSystem;
+import system.Path;
+
+public class MakeDirectory extends Command {
+
+    public MakeDirectory() {
+        this.setName("mkdir");
+        this.setDocs("mkdir DIR1 DIR2\n\tCreate two directories. May be specified with full path " +
+            "or relative path. Will not create DIR2 if DIR1 creation fails.");
+    }
+
+    public void executeCommand(FileSystem fs, ArrayList<String> arguments) {
+        if (arguments.size() != 2){
+            this.setOutput("Invalid parameter length");
+            return;
+        }
+            
+        this.setArguments(arguments);
+        Path first = new Path(arguments.get(0));
+        Path second = new Path(arguments.get(1));
+
+        fs.addDirectory(first);
+        fs.addDirectory(second);
+
+        this.setOutput(""); //change CommandPrinter later
+
+    }
+
+}

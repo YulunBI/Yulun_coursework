@@ -1,0 +1,4 @@
+Class name: ShellParent class (if any): NoneSubclasses (if any): None
+Responsibilities:* Read user input* Run commands based on the user input
+Collaborators:* Command
+* FileSystemExplorer

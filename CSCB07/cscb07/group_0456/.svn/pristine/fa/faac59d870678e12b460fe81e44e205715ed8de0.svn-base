@@ -1,0 +1,64 @@
+package commands;
+
+import java.util.ArrayList;
+
+import javax.naming.InvalidNameException;
+
+import exceptions.AlreadyExistsException;
+import exceptions.InvalidParamLengthException;
+import exceptions.InvalidPathException;
+import system.FileSystem;
+
+public class Echo extends Command {
+  public Echo() {
+    this.setName("echo");
+    this.setDocs("echo STRING [> OUTFILE]\n\tIf OUTFILE is not provided, print STRING in shell."
+        + "\n\tOtherwise, overwrites content of file OUTFILE with STRING."
+        + "\n\tCreates OUTFILE if it does not already exist."
+        + "\n\tSTRING is a string of characters surrounded by double quotation marks.");
+  }
+
+  public void executeCommand(FileSystem fs, ArrayList<String> arguments) throws InvalidParamLengthException {
+
+    int size = arguments.size();
+    
+    if (size == 0 || size == 2) {
+      throw new InvalidParamLengthException("Invalid parameter length");
+    }
+
+    String text = arguments.get(0);
+    try {
+      if (!isString(text)) {
+        throw new IllegalArgumentException(text + " is not a valid String!");
+      }
+      text = text.substring(1, text.length() - 1);
+
+      if (size == 1) {
+        System.out.println(text);
+      } else{
+        for (int i = 2; i < size; i++) {
+          String path = arguments.get(i);
+          fs.redirect(arguments.get(1), text, path);
+      }
+
+    }
+    } catch (InvalidNameException | InvalidPathException | AlreadyExistsException| 
+      IllegalArgumentException e) {
+      System.err.println(e.getMessage());
+    }
+  }
+
+  private Boolean isString(String text) {
+    String subString;
+
+    if (text.startsWith("\"") && text.endsWith("\"")) {
+      subString = text.substring(1, text.length() - 1);
+      if (subString.contains("\"")) {
+        return false;
+      }
+      return true;
+    }
+    return false;
+  }
+
+}

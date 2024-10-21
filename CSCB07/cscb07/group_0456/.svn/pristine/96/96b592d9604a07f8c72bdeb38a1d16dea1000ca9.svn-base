@@ -1,0 +1,12 @@
+Class name: File
+
+Parent Class: None
+
+Subclasses: None
+
+Responsibilities:
+* Represents a file in the file system
+* Store location of file
+
+Collaborators: 
+* Directory

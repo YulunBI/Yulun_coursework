@@ -1,0 +1,79 @@
+package commands;
+
+import java.util.ArrayList;
+import system.File;
+import system.FileSystem;
+import system.Path;
+
+public class Echo extends Command{
+  public Echo() {
+    this.setName("echo");
+    this.setDocs("echo STRING [> OUTFILE]\n\tIf OUTFILE is not provided, print STRING in shell." + 
+        "\n\tOtherwise, overwrites content of file OUTFILE with STRING." + 
+        "\n\tCreates OUTFILE if it does not already exist." +
+        "\n\tSTRING is a string of characters surrounded by double quotation marks.");
+  }
+  
+  public void executeCommand(FileSystem fs, ArrayList<String> arguments) {
+    try {
+      if (!arguments.isEmpty() && (arguments.get(arguments.size() - 1).equals(">") || 
+          arguments.get(arguments.size() - 1).equals(">>"))) {
+        throw new Exception("Must give a filename");
+      }
+      if (arguments.size() <= 1) {
+        printWholeList(arguments);
+      } else { 
+        String specfier = arguments.get(arguments.size() - 2);
+        if (!specfier.equals(">") && !specfier.equals(">>")) {
+          printWholeList(arguments);
+        } else {
+          Path p = new Path(arguments.get(arguments.size() - 1));
+          File f = fs.findFile(p);
+          if (f == null) {
+            fs.addFile(p);
+            f = fs.findFile(p);
+          }
+          if (specfier.equals(">")) {
+            setText(f,arguments);
+          } else if (specfier.equals(">>")) {
+            appendText(f,arguments);
+          } else {
+            throw new Exception("Please give right specfier");
+          }
+        }
+      }
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+  }
+  
+  private void printWholeList(ArrayList<String> arguments) {
+    int length = arguments.size();
+    if (length == 0) {
+      System.out.println("");
+    } else {
+      for (int i = 0; i < length - 1; i++) {
+        System.out.print(arguments.get(i)+" ");
+      }
+      System.out.print(arguments.get(length - 1)+"\n");
+    }
+  }
+  
+  private void setText(File f, ArrayList<String> arguments) {
+    f.setText("");
+    appendText(f, arguments);
+  }
+  
+  private void appendText(File f, ArrayList<String> arguments) {
+    int length = arguments.size();
+    if (length >= 3) {
+      for (int i = 0; i < arguments.size() - 3; i++) {
+        f.appendText(arguments.get(i)+" ");
+      }
+      f.appendText(arguments.get(arguments.size() - 3)+"\n");
+    } else {
+      f.appendText("\n");
+    }
+  }
+}
+  

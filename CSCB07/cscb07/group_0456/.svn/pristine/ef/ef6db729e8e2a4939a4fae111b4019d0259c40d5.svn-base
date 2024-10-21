@@ -1,0 +1,42 @@
+package commands;
+
+import java.util.ArrayList;
+
+public class Command {
+    private String name;
+    private ArrayList<String> arguments;
+    private String docs;
+    private String output;
+
+    public Command(String name, ArrayList<String> arguments, String docs) {
+        this.name = name;
+        this.arguments = arguments;
+        this.docs = docs;
+
+    }
+
+    public void executeCommand() {
+        // code to do what ever the command does
+    }
+
+    public void setOutput(String output) {
+        this.output = output;
+    }
+
+    public String getOutput() {
+        return output;
+    }
+
+    public void setDocs(String docs) {
+        this.docs = docs;
+    }
+
+    public String getDocs() {
+        return docs;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+}

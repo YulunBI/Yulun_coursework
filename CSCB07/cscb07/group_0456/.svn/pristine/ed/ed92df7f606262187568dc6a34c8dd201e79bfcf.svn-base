@@ -1,0 +1,14 @@
+package system;
+
+public class FileSystem {
+    // Need Directory implemented before continuing
+    // private Directory root;
+    // private Directory currentDir;
+    // private ArrayList<Command> commands;
+
+    // public FileSystem(){
+    // root is a new directory with a path of "/"
+    // currentDir = r
+    // add all the commands to commands list
+    // }
+}

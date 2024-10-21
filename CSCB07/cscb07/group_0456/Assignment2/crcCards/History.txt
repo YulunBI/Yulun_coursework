@@ -1,0 +1,11 @@
+Class name: History
+Parent Class: Command
+
+Subclasses: None
+
+Responsibilities:
+* Display recently used commands
+
+Collaborators: 
+* FileSystem
+* InvalidParamLengthException

@@ -1,0 +1,11 @@
+What did I work on in the last three days?
+    - Worked on testing, Javadoc, style check
+
+
+What do I plan to work in the next three days?
+    - Do MATB24 homework
+    - Prepare for MATB24 term test2
+
+Am I blocked on anything?
+    - Nope
+

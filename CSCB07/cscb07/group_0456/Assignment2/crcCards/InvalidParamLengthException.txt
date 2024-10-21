@@ -1,0 +1,10 @@
+Class name: InvalidParamLengthException
+
+Parent Class: None
+
+Subclasses: None
+
+Responsibilities:
+* Thrown when the user inputs the wrong number of parameters
+
+Collaborators: None

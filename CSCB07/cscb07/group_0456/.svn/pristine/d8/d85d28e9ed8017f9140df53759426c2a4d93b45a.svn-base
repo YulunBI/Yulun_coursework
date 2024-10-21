@@ -1,0 +1,67 @@
+package commands;
+
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.util.ArrayList;
+import exceptions.InvalidParamLengthException;
+import exceptions.InvalidPathException;
+import system.FileSystem;
+import system.JFileSystem;
+
+public class LoadJShell extends Command {
+
+  private static final int EXACT_ARG_LENGTH = 1;
+  
+  /**
+   * string containing all characters forbidden in file name.
+   */
+  private static final String FORB_CHAR = ".*[/.!@#$%^&*(){}~|<>?].*";
+  
+  public LoadJShell() {
+    this.setName("loadJShell");
+    this.setDocs("loadJShell FileName\n\tLoad the contents of the FileName.\n"
+        + "Reinitialize everything that was saved in FileName.\n" + 
+        "Only work when no command haven been typed in JShell.");
+  }
+  
+  public String executeCommand(FileSystem fs, ArrayList<String> arguments)
+      throws InvalidParamLengthException {
+    if (arguments.size() != EXACT_ARG_LENGTH) {
+      throw new InvalidParamLengthException("Invalid parameter length");
+    }
+    try {
+      checkIllegalArgument(fs);
+      checkValidName(arguments.get(0));
+      String realCurrDir = System.getProperty("user.dir");
+      FileInputStream fileIn = new FileInputStream(realCurrDir +
+          arguments + ".ser");
+      //System.out.println("pass 1");
+      ObjectInputStream in = new ObjectInputStream(fileIn);
+      //System.out.println("pass 2");
+      fs = JFileSystem.createFileSystemInstance((JFileSystem) in.readObject(),1);
+      //System.out.println("pass 3");
+      in.close();
+      fileIn.close();
+    } catch (IOException e){
+      System.err.println(e.getMessage());
+    } catch (ClassNotFoundException e) {
+      System.err.println(e.getMessage());
+    } catch (InvalidPathException e) {
+      System.err.println(e.getMessage());
+    }
+    return "";
+  }
+  
+  private void checkIllegalArgument(FileSystem fs) throws IllegalArgumentException{
+    if (fs != null) {
+      throw new IllegalArgumentException("FileSystem already initialized");
+    }
+  }
+  
+  private void checkValidName(String fileName) throws InvalidPathException{
+    if (fileName.matches(FORB_CHAR)) {
+      throw new InvalidPathException("Invalid File Name");
+    }
+  }
+}

@@ -1,0 +1,52 @@
+package test;
+
+import static org.junit.Assert.*;
+import org.junit.Test;
+import java.util.*;
+import commands.Command;
+import exceptions.InvalidParamLengthException;
+
+public class CommandTest {
+
+  /*
+   * Test getting command name
+   */
+  @Test
+  public void testCommandName() {
+    ArrayList<String> a = new ArrayList<String>();
+    Command c = new MockCommand("foo", "bar", a);
+    
+    assertEquals("foo", c.getName());
+  }
+  
+  /*
+   * Test getting and setting command docs
+   */
+  @Test
+  public void testCommandDocs() {
+    ArrayList<String> a = new ArrayList<String>();
+    Command c = new MockCommand("foo", "bar", a);
+    
+    assertEquals("bar", c.getDocs());
+    
+    c.setDocs("new docs");
+    
+    assertEquals("new docs", c.getDocs());
+  }
+  
+  /*
+   * Test execution of command
+   */
+  @Test
+  public void testCommandExecute() {
+    ArrayList<String> a = new ArrayList<String>();
+    Command c = new MockCommand("foo", "bar", a);
+    
+    try {
+      assertEquals("Executed command", c.executeCommand(new MockFileSystem(), a));
+    } catch (InvalidParamLengthException e) {
+      e.printStackTrace();
+    }
+  }
+
+}

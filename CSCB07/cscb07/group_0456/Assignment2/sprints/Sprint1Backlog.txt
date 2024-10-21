@@ -1,0 +1,44 @@
+//Sprint 1 Backlog.  
+October 21 to October 27
+
+
+User Stories from Product Backlog that we will address in this sprint:
+a) As a user, I can type commands into the shell.	
+b) As a user, I can view my all of my recent commands. 
+c) As a user, I can see the documentation for the command, so that I know how to use them.
+
+Specific tasks to be accomplished:
+a-1. (CommandScanner) Begin coding the structure of the CommandScanner class
+a-2. (CommandScanner) Scan the user input from the JShell
+a-3. (CommandScanner) Parse the user input for proper keywords
+a-4. (CommandScanner) Add command to command history in FileSystem
+a-5. (CommandScanner) Return a new command created from the parsed input
+a-6. (JShell) Have the shell continually prompt the user for input (using CommandScanner)
+a-7. (JShell) Have the shell display the current directory at the start of the line
+a-8. (JShell) Execute the command
+a-9. (JShell) Print out what happens after the command is executed (using CommandPrinter)
+a-10. (Directory) Write the base code for the Directory class
+a-11. (File) Write the base code for the File class
+a-12. (FileSystem) Write the base code for the FileSystem class
+a-13. (FileSystem) Store all the commands as a list in the FileSystem
+a-14. (Command) Begin coding the structure of the Command class 
+a-15. (CommandPrinter) Begin coding the structure of the CommandPrinter class
+a-16 (Path) Begin coding structure of Path class
+a-17. Review CRC Cards
+b-1. (FileSystem) Store command history as an list
+b-2. (History) Print out command history from FileSystem
+c-1. (All Commands) Write documentation for all Commands
+c-2. (Man) Print out command documentation for all Commands
+
+
+These tasks are assigned as follows:
+
+User: Yulun Wu
+Tasks: a-1, a-2, a-3 a-4 a-5 a-10 a-11, a-17
+
+User: Arthur Lu
+Tasks: b-1, b-2, c-1, c-2, a-17
+
+User: Yusuf Khan
+Tasks: a-6, a-7, a-8, a-9, a-12, a-13, a-14, a-15, a-16, a-17
+

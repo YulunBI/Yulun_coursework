@@ -1,0 +1,13 @@
+Class name: Echo
+
+Parent Class: Command
+
+Subclasses: None
+
+Responsibilities:
+* Overwrite file at path with user entered text
+* Append file at path with use entered text
+
+Collaborators: 
+* FileSystem
+* File

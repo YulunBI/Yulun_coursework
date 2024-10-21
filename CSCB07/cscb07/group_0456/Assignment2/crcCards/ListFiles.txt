@@ -1,0 +1,17 @@
+Class name: ListFiles
+
+Parent Class: Command
+
+Subclasses: None
+
+Responsibilities:
+* Print names of files and directories in current directory on separate lines
+* Print names of files and directories in any directory on separate lines
+* Print file name
+
+Collaborators: 
+* FileSystem
+* File
+* Directory
+* Path
+* InvalidPathException

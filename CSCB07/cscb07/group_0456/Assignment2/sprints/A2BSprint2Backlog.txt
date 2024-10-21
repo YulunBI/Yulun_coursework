@@ -1,0 +1,87 @@
+//A2B Sprint 1 Backlog.  
+November 23 to November 30
+
+
+User Stories from Product Backlog that we will address in this sprint:					
+
+a) As a user, I can delete a folder and its contents.												
+
+b) As a user, I can check what is in the subfolders of my desired folder(s).				
+
+c) As a user, I can move a folder to a new location.						
+
+d) As a user, I can copy and paste a file to new location.							
+
+e) As a user, I can copy and paste a folder and its contents to new location.						
+
+f) As a user, I can download a file from the internet.							
+
+g) As a user, I can print documentation for a single command.						
+
+h) As a user, I can save my current session of the shell to a file on my computer.				
+
+i) As a user, I can load my saved session of the shell from a file on my computer.				
+
+j) As a user, I can search for all files by name in the directories I provide.			
+
+k) As a user, I can search for all directories by name in the directories I provide.
+
+l) As a user, I can move a file to a new location.
+
+m) As a user, I can use the program without any bugs.
+
+ 		
+Specific tasks to be accomplished:
+a-1. (Remove) Finish implementing Remove
+b-1. (ListFiles) Modify ls to take in -R parameter, which recurisvely lists all subdirectories
+c-1. (Move) Finish implementing Move for Directories
+d-1. (Copy) Finish implementing Copy for Files
+e-1. (Copy) Finish implementing Copy for Directories
+f-1. (ClientUrl) Finish implementing ClientUrl
+g-1. (Manual) Modify class to only print documentation for 1 command
+h-1. (SaveJShell) Cleanup SaveJShell code
+i-1. (LoadJShell) Cleanup LoadJShell code
+j-1. (Search) Simplifiy file part of Search
+j-2. (File) Make file have generic content
+k-1. (Search) Simplifiy directory part of Search
+k-2. (Search) Add exceptions for invalid parameters
+l-1. (Move) Finish implementing Move for Files 
+m-1. (ChangeDirectory) Test using JUnit and put test file in test folder
+m-2. (Command) Test using JUnit and put test file in test folder
+m-3. (CommandHashTable) Test using JUnit and put test file in test folder
+m-4. (CommandScanner) Test using JUnit and put test file in test folder
+m-5. (Concatenate) Test using JUnit and put test file in test folder
+m-6. (Copy) Test using JUnit and put test file in test folder
+m-7. (Echo) Test using JUnit and put test file in test folder
+m-8. (Exit) Test using JUnit and put test file in test folder
+m-9. (History) Test using JUnit and put test file in test folder
+m-10. (ListFiles) Test using JUnit and put test file in test folder
+m-11. (LoadJShell) Test using JUnit and put test file in test folder
+m-12. (SaveJShell) Test using JUnit and put test file in test folder
+m-13. (MakeDirectory) Test using JUnit and put test file in test folder
+m-14. (Manual) Test using JUnit and put test file in test folder
+m-15. (Move) Test using JUnit and put test file in test folder
+m-16. (PopDirectory) Test using JUnit and put test file in test folder
+m-17. (PushDirectory) Test using JUnit and put test file in test folder
+m-18. (Remove) Test using JUnit and put test file in test folder
+m-19. (Search) Test using JUnit and put test file in test folder
+m-20. (Directory) Test using JUnit and put test file in test folder
+m-21. (File) Test using JUnit and put test file in test folder
+m-22. (FileSystem) Test using JUnit and put test file in test folder
+m-23. (Path) Test using JUnit and put test file in test folder
+m-24. (Redirector) Test using JUnit and put test file in test folder
+m-25. (PrintWorkingDirectory) Test using JUnit and put test file in test folder
+m-26. (Tree) Test using JUnit and put test file in test folder
+m-27. (ClientUrl) Test using JUnit and put test file in test folder
+
+These tasks are assigned as follows:
+
+User: Yulun Wu
+Tasks: f-1, h-1, i-1, m-3, m-4, m-7, m-8, m-10, m-11, m-12, m-20, m-27
+
+User: Arthur Lu
+Tasks: a-1, c-1, d-1, e-1, g-1, l-1, m-2, m-6, m-9, m-14, m-15, m-16, m-17, m-18
+
+User: Yusuf Khan
+Tasks: b-1, j-1, j-2, k-1, k-2, m-1, m-5, m-13, m-19, m-21, m-22, m-23, m-24, m-25, m-26
+

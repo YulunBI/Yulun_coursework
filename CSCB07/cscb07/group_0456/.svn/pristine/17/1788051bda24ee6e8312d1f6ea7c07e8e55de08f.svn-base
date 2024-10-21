@@ -1,0 +1,153 @@
+package system;
+
+import exceptions.AlreadyExistsException;
+import exceptions.InvalidPathException;
+import java.util.ArrayList;
+import java.util.EmptyStackException;
+import javax.naming.InvalidNameException;
+
+/**
+ * Interface which represents a FileSystem
+ */
+public interface FileSystem {
+
+  /**
+   * Returns a String containing listing all the contents in dir, recursively
+   * Returns a String containing listing all the contents in dir, recursively
+   * 
+   * @param dir Represents the Directory we're looking through
+   * @param counter Represents the number of tabs currently being repeated (start at 0)
+   * @param printPath Represents if we should print the path or file name
+   * @return The contents of dir, recursively
+   */
+
+  public String recursiveList(Directory dir, int counter, Boolean printPath);
+
+
+  /**
+   * Adds a File to the FileSystem tree if parent of path is valid, the File name is valid and it
+   * does not already exist. InvalidPathException is thrown if parent of path is invalid.
+   * InvalidNameException is thrown if the File name is invalid. AlreadyExistsException is thrown if
+   * a Directory or File of the same name already exists.
+   * 
+   * @param path Represents a path to a File.
+   * @throws InvalidPathException If parent of path is invalid.
+   * @throws InvalidNameException If the File name is invalid.
+   * @throws AlreadyExistsException If a Directory or File of the same name already exists.
+   */
+  public void addFile(Path path)
+      throws InvalidPathException, InvalidNameException, AlreadyExistsException;
+
+
+  /**
+   * Adds a Directory to the FileSystem tree if parent of path is valid, the file name is valid and
+   * it does not already exist. InvalidPathException is thrown if parent of path is invalid.
+   * InvalidNameException is thrown if the Directory name is invalid. AlreadyExistsException is
+   * thrown if a Directory or File of the same name already exists.
+   * 
+   * @param path Represents a path to a Directory.
+   * @throws InvalidPathException If parent of path is invalid.
+   * @throws InvalidNameException If the Directory name is invalid.
+   * @throws AlreadyExistsException If a Directory or File of the same name already exists.
+   */
+  public void addDirectory(Path path)
+      throws InvalidPathException, InvalidNameException, AlreadyExistsException;
+
+  /**
+   * Returns the File specified by path if it exists in the FileSystem tree. If the parent path is
+   * invalid, InvalidPathException is thrown. If the parent path is valid and the File doesn't
+   * exist, then null is returned.
+   * 
+   * @param path Represents a path to a File.
+   * @return The File found in the FileSystem
+   * @throws InvalidPathException If the parent path is valid and the File doesn't exist.
+   */
+  public File findFile(Path path) throws InvalidPathException;
+
+
+  /**
+   * Returns the Directory specified by path if it exists in the FileSystem tree. If path is
+   * invalid, InvalidPathException is thrown.
+   * 
+   * @param path Represents a path to a Directory.
+   * @return The Directory found in the FileSystem.
+   * @throws InvalidPathException If path is invalid.
+   */
+  public Directory findDirectory(Path path) throws InvalidPathException;
+
+
+  /**
+   * Changes currentDir to the Directory specified by path if it is valid. Otherwise
+   * InvalidPathException is thrown.
+   * 
+   * @param path Represents a path to a Directory.
+   * @throws InvalidPathException If the given path is invalid.
+   */
+  public void changeDirectory(Path path) throws InvalidPathException;
+
+
+  /**
+   * Returns the value of currentDir.
+   * 
+   * @return The value of the currentDir.
+   */
+  public Directory getDirectory();
+
+  /**
+   * Returns the value of history.
+   * 
+   * @return The value of the history.
+   */
+  public ArrayList<String> getHistory();
+
+
+  /**
+   * Adds s to history.
+   * 
+   * @param s A string to add to history.
+   */
+  public void addHistory(String s);
+
+  /**
+   * Pushes d to dirStack.
+   * 
+   * @param d A string to push to Directory stack.
+   */
+  public void stackPush(Directory d);
+
+  /**
+   * Returns the popped value of dirStack if it is non-empty. Throws EmptyStackException if there is
+   * nothing in the stack.
+   * 
+   * @return A Directory popped from Directory stack.
+   * @throws EmptyStackException If there is nothing in the stack.
+   */
+  public Directory stackPop();
+
+
+
+  /**
+   * Redirects text to file. If specifier is ">", then it overwrites the file. If specifier is ">>",
+   * then it appends the text to the file. If the specifier is neither, then
+   * IllegalArgumentException is thrown
+   * 
+   * @param specifier The specifier of the redirection
+   * @param text The text that is being output to the File
+   * @param file The name of the File
+   * @throws InvalidNameException If the Directory name is invalid.
+   * @throws InvalidPathException If the path is invalid.
+   * @throws AlreadyExistsException If the file already exist.
+   * @throws IllegalArgumentException If the specifier is neither.
+   */
+  public void redirect(String specifier, String text, String file) throws InvalidNameException,
+      InvalidPathException, AlreadyExistsException, IllegalArgumentException;
+
+  /**
+   * Returns the root directory of this file system.
+   * 
+   * @return The root of this FileSystem.
+   */
+  public Directory getRoot();
+  
+  
+}

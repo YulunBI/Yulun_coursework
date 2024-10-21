@@ -1,0 +1,13 @@
+Class name: Command
+
+Parent Class: None
+
+Subclasses: Cat, Cd, Cp, Echo, Exit, Get, Ls, Mkdir, Mw, Pwd
+
+Responsibilities:
+* Store command name
+* Store command arguments
+* Store command documentation
+* Define what happens when the command is executed
+
+Collaborators: None

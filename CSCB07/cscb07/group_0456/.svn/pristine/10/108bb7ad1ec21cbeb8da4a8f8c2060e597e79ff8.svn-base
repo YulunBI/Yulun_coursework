@@ -1,0 +1,19 @@
+Class name: Directory
+
+Parent Class: None
+
+Subclasses: None
+
+Responsibilities:
+* Represents a directory in the file system
+* Stores the path of the directory
+* Get the parent of the directory
+* Get the children of the directory
+* Get the files of the directory
+* Add a file to the directory
+* Add a sub Directory to the directory
+
+Collaborators:
+* Path
+* Directory
+* File

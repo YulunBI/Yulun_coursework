@@ -1,0 +1,45 @@
+package commands;
+
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.util.ArrayList;
+import exceptions.InvalidParamLengthException;
+import exceptions.InvalidPathException;
+import system.FileSystem;
+import system.Path;
+
+public class SaveJShell extends Command {
+
+  private static final int EXACT_ARG_LENGTH = 1;
+  
+  public SaveJShell() {
+    this.setName("saveJShell");
+    this.setDocs("saveJShell FileName\n\tSave the session of the JShell"
+        + "in FileName.");
+  }
+  
+  public String executeCommand(FileSystem fs, ArrayList<String> arguments)
+      throws InvalidParamLengthException {
+    if (arguments.size() != EXACT_ARG_LENGTH) {
+      throw new InvalidParamLengthException("Invalid parameter length");
+    }
+    try {
+      Path root = new Path("");
+      fs.changeDirectory(root);
+      FileOutputStream fileOut = new FileOutputStream("/Users/yulunwu/" 
+    + "Downloads/2020 fall/CSCB07/cscb07/group_0456/Assignment2" 
+          + arguments + ".ser");
+      ObjectOutputStream out = new ObjectOutputStream(fileOut);
+      out.writeObject(fs);
+      out.close();
+      fileOut.close();
+    } catch (IOException e){
+      System.err.println(e.getMessage());
+    } catch (InvalidPathException e) {
+      System.err.println(e.getMessage());
+    }
+    return "";
+  }
+}

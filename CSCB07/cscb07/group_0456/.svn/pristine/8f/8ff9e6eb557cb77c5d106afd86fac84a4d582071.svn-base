@@ -1,0 +1,90 @@
+package system;
+
+import java.util.ArrayList;
+
+import commands.Command;
+
+public class FileSystem {
+    private Directory root;
+    private Directory currentDir;
+    private ArrayList<Command> commands;
+    private ArrayList<String> history;
+
+    public FileSystem() {
+
+        root = new Directory("", new Path("/"), null);
+        currentDir = root;
+        // add all commands - new command constructors to be added
+        // commands.add(new ChangeDirectory());
+    }
+
+    private Directory traverseFileSystem(Path path) {
+
+        Directory selected;
+        String selectedName = path.getList().get(0);
+
+        if (selectedName.matches(".")) {
+            selected = currentDir;
+
+        } else if (selectedName.matches("..")) {
+            selected = currentDir.getParent();
+        } else if (selectedName.isEmpty()) {
+            selected = root;
+        } else {
+            return null;
+        }
+
+        for (int i = 1; i < path.getList().size(); i++) {
+            if (selected == null) {
+                return null;
+            }
+
+            selectedName = path.getList().get(i);
+
+            if (selectedName.matches("..")) {
+                // selected directory is parent
+                selected = selected.getParent();
+                continue;
+
+            } else if (selectedName.matches(".")) {
+                // selected directory is the same
+                continue;
+            }
+
+            for (Directory dir : selected.getChildren()) {
+                if (selectedName.matches(dir.getName())) {
+                    selected = dir;
+                    break;
+                }
+            }
+        }
+
+        return selected;
+    }
+
+    public void addFile(String name, Path path) {
+        Directory parent = traverseFileSystem(path);
+
+        // System.out.println(parent.getName());
+        // must check if file exists already
+        parent.addSubFile(name);
+    }
+
+    public void addDirectory(String name, Path path) {
+        // go through path and add dir
+
+        Directory parent = traverseFileSystem(path);
+        // must check if directory exists already
+        parent.addSubDictionary(name);
+
+    }
+
+    public void changeDirectory(Path path) {
+
+    }
+    
+    public ArrayList<String> getHistory() {
+      return this.history;
+    }
+
+}

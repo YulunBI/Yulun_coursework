@@ -1,0 +1,12 @@
+package commands;
+
+import java.util.ArrayList;
+
+public class History extends Command {
+
+  public History(String name, ArrayList<String> arguments, String docs) {
+    super(name, arguments, docs);
+    // TODO Auto-generated constructor stub
+  }
+  
+}

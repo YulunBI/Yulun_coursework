@@ -1,0 +1,38 @@
+package commands;
+
+import java.util.ArrayList;
+
+import system.FileSystem;
+
+public abstract class Command {
+    private String name;
+    private ArrayList<String> arguments;
+    private String docs;
+
+    public abstract void executeCommand(FileSystem fs, ArrayList<String> arguments);
+
+    public void setDocs(String docs) {
+        this.docs = docs;
+    }
+
+    public String getDocs() {
+        return docs;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    protected void setName(String name){
+        this.name = name;
+    }
+
+    protected void setArguments(ArrayList<String> arguments) {
+        this.arguments = arguments;
+    }
+
+    protected ArrayList<String> getArguments() {
+        return this.arguments;
+    }
+
+}

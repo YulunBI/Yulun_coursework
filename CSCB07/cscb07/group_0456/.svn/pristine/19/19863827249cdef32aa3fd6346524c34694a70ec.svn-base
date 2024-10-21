@@ -1,0 +1,11 @@
+Class name: Path
+
+Parent Class: None
+
+Subclasses: None
+
+Responsibilities:
+* Represents a path in the file system
+
+Collaborators: 
+* FileSystem

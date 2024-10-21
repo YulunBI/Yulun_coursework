@@ -1,0 +1,19 @@
+package system;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+
+public class Path {
+    private ArrayList<String> location;
+
+    public Path(String path) {
+
+        location = new ArrayList<String>(Arrays.asList(path.split("/")));
+
+    }
+
+    public String getPath() {
+        return location.toString();
+    }
+
+}

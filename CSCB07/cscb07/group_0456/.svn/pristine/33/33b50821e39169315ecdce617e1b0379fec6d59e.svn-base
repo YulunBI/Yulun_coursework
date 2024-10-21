@@ -1,0 +1,119 @@
+package test;
+
+import static org.junit.Assert.*;
+import java.util.ArrayList;
+import org.junit.Test;
+import commands.PopDirectory;
+import exceptions.InvalidParamLengthException;
+import system.*;
+
+public class PopDirectoryTest {
+
+  /**
+   * Test that InvalidParamLengthException is thrown when the wrong number of args is given.
+   */
+  @Test
+  public void testInvalidParamLengthExecuteCommand() {
+    PopDirectory popd = new PopDirectory();
+    ArrayList<String> args = new ArrayList<String>();
+    
+    try {
+      args.add("foo");
+      popd.executeCommand(new MockFileSystem(), args);
+      fail("InvalidParamLengthException not thrown");
+    } catch (InvalidParamLengthException e) {
+      assertTrue(true);
+    } catch (Exception e) {
+      fail(e.getMessage());
+    }    
+    
+    try {
+      args.add("cat");
+      popd.executeCommand(new MockFileSystem(), args);
+      fail("InvalidParamLengthException not thrown");
+    } catch (InvalidParamLengthException e) {
+      assertTrue(true);
+    } catch (Exception e) {
+      fail(e.getMessage());
+    }
+  }
+  
+  /**
+   * Test that the command does not execute when the stack is empty.
+   */
+  @Test
+  public void testEmptyExecuteCommand() {
+    PopDirectory popd = new PopDirectory();
+    ArrayList<String> args = new ArrayList<String>();
+    FileSystem fs = new MockFileSystem();
+    
+    try {
+      popd.executeCommand(fs, args);
+      assertEquals("CD Path", fs.getDirectory().getPath()); //working directory has not changed
+    } catch (Exception e) {
+      fail(e.getMessage());
+    }
+  }
+
+  /**
+   * Test that the command pops a directory from the top of a small stack.
+   */
+  @Test
+  public void testValidExecuteCommand() {
+    PopDirectory popd = new PopDirectory();
+    ArrayList<String> args = new ArrayList<String>();
+    FileSystem fs = new MockFileSystem();
+    Path p = new MockPath("/Valid Path/");
+    
+    try {
+      fs.addDirectory(p); // add the dir to the file system
+      Directory d = fs.findDirectory(p);
+      fs.stackPush(d); // add it to the stack
+      popd.executeCommand(fs, args);
+      assertEquals("Valid Path", fs.getDirectory().getPath());      
+
+      popd.executeCommand(fs, args);
+      assertEquals("Valid Path", fs.getDirectory().getPath()); //working directory has not changed
+    } catch (Exception e) {
+      fail(e.getMessage());
+    }
+  }
+  
+  /**
+   * Test that the command can pop multiple directories in a row.
+   */
+  @Test
+  public void testMultipleExecuteCommand() {
+    PopDirectory popd = new PopDirectory();
+    ArrayList<String> args = new ArrayList<String>();
+    FileSystem fs = new MockFileSystem();
+    Path p = new MockPath("/Valid Path/foo");
+    
+    try {
+      fs.addDirectory(p); // add the dir to the file system
+      Directory d = fs.findDirectory(p);
+      fs.stackPush(d); // add it to the stack
+      
+      p = new MockPath("/Valid Path/bar/");
+      fs.addDirectory(p); // add the dir to the file system
+      d = fs.findDirectory(p);
+      fs.stackPush(d); // add it to the stack
+      
+      p = new MockPath("/Valid Path/this/");
+      fs.addDirectory(p); // add the dir to the file system
+      d = fs.findDirectory(p);
+      fs.stackPush(d); // add it to the stack
+      
+      popd.executeCommand(fs, args);
+      assertEquals("Valid Path", fs.getDirectory().getPath());      
+
+      popd.executeCommand(fs, args);
+      assertEquals("Valid Path", fs.getDirectory().getPath());
+      
+      popd.executeCommand(fs, args);
+      assertEquals("Valid Path", fs.getDirectory().getPath());
+    } catch (Exception e) {
+      fail(e.getMessage());
+    }
+  }
+}

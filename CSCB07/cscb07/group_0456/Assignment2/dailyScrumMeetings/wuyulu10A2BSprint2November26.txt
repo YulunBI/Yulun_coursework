@@ -1,0 +1,11 @@
+What did I work on in the last three days?
+    - Finished SaveJShell and LoadJShell.
+    - Finished ClientUrl.
+
+What do I plan to work in the next three days?.
+    - Write java docs for SaveJShell, LoadJShell, ClientUrl.
+    - Write Junit test for SaveJShell, LoadJShell, ClientUrl.
+
+Am I blocked on anything? 
+    - Can't open the second link, which is a example for curl, from handout.
+

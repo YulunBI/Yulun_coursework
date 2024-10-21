@@ -1,0 +1,92 @@
+// **********************************************************
+// Assignment2:
+// Student1:
+// UTORID user_name: khanyus7
+// UT Student #: 1006330329
+// Author: Yusuf Khan
+//
+// Student2:
+// UTORID user_name: wuyulu10
+// UT Student #: 1004912785
+// Author: Yulun Wu
+//
+// Student3:
+// UTORID user_name: lujia34
+// UT Student #: 1006173196
+// Author: Jia (Arthur) Lu
+//
+// Student4:
+// UTORID user_name:
+// UT Student #:
+// Author:
+//
+//
+// Honor Code: I pledge that this program represents my own
+// program code and that I have coded on my own. I received
+// help from no one in designing and debugging my program.
+// I have also read the plagiarism section in the course info
+// sheet of CSC B07 and understand the consequences.
+// *********************************************************
+
+package driver;
+
+import java.util.ArrayList;
+import commands.Command;
+import commands.CommandHashTable;
+import commands.CommandScanner;
+import exceptions.InvalidCommandNameException;
+import exceptions.InvalidParamLengthException;
+import system.FileSystem;
+import system.JFileSystem;
+import system.Redirector;
+
+/**
+ * A mock for real Shell.
+ * 
+ */
+public class JShell {
+
+  /**
+   * Scans command and argument(s) from user input in console, execute the corresponding command
+   * with argument(s) specified by user.
+   * 
+   * @throws InvalidCommandNameException If the user provides an invalid command name.
+   * @throws InvalidParamLengthException If the user doesn't provide the right number of argument(s)
+   *         needed for command inputed by user.
+   */
+  public static void main(String[] args) {
+    CommandScanner scan = new CommandScanner();
+    FileSystem fs = null;
+    CommandHashTable hashTable = new CommandHashTable();
+
+    while (true) {
+      System.out.print("/#: ");
+
+      Redirector rd = new Redirector();
+      String userInput = scan.scanUserInput();
+      scan.parseCommandAndParameter();
+
+      ArrayList<String> parameters = scan.getParameter();
+      rd.removeSymbol(parameters);
+      if ((!userInput.trim().startsWith("loadJShell ")) && fs == null)
+        fs = JFileSystem.createFileSystemInstance(null, 0);
+
+      if (fs != null)
+        fs.addHistory(userInput);
+
+      try {
+        Command c = scan.getCommand(hashTable);
+        System.out.println(rd.redirectOutput(c.executeCommand(fs, parameters), fs));
+      } catch (InvalidCommandNameException | InvalidParamLengthException
+          | IllegalArgumentException e) {
+        System.err.println(e.getMessage());
+      } catch (Exception e) {
+        System.err.println("Unknown error occured. The program was prevented from crashing.");
+      }
+      if (fs == null) {
+        fs = JFileSystem.createFileSystemInstance(null, 0);
+        fs.addHistory(userInput);
+      }
+    }
+  }
+}

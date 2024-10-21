@@ -1,0 +1,22 @@
+package commands;
+
+import system.*;
+import java.util.*;
+
+public class PopDirectory extends Command{
+  public PopDirectory() {
+    this.setName("popd");
+    this.setDocs("popd\n\tRemoves top entry from directory stack and performs cd with it.");
+  }
+  
+  public void executeCommand(FileSystem fs, ArrayList<String> arguments) {
+    Directory d = fs.stackPop();
+    Path p = new Path(d.getPath());
+    try {
+      fs.changeDirectory(p);
+    } catch (Exception e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
+  }
+}

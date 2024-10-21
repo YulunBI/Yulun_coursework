@@ -1,0 +1,70 @@
+package commands;
+
+import java.util.ArrayList;
+import system.Directory;
+import system.File;
+import system.FileSystem;
+import system.Path;
+
+public class ListFiles extends Command{
+  public ListFiles() {
+    this.setName("ls");
+    this.setDocs("ls [PATH ...]\n\tIf no paths are given, print the contents of current directory,"+ 
+        "\n\twith a new line following each file/directory." + 
+        "\n\tOtherwise, for each path p:" + 
+        "\n\t\tIf p specifies a file, print p." +
+        "\n\t\tIf p specifies directory, print p + ':' + contents of directory + newline.");
+  }
+  
+  public void executeCommand(FileSystem fs, ArrayList<String> arguments) {
+    try {
+      Directory d = fs.getDirectory();
+      Path pd = new Path(d.getPath());
+      this.setArguments(arguments);
+      if (arguments.size() == 0) {
+        printContentInCurrentDirectory(d);     
+      } else {
+        for (String s : this.getArguments()) {
+          Path p;
+          if (!checkAbsolutePath(s)) {
+            p = new Path(d.getPath()+s);
+          } else {
+            p = pd;
+          }
+          if (p.isFile()) {
+            System.out.println(p.getLastElement());
+          } else {
+            fs.changeDirectory(p);
+            printContentInCurrentDirectory(fs.getDirectory());
+            fs.changeDirectory(pd);
+          }
+        }
+      }
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+  }
+  
+  private boolean checkAbsolutePath(String s) {
+    return s.startsWith("/");
+  }
+  
+  private void printContentInCurrentDirectory(Directory d) {
+    // get subDirectory and subFile list from FileSystem
+    // print them one by one each followed by a newline
+    printDirectory(d.getChildren());
+    printFiles(d.getFile());
+  }
+  
+  private void printDirectory(ArrayList<Directory> list) {
+    for (Directory s : list) {
+      System.out.println(s.getName());
+    }
+  }
+  
+  private void printFiles(ArrayList<File> list) {
+    for (File s : list) {
+      System.out.println(s.getName());
+    }
+  }
+}

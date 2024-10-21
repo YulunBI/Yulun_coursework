@@ -1,0 +1,101 @@
+// **********************************************************
+// Assignment2:
+// Student1:
+// UTORID user_name: khanyus7
+// UT Student #: 1006330329
+// Author: Yusuf Khan
+//
+// Student2:
+// UTORID user_name: wuyulu10
+// UT Student #: 1004912785
+// Author: Yulun Wu
+//
+// Student3:
+// UTORID user_name: lujia34
+// UT Student #: 1006173196
+// Author: Jia (Arthur) Lu
+//
+// Student4:
+// UTORID user_name:
+// UT Student #:
+// Author:
+//
+//
+// Honor Code: I pledge that this program represents my own
+// program code and that I have coded on my own. I received
+// help from no one in designing and debugging my program.
+// I have also read the plagiarism section in the course info
+// sheet of CSC B07 and understand the consequences.
+// *********************************************************
+package commands;
+
+import java.lang.reflect.InvocationTargetException;
+import java.util.HashMap;
+import exceptions.InvalidCommandNameException;
+
+/**
+ * Hash table to match command name to corresponding class.
+ * 
+ */
+public class CommandHashTable {
+  /**
+   * Represents a hash map which maps command names to its appropriate class
+   */
+  private HashMap<String, String> commandHashMap;
+
+  /**
+   * Constructs a new CommandHashTable and adds all command name mappings
+   */
+  public CommandHashTable() {
+    commandHashMap = new HashMap<String, String>();
+
+    commandHashMap.put("cd", "commands.ChangeDirectory");
+    commandHashMap.put("cat", "commands.Concatenate");
+    commandHashMap.put("echo", "commands.Echo");
+    commandHashMap.put("exit", "commands.Exit");
+    commandHashMap.put("history", "commands.History");
+    commandHashMap.put("ls", "commands.ListFiles");
+    commandHashMap.put("mkdir", "commands.MakeDirectory");
+    commandHashMap.put("man", "commands.Manual");
+    commandHashMap.put("popd", "commands.PopDirectory");
+    commandHashMap.put("pwd", "commands.PrintWorkingDirectory");
+    commandHashMap.put("pushd", "commands.PushDirectory");
+
+  }
+
+
+  /**
+   * Returns a new Command given by name if it exists, otherwise InvalidCommandNameException is
+   * thrown
+   * 
+   * @param name The name of the command
+   * @return Command An instance of the command
+   * @throws InvalidCommandNameException
+   */
+  public Command findCommand(String name) throws InvalidCommandNameException {
+    Command command = null;
+
+    String s = commandHashMap.get(name);
+
+    if (s == null) {
+      throw new InvalidCommandNameException("Invalid command name");
+    }
+
+
+    Class<?> c;
+    try {
+      c = Class.forName(s);
+      command = (Command) c.getDeclaredConstructor().newInstance();
+    } catch (InstantiationException | IllegalAccessException | IllegalArgumentException
+        | InvocationTargetException | NoSuchMethodException | SecurityException
+        | ClassNotFoundException e) {
+
+      System.out.println(e.getMessage());
+    }
+
+
+
+    return command;
+
+  }
+}

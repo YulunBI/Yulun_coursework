@@ -1,0 +1,127 @@
+// **********************************************************
+// Assignment2:
+// Student1:
+// UTORID user_name: khanyus7
+// UT Student #: 1006330329
+// Author: Yusuf Khan
+//
+// Student2:
+// UTORID user_name: wuyulu10
+// UT Student #: 1004912785
+// Author: Yulun Wu
+//
+// Student3:
+// UTORID user_name: lujia34
+// UT Student #: 1006173196
+// Author: Jia (Arthur) Lu
+//
+// Student4:
+// UTORID user_name:
+// UT Student #:
+// Author:
+//
+//
+// Honor Code: I pledge that this program represents my own
+// program code and that I have coded on my own. I received
+// help from no one in designing and debugging my program.
+// I have also read the plagiarism section in the course info
+// sheet of CSC B07 and understand the consequences.
+// *********************************************************
+package commands;
+
+import java.util.ArrayList;
+import exceptions.InvalidPathException;
+import system.Directory;
+import system.File;
+import system.FileSystem;
+import system.Path;
+
+/**
+ * Command for printing contents of directory and name of file(s).
+ * 
+ */
+public class ListFiles extends Command {
+
+  /**
+   * Creates a new ListFiles instance and initializes the command name and docs.
+   */
+  public ListFiles() {
+    this.setName("ls");
+    this.setDocs("ls [PATH ...]\n\tIf no paths are given, print the contents of current directory,"
+        + "\n\twith a new line following each file/directory." + "\n\tOtherwise, for each path p:"
+        + "\n\t\tIf p specifies a file, print p."
+        + "\n\t\tIf p specifies directory, print p + ':' + contents of directory + newline.");
+  }
+
+  /**
+   * Prints the contents of current directory if no argument is given. Otherwise for each given
+   * argument, if that argument specifies a file, print the name of file. If that argument specifies
+   * a directory, print the name of that directory and name of the contents of that directory.
+   * InvalidPathException is thrown if the directory on the stack is not valid for fs.
+   * 
+   * @param fs the FileSystem associated with the shell this command is running in
+   * @param arguments the list of arguments provided by the user
+   * @throws InvalidPathException
+   */
+  public void executeCommand(FileSystem fs, ArrayList<String> arguments) {
+
+    try {
+      this.setArguments(arguments);
+
+      if (this.getArguments().size() == 0) {
+        Directory d = fs.getDirectory();
+        printContentInCurrentDirectory(d);
+      } else {
+        for (String s : this.getArguments()) {
+          Path p = new Path(s);
+
+          if (fs.findFile(p) != null) {
+            System.out.println(p.getLastElement());
+          } else if (fs.findDirectory(p) != null) {
+            Directory curr = fs.findDirectory(p);
+            System.out.println(curr.getPath() + ":");
+            printContentInCurrentDirectory(curr);
+          }
+        }
+      }
+    } catch (InvalidPathException e) {
+      System.err.println(e.getMessage());
+    }
+  }
+
+  /**
+   * Prints the name of the contents in d.
+   * 
+   * @param d the directory that is needed to print contents
+   */
+  private void printContentInCurrentDirectory(Directory d) {
+    // get subDirectory and subFile list from FileSystem
+    // print them one by one each followed by a newline
+    printDirectory(d.getChildren());
+    printFiles(d.getFile());
+    System.out.println("");
+  }
+
+  /**
+   * Prints the name of the directories in list.
+   * 
+   * @param list the list of directories that are needed to print
+   */
+  private void printDirectory(ArrayList<Directory> list) {
+    for (Directory d : list) {
+      System.out.println(d.getName());
+    }
+  }
+
+  /**
+   * Prints the name of the files in list.
+   * 
+   * @param d the list of files that are needed to print
+   */
+  private void printFiles(ArrayList<File> list) {
+    for (File s : list) {
+      System.out.println(s.getName());
+    }
+  }
+
+}

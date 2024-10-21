@@ -1,0 +1,12 @@
+Class name: MakeDirectory
+
+Parent Class: Command
+
+Subclasses: None
+
+Responsibilities:
+* Create directory with path specified by argument
+
+Collaborators: 
+* FileSystem
+* Directory

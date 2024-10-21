@@ -1,0 +1,10 @@
+package exceptions;
+
+ /** 
+   * Exception for when the parameter length of a command is invalid
+   */
+public class InvalidParamLengthException extends Exception{
+    public InvalidParamLengthException(String errorMessage) {
+        super(errorMessage);
+    }
+}

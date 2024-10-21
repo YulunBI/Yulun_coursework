@@ -1,0 +1,15 @@
+Class name: Remove
+
+Parent Class: Command
+
+Subclasses: None
+
+Responsibilities:
+* Removes given file/directory and any children recursively.
+
+Collaborators: 
+* FileSystem
+* File
+* Path
+* InvalidParamLengthException
+* InvalidPathException

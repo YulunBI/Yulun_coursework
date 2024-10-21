@@ -1,0 +1,13 @@
+package commands;
+
+
+public class Exit extends Command{
+  public Exit() {
+    this.setName("exit");
+    this.setDocs("Quit the program.");
+  }
+  
+  public void executeCommand() {
+    System.exit(0);
+  }
+}

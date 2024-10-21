@@ -1,0 +1,71 @@
+// **********************************************************
+// Assignment2:
+// Student1:
+// UTORID user_name: khanyus7
+// UT Student #: 1006330329
+// Author: Yusuf Khan
+//
+// Student2:
+// UTORID user_name: wuyulu10
+// UT Student #: 1004912785
+// Author: Yulun Wu
+//
+// Student3:
+// UTORID user_name: lujia34
+// UT Student #: 1006173196
+// Author: Jia (Arthur) Lu
+//
+// Student4:
+// UTORID user_name:
+// UT Student #:
+// Author:
+//
+//
+// Honor Code: I pledge that this program represents my own
+// program code and that I have coded on my own. I received
+// help from no one in designing and debugging my program.
+// I have also read the plagiarism section in the course info
+// sheet of CSC B07 and understand the consequences.
+// *********************************************************
+package commands;
+
+import java.util.ArrayList;
+import exceptions.InvalidParamLengthException;
+import system.FileSystem;
+
+/**
+ * Command for exiting the Shell.
+ * 
+ */
+public class Exit extends Command {
+
+  /**
+   * The exact number of arguments required to execute this command.
+   */
+  private static final int EXACT_ARG_LENGTH = 0;
+
+  /**
+   * Creates a new Exit instance and initializes the command name and docs.
+   */
+  public Exit() {
+    this.setName("exit");
+    this.setDocs("Quit the program.");
+  }
+
+  /**
+   * Exits the Shell. InvalidParamLengthException is thrown if there are not exactly
+   * EXACT_ARG_LENGTH arguments provided.
+   * 
+   * @param fs the FileSystem associated with the shell this command is running in
+   * @param arguments the list of arguments provided by the user
+   * @throws InvalidParamLengthException If there are not exactly EXACT_ARG_LENGTH arguments
+   *         provided.
+   */
+  public void executeCommand(FileSystem fs, ArrayList<String> arguments)
+      throws InvalidParamLengthException {
+    if (arguments.size() != EXACT_ARG_LENGTH) {
+      throw new InvalidParamLengthException("Invalid parameter length");
+    }
+    System.exit(0);
+  }
+}

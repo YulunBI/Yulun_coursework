@@ -1,0 +1,8 @@
+package commands;
+
+public class PopDirectory extends Command{
+  public PopDirectory() {
+    this.setName("popd");
+    this.setDocs("popd\n\tRemoves top entry from directory stack and performs cd with it.");
+  }
+}

@@ -1,0 +1,15 @@
+Class name: Tree
+
+Parent Class: Command
+
+Subclasses: None
+
+Responsibilities:
+* Displays a tree representation of the file system
+
+Collaborators: 
+* FileSystem
+* Path
+* Directory
+* InvalidPathException
+* InvalidParamLengthException

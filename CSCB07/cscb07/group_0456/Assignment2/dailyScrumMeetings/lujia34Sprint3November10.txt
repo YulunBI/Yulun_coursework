@@ -1,0 +1,11 @@
+What did I work on in the last three days?
+    - javadocs on classes (man, popd, pushd, history, file, directory, various scattered methods)
+    - honor pledge
+    - final testing
+
+What do I plan to work in the next three days?
+    - nothing
+
+Am I blocked on anything?
+    - nothing
+    

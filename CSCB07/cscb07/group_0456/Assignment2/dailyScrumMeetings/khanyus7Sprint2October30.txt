@@ -1,0 +1,14 @@
+What did I work on in the last three days?
+    - Finished main part of FileSystem
+    - Finished most of ChangeDirectory, MakeDirectory and PrintWorkingDirectory
+    - Added list of commands to the FileSystem
+
+What do I plan to work in the next three days?
+    - Finish Concatenation
+    - handle invalid file names
+    - handle invalid directory names
+    - handle invalid paths
+    - start brainstroming a custom exception class
+
+Am I blocked on anything?
+    - No

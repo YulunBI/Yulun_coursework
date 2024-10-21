@@ -1,0 +1,91 @@
+//Sprint 3 Backlog.  
+November 4 to November 10
+
+
+User Stories from Product Backlog that we will address in this sprint:
+
+a) As a user, I can type commands into the shell.	
+b) As a user, I can see the documentation for the command, so that I know how to use them.
+c) As a user, I can check the content in my current folder. 																							
+d) As a user, I can check the content in any folder I list.						
+e) As a user, I can check if my desired file is in the folder   						  								 													
+f) As a user, I can view my files on the console.   							
+g) As a user, I can overwrite my files with the text I want.   						
+h) As a user, I can create a new file with the text I want.						
+i) As a user, I can append text to my files.   								
+j) As a user, I can print text to shell. 
+k) As a user, I can see any errors that happen if my command is unsuccessful.
+l) As a user, I can exit the shell.
+m) As a user, I can create two new folders.
+n) As a user, I can check which folder I am in.     
+o) As a user, I can save my current location and continue work on somewhere else.
+p) As a user, I can go to my saved locations starting with my most recent saved location.
+q) As a user, I can view a specific amount of my recent commands if I provide a number.
+r) As a user, I can view my all of my recent commands.
+s) As a user, I can change the folder that I'm currently in.	 		
+
+As a user, I can print text to shell. 
+Specific tasks to be accomplished:
+a-1. (CommandHashTable) Create crc card for a command hash table class
+a-2. (CommandHashTable) Intialize hash table with all commands
+a-3. (CommandHashTable) Return a new instance of a command, given its name(using reflection)
+a-4. (FileSystem) Remove commands array list and getCommand function from FileSystem
+a-5. (CommandPrinter) Remove the CommandPrinter class, its not necessary
+a-5. (CommandScanner) Move CommandScanner to command folder and delete a2 folder
+a-6. (FileSystem) Make FileSystem constructor private
+a-7. (FileSystem) Create an private static instance of itself 
+a-7. (FileSystem) Add new method, to get single instance of FileSystem using singleton design pattern
+a-8. (CommandScanner) Change getCommand method, make it get the command from the CommandHashTable class
+a-9. (JShell) Use CommandHashTable instead of FileSystem, when scanning for command
+a-10. (FileSystem) Shorten traversal method
+a-11. (Path) Test and complete javadoc
+a-12. (Command) Make Command Abstract
+a-13. (FileSystem) Test and complete javadoc
+a-14. (Directory) Test and complete javadoc
+a-15. (File) Test and complete javadoc
+a-16. (JShell) Test and complete javadoc
+a-17. (CommandScanner) Test and complete javadoc
+b-1. (All commands) Check documentation for spelling mistakes
+b-2. (Manual) Get command names from CommandHashTable instead of FileSystem
+b-3. (Manual) Test and complete javadoc
+c-1. (ListFiles) Check format for printing content of current folder
+c-2. (ListFiles) Test and complete javadoc
+e-1. (ListFiles) Check file printing format
+f-1. (Echo) Finish overwriting part
+h-1. (Echo) Finish creating new file part
+i-1. (Echo) Finish appending text part
+i-2. (File) Add append text method
+j-1. (Echo) Finish printing String to shell
+j-2. (Echo) Test and complete javadoc
+j-3. (Concatenate) Test and complete javadoc
+k-1. (AlreadyExistsException) Make crc card
+k-2. (InvalidCommandNameException)Make crc card
+k-3. (InvalidParamLengthException) Make crc card
+k-4. (InvalidPathException) Make crc card
+k-5. (AlreadyExistsException) Implement basic form
+k-6. (InvalidCommandNameException) Implement basic form
+k-7. (InvalidParamLengthException) Implement basic form
+k-8. (InvalidPathException) Implement basic form
+k-9. (All Exceptions) Replace default exceptions, with custom exceptions
+k-10. (All Exceptions) Catch custom exceptions instead of default
+l-1. (Exit) Test and complete javadoc
+m-1. (MakeDirectory) Test and complete javadoc
+n-1. (PrintWorkingDirectory) Test and complete javadoc
+o-1. (PushDirectory) Test and complete javadoc
+p-1. (PopDirectory) Test and complete javadoc 
+q-1. (History) Test with no param and complete javadoc
+r-1. (History) Test when given a param
+s-1. (ChangeDirectory) Test and complete javadoc
+
+
+These tasks are assigned as follows:
+
+User: Yulun Wu
+Tasks: a-16, a-17, c-1, c-2, e-1, f-1, h-1, i-1, j-1 to j-3, l-1
+
+User: Arthur Lu
+Tasks: a-14, a-15, b1 to b-3, o-1, p-1, q-1, r-1
+
+User: Yusuf Khan
+Tasks: a-1 to a-13, k-1 to k-10, m-1, n-1, s-1, i-2
+

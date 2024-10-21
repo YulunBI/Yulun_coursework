@@ -1,0 +1,148 @@
+package system;
+
+import java.util.*;
+import commands.*;
+
+public class FileSystem {
+    private Directory root;
+    private Directory currentDir;
+    private ArrayList<String> history;
+    private Stack<Directory> dirStack;
+
+    public FileSystem() {
+
+        root = new Directory("", new Path("/"), null);
+
+        // initialize lists and stack
+        history = new ArrayList<String>();
+        dirStack = new Stack<Directory>();
+
+        currentDir = root;
+
+    }
+
+    private Directory traverseFileSystem(Path path) throws Exception {
+
+        // keeps track of directory that we're looking at
+        Directory selected;
+        String selectedName = path.getList().get(0);
+        Boolean dirFound = false;
+
+        // determining the first selected directory
+        if (selectedName.equals(".")) {
+            selected = currentDir;
+
+        } else if (selectedName.equals("..")) {
+            selected = currentDir.getParent();
+        } else if (selectedName.isEmpty()) {
+            selected = root;
+        } else {
+            // change this to InvalidPathException
+            throw new Exception("Path is invalid.");
+        }
+
+        int length = path.getList().size();
+
+        // go through every directory in the path
+        for (int i = 1; i < length; i++) {
+            if (selected == null) {
+                // change this to InvalidPathException
+                throw new Exception("Path is invalid.");
+            }
+
+            selectedName = path.getList().get(i);
+            dirFound = false;
+
+            if (selectedName.equals("..")) {
+                // selected directory is parent
+                selected = selected.getParent();
+                dirFound = true;
+                continue;
+
+            } else if (selectedName.equals(".")) {
+                // selected directory is the same
+                dirFound = true;
+                continue;
+            }
+
+            for (Directory dir : selected.getChildren()) {
+                if (selectedName.equals(dir.getName())) {
+                    selected = dir;
+                    dirFound = true;
+                    break;
+                }
+            }
+
+            // if the directory doesn't change, then return null
+            if (dirFound == false) {
+                // change this to InvalidPathException
+                throw new Exception("Path is invalid.");
+            }
+        }
+
+        return selected;
+    }
+
+    public void addFile(Path path) throws Exception {
+
+        Directory parent = traverseFileSystem(path.getParentPath());
+        String name = path.getLastElement();
+        // addSubFile must check if file exists already
+        parent.addSubFile(name);
+    }
+
+    public void addDirectory(Path path) throws Exception {
+        // go through path and add dir
+        Directory parent = traverseFileSystem(path.getParentPath());
+        String name = path.getLastElement();
+
+        // addSubDirectory must check if directory exists already
+        parent.addSubDictionary(name);
+
+    }
+
+    public File findFile(Path path) throws Exception {
+        Directory parent = traverseFileSystem(path.getParentPath());
+
+        for (File f : parent.getFile()) {
+            if (f.getName().equals(path.getLastElement())) {
+                return f;
+            }
+        }
+
+        return null;
+    }
+
+    public Directory findDirectory(Path path) throws Exception {
+        Directory parent = traverseFileSystem(path);
+
+        return parent;
+    }
+
+    public void changeDirectory(Path path) throws Exception {
+        Directory changed = traverseFileSystem(path);
+
+        currentDir = changed;
+    }
+
+    public Directory getDirectory() {
+        return this.currentDir;
+    }
+
+    public ArrayList<String> getHistory() {
+        return this.history;
+    }
+
+    public void addHistory(String s) {
+        this.history.add(s);
+    }
+
+    public void stackPush(Directory d) {
+        dirStack.push(d);
+    }
+
+    public Directory stackPop() {
+        return dirStack.pop();
+    }
+
+}

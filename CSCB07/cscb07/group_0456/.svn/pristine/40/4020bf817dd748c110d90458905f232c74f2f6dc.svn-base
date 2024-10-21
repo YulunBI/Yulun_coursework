@@ -1,0 +1,27 @@
+package test;
+
+import static org.junit.Assert.*;
+import org.junit.Test;
+import commands.CommandHashTable;
+import exceptions.InvalidCommandNameException;
+
+public class CommandHashTableTest {
+
+  @Test
+  public void InvalidCommandNameFindCommand() {
+    try {
+      CommandHashTable hashTable = new CommandHashTable();
+      hashTable.findCommand("1");
+      fail("InvalidCommandNameException not found");
+    } catch (InvalidCommandNameException e) {
+      return;
+    }
+  }
+
+  @Test
+  public void ValidCommandNameFindCommand() throws InvalidCommandNameException {
+    CommandHashTable hashTable = new CommandHashTable();
+    hashTable.findCommand("curl");
+    assertNotNull(hashTable);
+  }
+}

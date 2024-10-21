@@ -1,0 +1,47 @@
+package system;
+
+import java.util.ArrayList;
+
+public class Dictionary{
+  
+  private Dictionary superDictionary;
+  private ArrayList<Dictionary> subDictionary;
+  private ArrayList<File> subFile;
+  private String name;
+  private Path location;
+  
+  public Dictionary(String name,String location,Dictionary superDictionary) {
+    this.superDictionary = superDictionary;
+    subDictionary = new ArrayList<Dictionary>();
+    subFile = new ArrayList<File>();
+    this.name = name;
+    this.location = new Path(location);
+  }
+  
+  public String getName() {
+    return name;
+  }
+  
+  public ArrayList<Dictionary> getChildren() {
+    return subDictionary;
+  }
+  
+  public ArrayList<File> getFile() {
+    return subFile;
+  }
+  
+  public void addSubDictionary(String name) {
+    subDictionary.add(new Dictionary(name,location.getPath()+this.name,this));
+  }
+  
+  public void addSubFile(String name) {
+    subFile.add(new File(name,location.getPath()+this.name));
+  }
+
+  public Dictionary getParent() {
+    return superDictionary;
+  }
+  
+}
+
+

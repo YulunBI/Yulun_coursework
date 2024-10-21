@@ -1,0 +1,19 @@
+package commands;
+
+import system.*;
+
+public class History extends Command {
+  
+  public History() {
+    this.setName("history");
+    this.setDocs("history [number]\n\tPrints out history of last [number] commands.");
+  }
+  
+  public void executeCommand(FileSystem fs) {
+    int count = Integer.parseInt(this.getArguments().get(1));
+    for (int i = fs.getHistory().size()-1; i >= fs.getHistory().size() - count; i--) {
+      System.out.println(i + ".\t " + fs.getHistory().get(i));
+    }
+  }
+  
+}

@@ -1,0 +1,15 @@
+Class name: LoadJShell
+
+Parent Class: Command
+
+Subclasses: None
+
+Responsibilities:
+* Load the contents in the given argument.* Reinitialize everything that was saved in given argument.
+* Only work when no command haven been typed in JShell.
+
+Collaborators: 
+* File
+* FileSystem
+* JShell
+

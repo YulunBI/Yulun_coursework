@@ -1,0 +1,4 @@
+Class name: MoveParent class (if any): CommandSubclasses (if any): None
+Responsibilities:* Move file to another location
+Collaborators:* FileSystemExplorer
+

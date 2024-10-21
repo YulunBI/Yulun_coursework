@@ -1,0 +1,23 @@
+package commands;
+
+import java.util.ArrayList;
+import system.FileSystem;
+
+public class Echo extends Command{
+  public Echo() {
+    this.setName("echo");
+    this.setDocs("echo STRING [> OUTFILE]\n\tIf OUTFILE is not provided, print STRING in shell." + 
+        "\n\tOtherwise, overwrites content of file OUTFILE with STRING." + 
+        "\n\tCreates OUTFILE if it does not already exist." +
+        "\n\tSTRING is a string of characters surrounded by double quotation marks.");
+  }
+  
+  public void executeCommand(FileSystem fs, ArrayList<String> arguments) {
+    try {
+      
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+  }
+}
+  

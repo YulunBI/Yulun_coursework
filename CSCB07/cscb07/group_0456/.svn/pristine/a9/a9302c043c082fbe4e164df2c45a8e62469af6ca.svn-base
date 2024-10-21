@@ -1,0 +1,76 @@
+package commands;
+
+import exceptions.InvalidParamLengthException;
+import exceptions.InvalidPathException;
+import java.util.ArrayList;
+import system.Directory;
+import system.File;
+import system.FileSystem;
+import system.JPath;
+import system.Path;
+
+public class Copy extends Command {
+  
+  private static final int EXACT_ARG_LENGTH = 2;
+
+  public Copy() {
+    this.setName("cp");
+    this.setDocs("cp OLDPATH NEWPATH\n\tCopy file/directory at OLDPATH to NEWPATH."
+        + "\n\tOLDPATH and NEWPATH can be either relative to the current directory or full paths."
+        + "\n\tIf NEWPATH is a directory, copy OLDPATH into that directory.");
+  }
+  
+  public String executeCommand(FileSystem fs, ArrayList<String> arguments)
+    throws InvalidParamLengthException {
+    if (arguments.size() != EXACT_ARG_LENGTH)
+      throw new InvalidParamLengthException("Invalid parameter length");
+    
+    try {
+      Path oldPath = new JPath(arguments.get(0));
+      Path newPath = new JPath(arguments.get(1));
+      
+      if (fs.findFile(oldPath) != null) { //copying a file
+        
+        File f = fs.findFile(oldPath);
+        try {          
+          if (fs.findFile(newPath) != null) { // case 9: overwrite target with f
+            
+            File target = fs.findFile(newPath);
+            target.setText(f.getText());
+            
+          } else if (fs.findDirectory(newPath) != null) { // case 7: move f into newPath
+            newPath = new JPath("./" + arguments.get(1) + "/" + f.getName());
+            fs.addFile(newPath);
+            File target = fs.findFile(newPath);
+            target.setText(f.getText());
+          }
+          
+        } catch (InvalidPathException e1) { // when no file/dir exists at newpath
+          // case 10: create new file with same contents in same directory
+          if (newPath.getParentPath().toString().equals(oldPath.getParentPath().toString())) {
+            newPath = new JPath(f.getLocation() + newPath.getLastElement());
+            fs.addFile(newPath);
+            File target = fs.findFile(newPath);
+            target.setText(f.getText());
+          } else {
+            try {
+              throw new IllegalArgumentException("Directory or file along path does not exist");
+            } catch (IllegalArgumentException arge) {
+              System.err.println(arge.getMessage());
+            }
+          }
+        }
+        
+      } else if (fs.findDirectory(oldPath) != null) { //copying a directory
+        
+        
+        
+      }
+    } catch (Exception e) {
+      System.err.println(e.getMessage());
+    }
+    
+    return "";
+  }
+  
+}

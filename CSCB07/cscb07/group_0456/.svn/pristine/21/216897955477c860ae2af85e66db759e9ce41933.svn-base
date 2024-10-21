@@ -1,0 +1,48 @@
+package commands;
+
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.util.ArrayList;
+import exceptions.InvalidParamLengthException;
+import system.FileSystem;
+
+public class LoadJShell extends Command {
+
+  private static final int EXACT_ARG_LENGTH = 1;
+  
+  public LoadJShell() {
+    this.setName("loadJShell");
+    this.setDocs("loadJShell FileName\n\tLoad the contents of the FileName.\n"
+        + "Reinitialize everything that was saved in FileName.\n" + 
+        "Only work when no command haven been typed in JShell.");
+  }
+  
+  public String executeCommand(FileSystem fs, ArrayList<String> arguments)
+      throws InvalidParamLengthException {
+    if (arguments.size() != EXACT_ARG_LENGTH) {
+      throw new InvalidParamLengthException("Invalid parameter length");
+    }
+    // need to change to proper exception
+    if (fs != null) {
+      throw new InvalidParamLengthException("Invalid parameter length1");
+    }
+    try {
+      FileInputStream fileIn = new FileInputStream("/Users/yulunwu/" 
+          + "Downloads/2020 fall/CSCB07/cscb07/group_0456/Assignment2" 
+          + arguments + ".ser");
+      //System.out.println("pass 1");
+      ObjectInputStream in = new ObjectInputStream(fileIn);
+      //System.out.println("pass 2");
+      fs = FileSystem.createFileSystemInstance((FileSystem) in.readObject(),1);
+      //System.out.println("pass 3");
+      in.close();
+      fileIn.close();
+    } catch (IOException e){
+      System.err.println(e.getMessage());
+    } catch (ClassNotFoundException e) {
+      System.err.println(e.getMessage());
+    }
+    return "";
+  }
+}

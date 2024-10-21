@@ -1,0 +1,12 @@
+package commands;
+
+import java.util.ArrayList;
+
+public class Manual extends Command {
+
+  public Manual(String name, ArrayList<String> arguments, String docs) {
+    super(name, arguments, docs);
+    // TODO Auto-generated constructor stub
+  }
+  
+}

@@ -1,0 +1,8 @@
+package commands;
+
+public class PrintWorkingDirectory extends Command {
+  public PrintWorkingDirectory() {
+    this.setName("pwd");
+    this.setDocs("pwd\n\tPrints full path of current working directory.");
+  }
+}

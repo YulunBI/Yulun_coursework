@@ -1,0 +1,13 @@
+Class name: Get
+
+Parent Class: Command
+
+Subclasses: None
+
+Responsibilities:
+* Find file at URL specified by argument
+* Add file to current directory
+
+Collaborators: 
+* FileSystem
+* File

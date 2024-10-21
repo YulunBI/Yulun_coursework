@@ -1,0 +1,15 @@
+Class name: JShell
+
+Parent Class: None
+
+Subclasses: None
+
+Responsibilities:
+* Display current working directory at the start of every input line
+* Execute command entered by user on input line
+
+Collaborators:
+* Command
+* CommandScanner
+* CommandPrinter
+* FileSystem

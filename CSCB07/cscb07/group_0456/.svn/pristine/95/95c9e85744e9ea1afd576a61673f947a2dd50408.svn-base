@@ -1,0 +1,12 @@
+Class name: Mv
+
+Parent Class: Command
+
+Subclasses: None
+
+Responsibilities:
+* Move file with path specified by first argument to path specified by second argument
+
+Collaborators: 
+* FileSystem
+* File

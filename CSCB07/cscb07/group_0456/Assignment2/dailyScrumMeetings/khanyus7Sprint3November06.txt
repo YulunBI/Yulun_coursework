@@ -1,0 +1,17 @@
+What did I work on in the last three days?
+    - Finished making Sprint3Backlog
+    - Removed CommandPrinter
+    - Finished CommandHashTable 
+    - Demoed with TA
+
+
+What do I plan to work in the next three days?
+    - Follow singleton design pattern for FileSystem
+    - Finish creating custom exception classes 
+    - Finish handling errors
+    - Shorten FileSystem traversal
+    - Java docs for FileSystem, Path, Command, CommandHashTable, ChangeDirectory
+
+Am I blocked on anything?
+    - Nope
+

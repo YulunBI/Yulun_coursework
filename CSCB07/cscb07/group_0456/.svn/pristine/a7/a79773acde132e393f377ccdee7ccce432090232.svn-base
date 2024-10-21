@@ -1,0 +1,12 @@
+package commands;
+
+public class ListFiles extends Command{
+  public ListFiles() {
+    this.setName("ls");
+    this.setDocs("ls [PATH ...]\n\tIf no paths are given, print the contents of current directory,"+ 
+        "\n\twith a new line following each file/directory." + 
+        "\n\tOtherwise, for each path p:" + 
+        "\n\t\tIf p specifies a file, print p." +
+        "\n\t\tIf p specifies directory, print p + ':' + contents of directory + newline.");
+  }
+}

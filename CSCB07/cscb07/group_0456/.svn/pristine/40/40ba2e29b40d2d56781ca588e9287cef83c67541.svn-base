@@ -1,0 +1,40 @@
+User Stories												Time Estimate
+
+As a user, I can exit the shell.									1 hour
+
+As a user, I can type commands into the shell.								3 days
+
+As a user, I can see any errors that happen if my command is unsuccessful.				4 days
+
+As a user, I can change the folder that I'm currently in.						1 hour
+
+As a user, I can create two new folders.  								2 hours
+
+As a user, I can check the content in my current folder.   						2 hours
+
+As a user, I can check the content in any folder I list.						2 hours
+
+As a user, I can check if my desired file is in the folder   						2 hours
+
+As a user, I can check which folder I am in.   								2 hours
+
+As a user, I can save my current location and continue work on somewhere else.				3 hours
+
+As a user, I can go to my saved locations starting with my most recent saved location.   		3 hours
+
+As a user, I can view my all of my recent commands.   							2 hours
+
+As a user, I can view a specific amount of my recent commands if I provide a number. 			1 hour		
+
+As a user, I can view my files on the console.   							4 hours
+
+As a user, I can overwrite my files with the text I want.   						3 hours
+
+As a user, I can create a new file with the text I want.						3 hours
+
+As a user, I can append text to my files.   								3 hours
+
+As a user, I can see the documentation for the commands,						3 hours
+so that I know how to use them.
+
+As a user, I can print text to shell.   								1 hour

@@ -1,0 +1,58 @@
+package commands;
+
+import exceptions.InvalidParamLengthException;
+import exceptions.InvalidPathException;
+import java.util.ArrayList;
+import system.Directory;
+import system.File;
+import system.FileSystem;
+import system.JPath;
+import system.Path;
+
+public class Move extends Command {
+  
+  private static final int EXACT_ARG_LENGTH = 2;
+  
+  public Move() {
+    this.setName("mv");
+    this.setDocs("mv OLDPATH NEWPATH\n\tMove file/directory at OLDPATH to NEWPATH."
+        + "\n\tOLDPATH and NEWPATH can be either relative to the current directory or full paths."
+        + "\n\tIf NEWPATH is a directory, move OLDPATH into that directory.");
+  }
+  
+  public String executeCommand(FileSystem fs, ArrayList<String> arguments)
+    throws InvalidParamLengthException {
+    if (arguments.size() != EXACT_ARG_LENGTH)
+      throw new InvalidParamLengthException("Invalid parameter length");
+    
+    try {
+      Path oldPath = new JPath(arguments.get(0));
+      Remove re = new Remove(); // might as well reuse remove to delete OLDPATH file/dir
+      
+      if (fs.findFile(oldPath) != null) { //moving a file
+        File oldFile = fs.findFile(oldPath);
+        Path newPath = new JPath(arguments.get(1) + "/" + oldFile.getName());
+        
+        // create new copy of files at NEWPATH
+        fs.addFile(newPath);
+        File newFile = fs.findFile(newPath);
+        newFile.setText(oldFile.getText());
+        
+        // remove old copy of files at OLDPATH
+        ArrayList<String> removeFiles = new ArrayList<String>();
+        removeFiles.add(arguments.get(0));
+        re.executeCommand(fs, removeFiles);
+        
+      } else if (fs.findDirectory(oldPath) != null) { //moving a directory
+        Directory oldDir = fs.findDirectory(oldPath);
+        Path newPath = new JPath(arguments.get(1) + "/" + oldDir.getName());
+        
+      }
+    } catch (Exception e) {
+      System.err.println(e.getMessage());
+    }
+    
+    return "";
+  }
+
+}

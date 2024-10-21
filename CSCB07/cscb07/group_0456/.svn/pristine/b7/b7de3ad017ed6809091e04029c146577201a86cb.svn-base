@@ -1,0 +1,25 @@
+Class name: Command
+
+Parent Class: None
+
+Subclasses:
+* ChangeDirectory
+* Concatenate
+* Echo
+* Exit
+* History
+* ListFiles
+* MakeDirectory
+* Manual
+* PopDirectory
+* PrintWorkingDirectory
+* PushDirectory
+
+Responsibilities:
+* Store command name
+* Store command arguments
+* Store command documentation
+* Define what happens when the command is executed
+
+Collaborators:
+* InvalidParamLengthException

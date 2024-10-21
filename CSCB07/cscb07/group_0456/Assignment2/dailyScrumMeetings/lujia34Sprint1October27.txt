@@ -1,0 +1,15 @@
+What did I work on in the last three days?
+    - implemented history and man
+    - added documentation for history and man
+    - framework for storing command history in FileSystem
+    - brainstormed/discussed with partners how to implement/execute commands/pass information around
+
+What do I plan to work in the next three days?
+    - add documentation for the rest of commands
+    - perform some testing on history/man
+    - continue ironing out details of command/shell/user interaction
+
+Am I blocked on anything?
+    - need other commands created to add documentation
+    - need FileSystem/JShell ready to use/test commands properly
+    

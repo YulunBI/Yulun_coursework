@@ -1,0 +1,145 @@
+package commands;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Scanner;
+import exceptions.InvalidCommandNameException;
+import system.FileSystem;
+
+public class CommandScanner {
+
+  /**
+   * Represents the contents inputed by user.
+   */
+  private String inputString = "";
+  
+  /**
+   * Represents the command the user desires to execute.
+   */
+  private String command = "";
+  
+  /**
+   * Represents the list of contents inputed by user.
+   */
+  private String[] inputStringList;
+  
+  /**
+   * Represents the list of parameter(s) user inputed to execute command.
+   */
+  private ArrayList<String> parameter;
+
+  /**
+   * Represents the list of commands which allow quotes
+   */
+  private ArrayList<String>  quotesAllowed;
+
+  /**
+   * Represents the list of commands which allow redirection
+   */
+  private ArrayList<String> redirectionAllowed;
+
+  public CommandScanner() {
+    parameter = new ArrayList<String>();
+    quotesAllowed = new ArrayList<String>();
+    redirectionAllowed = new ArrayList<String>();
+
+    redirectionAllowed.add("echo");
+    quotesAllowed.add("echo");
+  }
+
+  /**
+   * Scan the user input from console and add that user input to History. 
+   * 
+   * @param fs The file system.
+   */
+  public void scanUserInput(FileSystem fs) {
+    Scanner userInput = new Scanner(System.in);
+    inputString = userInput.nextLine();
+    fs.addHistory(inputString);
+  }
+
+  /**
+   * Split inputString into inputStringList with delimiter "\\s+".
+   */
+  private void divideInput() {
+    String regex = "\\s+";
+    
+    for(String command : quotesAllowed){
+      if(inputString.startsWith(command)){
+        //only select the spaces that aren't in quotes
+        regex = "\\s+(?=(?:\"[^\"]*\"|[^\"])*$)";
+        break;
+    }
+  } 
+    inputStringList = inputString.split(regex);
+  }
+
+  /**
+   * Remove any leading and trailing space in inputString.
+   */
+  private void removeSpacesInInput() {
+    String regex = "^\\s+";
+    
+    for(String command : redirectionAllowed){
+      if(inputString.startsWith(command)){
+        inputString = inputString.replaceAll("\s*>>\s*(?=(?:\"[^\"]*\"|[^\"])*$)", " >> ");
+        inputString = inputString.replaceAll("\s*[^>]>[^>]\s*(?=(?:\"[^\"]*\"|[^\"])*$)", " > ");
+      }
+    }
+
+    //remove all spaces from the front
+    inputString = inputString.replaceAll("^\\s+", "");
+
+    for(String command : quotesAllowed){
+      if(inputString.startsWith(command)){
+        //only select the spaces that aren't in quotes
+        regex = "\\s+(?=(?:\"[^\"]*\"|[^\"])*$)";
+        break;
+    }
+  }
+    inputString = inputString.replaceAll(regex, " ");
+  }
+  
+  /**
+   * Parse command and parameter(s) from user input. 
+   */
+  public void parseCommandAndParameter() {
+    removeSpacesInInput();
+    divideInput();
+    ArrayList<String> commandAndParameter = new ArrayList<String>(Arrays.asList(inputStringList));
+    command = commandAndParameter.get(0);
+    commandAndParameter.remove(0);
+    parameter = commandAndParameter;
+  }
+
+  /**
+   * Return a new Command given by name if it exists.
+   * InvalidCommandNameException is thrown if the user provides an invalid command name.
+   * 
+   * @param hashTable The CommandHashTable.
+   * @return Command The command found in CommandHashTable.
+   * @throws InvalidCommandNameException
+   */
+  public Command getCommand(CommandHashTable hashTable) throws InvalidCommandNameException {
+    return hashTable.findCommand(this.command);
+  }
+
+  /**
+   * Return a ArrayList contains Strings of parameter(s).
+   * 
+   * @return parameter The ArrayList contains Strings of parameter(s).
+   */
+  public ArrayList<String> getParameter() {
+    return parameter;
+  }
+
+  /**
+   * Return a String represents a command name.
+   * 
+   * @return command The String represents a command name.
+   */
+  public String getName() {
+    return command;
+  }
+
+}

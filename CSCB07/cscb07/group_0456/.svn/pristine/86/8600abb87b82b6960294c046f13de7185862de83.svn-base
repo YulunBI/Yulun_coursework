@@ -1,0 +1,12 @@
+Class name: PushDirectory
+
+Parent Class: None
+
+Subclasses: None
+
+Responsibilities:
+* Save the current directory and then changes the directory
+
+Collaborators: 
+* FileSystem
+* Path

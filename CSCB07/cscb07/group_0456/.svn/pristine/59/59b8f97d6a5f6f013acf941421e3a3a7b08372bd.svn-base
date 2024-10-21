@@ -1,0 +1,87 @@
+package test;
+
+import static org.junit.Assert.*;
+import java.util.ArrayList;
+import org.junit.Test;
+import commands.PushDirectory;
+import exceptions.InvalidParamLengthException;
+import system.Directory;
+import system.FileSystem;
+import system.Path;
+
+public class PushDirectoryTest {
+
+  /**
+   * Test that InvalidParamLengthException is thrown when the wrong number of args is given.
+   */
+  @Test
+  public void testInvalidParamLengthExecuteCommand() {
+    PushDirectory pushd = new PushDirectory();
+    ArrayList<String> args = new ArrayList<String>();
+    
+    try {
+      pushd.executeCommand(new MockFileSystem(), args);
+      fail("InvalidParamLengthException not thrown");
+    } catch (InvalidParamLengthException e) {
+      assertTrue(true);
+    } catch (Exception e) {
+      fail(e.getMessage());
+    }
+    
+    try {      
+      args.add("foo");
+      args.add("bar");
+      pushd.executeCommand(new MockFileSystem(), args);
+      fail("InvalidParamLengthException not thrown");
+    } catch (InvalidParamLengthException e) {
+      assertTrue(true);
+    } catch (Exception e) {
+      fail(e.getMessage());
+    }
+  }
+  
+  /**
+   * Test that the command does not execute when an invalid arg is given.
+   */
+  @Test
+  public void testInvalidExecuteCommand() {
+    PushDirectory pushd = new PushDirectory();
+    ArrayList<String> args = new ArrayList<String>();
+    FileSystem fs = new MockFileSystem();
+    
+    try {
+      
+      args.add("/Invalid Path/");
+      pushd.executeCommand(fs, args);
+      assertEquals("CD Path", fs.getDirectory().getPath()); //working directory has not changed
+      
+    } catch (Exception e) {
+      fail(e.getMessage());
+    }
+  }
+  
+  /**
+   * Test that the command changes the working directory and adds to the stack on valid input.
+   */
+  @Test
+  public void testValidExecuteCommand() {
+    PushDirectory pushd = new PushDirectory();
+    ArrayList<String> args = new ArrayList<String>();
+    FileSystem fs = new MockFileSystem();
+    Path p = new MockPath("/Valid Path/");
+    
+    try {
+      fs.addDirectory(p); // add the dir to the file system      
+      args.add("/Valid Path/");
+      pushd.executeCommand(fs, args);
+      assertEquals("Valid Path", fs.getDirectory().getPath()); //working directory has changed
+      
+      Directory d = fs.stackPop();
+      assertEquals("CD Path", d.getPath()); //check that CD Path was put into stack
+      
+    } catch (Exception e) {
+      fail(e.getMessage());
+    }
+  }
+
+}

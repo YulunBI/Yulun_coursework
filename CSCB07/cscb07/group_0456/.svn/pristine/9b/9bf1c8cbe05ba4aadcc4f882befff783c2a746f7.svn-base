@@ -1,0 +1,12 @@
+Class name: Echo
+
+Parent Class: Command
+
+Subclasses: None
+
+Responsibilities:
+* Print text to shell
+
+Collaborators: 
+* FileSystem
+* InvalidParamLengthException

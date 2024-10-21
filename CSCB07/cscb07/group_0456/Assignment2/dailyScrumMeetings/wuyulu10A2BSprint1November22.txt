@@ -1,0 +1,11 @@
+What did I work on in the last three days?
+    - Finished a working version of SaveJShell and LoadJShell.
+    - Finished structure of ClientUrl.
+
+What do I plan to work in the next three days?
+    - Improve SaveJShell and LoadJShell.
+    - Finish ClientUrl.	
+
+Am I blocked on anything? 
+    - Not really, but trying to come up better idea to make FileSystem more secure.
+

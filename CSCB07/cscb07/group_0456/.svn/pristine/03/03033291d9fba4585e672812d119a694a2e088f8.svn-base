@@ -1,0 +1,25 @@
+package commands;
+
+import java.util.ArrayList;
+
+import system.FileSystem;
+
+public class PrintWorkingDirectory extends Command {
+  public PrintWorkingDirectory() {
+    this.setName("pwd");
+    this.setDocs("pwd\n\tPrints full path of current working directory.");
+  }
+
+  
+  public void executeCommand(FileSystem fs, ArrayList<String> arguments) {
+    if (arguments.size() != 0){
+        this.setOutput("Invalid parameter length");
+        return;
+    }
+
+
+    this.setOutput(fs.getDirectory().getPath());
+
+}
+
+}

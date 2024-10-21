@@ -1,0 +1,258 @@
+package system;
+
+import java.util.ArrayList;
+import java.util.EmptyStackException;
+import java.util.Stack;
+import javax.naming.InvalidNameException;
+import exceptions.AlreadyExistsException;
+import exceptions.InvalidPathException;
+
+public class FileSystem {
+  /** 
+   * The only instance of FileSystem
+   */
+  private static FileSystem fs = null;
+
+  /** 
+   * Represents the root Directory
+   */
+  private Directory root;
+
+  /** 
+   * Represents the current Directory
+   */
+  private Directory currentDir;
+
+  /** 
+   * A list to store command history
+   */
+  private ArrayList<String> history;
+
+  /** 
+   * Represents the directory stack
+   */
+  private Stack<Directory> dirStack;
+
+  /**
+   * Constructs a new FileSystem with currentDir pointing at the root
+   */
+  private FileSystem() {
+
+    root = new Directory("", new Path("/"), null);
+
+    // initialize lists and stack
+    history = new ArrayList<String>();
+    dirStack = new Stack<Directory>();
+
+    currentDir = root;
+
+  }
+
+  
+  /** 
+   * Creates a new instance FileSystem if it is null, otherwise it returns the already
+   * created instance.
+   * @return FileSystem
+   */
+  public static FileSystem createFileSystemInstance() {
+    if (fs == null) {
+      fs = new FileSystem();
+    }
+    return fs;
+  }
+
+  
+  /** 
+   * Traverses through the FileSystem tree and returns the Directory specified
+   * by path if is valid, otherwise InvalidPathException is thrown.
+   * @param path
+   * @return Directory
+   * @throws InvalidPathException
+   */
+  private Directory traverseFileSystem(Path path) throws InvalidPathException {
+    Directory selected = null;
+    String selectedName = path.getList().get(0);
+
+    if (selectedName.equals(".")) {
+      selected = currentDir;
+    } else if (selectedName.equals("..")) {
+      selected = currentDir.getParent();
+    } else if (selectedName.isEmpty()) {
+      selected = root;
+    }
+    checkForInvalidPath(selected);
+    
+    for (int i = 1; i < path.getList().size(); i++) {
+
+      checkForInvalidPath(selected);
+      selectedName = path.getList().get(i);
+
+      if (selectedName.equals("..")) {
+        selected = selected.getParent();
+        continue;
+      } else if (selectedName.equals(".")) {
+        continue;
+      }
+      selected = selected.getSubDirectory(selectedName);
+    }
+    
+    checkForInvalidPath(selected);
+    return selected;
+  }
+
+  
+  /** 
+   * Adds a File to the FileSystem tree if parent of path is valid, the File name is valid
+   * and it does not already exist. InvalidPathException is thrown if parent of path is invalid.
+   * InvalidNameException is thrown if the File name is invalid. AlreadyExistsException
+   * is thrown if a Directory or File of the same name already exists. 
+   * @param path
+   * @throws InvalidPathException
+   * @throws InvalidNameException
+   * @throws AlreadyExistsException
+   */
+  public void addFile(Path path)
+      throws InvalidPathException, InvalidNameException, AlreadyExistsException {
+    if(path.endsWithFowardSlash()){
+      throw new InvalidPathException("Path is invalid.");
+    }
+
+    Directory parent = traverseFileSystem(path.getParentPath());
+    String name = path.getLastElement();
+
+    parent.addSubFile(name);
+  }
+
+  
+  /** 
+   * Adds a Directory to the FileSystem tree if parent of path is valid, the file name is 
+   * valid and it does not already exist. InvalidPathException is thrown if parent of 
+   * path is invalid. InvalidNameException is thrown if the Directory name is invalid. 
+   * AlreadyExistsException is thrown if a Directory or File of the same name already exists. 
+   * @param path
+   * @throws InvalidPathException
+   * @throws InvalidNameException
+   * @throws AlreadyExistsException
+   */
+  public void addDirectory(Path path)
+      throws InvalidPathException, InvalidNameException, AlreadyExistsException {
+    // go through path and add dir
+    Directory parent = traverseFileSystem(path.getParentPath());
+    String name = path.getLastElement();
+
+    parent.addSubDictionary(name);
+
+  }
+
+  
+  /** 
+   * Returns the File specified by path if it exists in the FileSystem tree. If the 
+   * parent path is invalid, InvalidPathException is thrown.
+   * If the parent path is valid and the File doesn't exist, then null is returned.
+   * @param path
+   * @return File
+   * @throws InvalidPathException
+   */
+  public File findFile(Path path) throws InvalidPathException {
+    if (path.endsWithFowardSlash()){
+      throw new InvalidPathException("Path is invalid.");
+    }
+
+    Directory parent = traverseFileSystem(path.getParentPath());
+
+    for (File f : parent.getFile()) {
+      if (f.getName().equals(path.getLastElement())) {
+        return f;
+      }
+    }
+
+    return null;
+  }
+
+  
+  /** Returns the Directory specified by path if it exists in the FileSystem tree.
+   * If path is invalid, InvalidPathException is thrown.
+   * @param path
+   * @return Directory
+   * @throws InvalidPathException
+   */
+  public Directory findDirectory(Path path) throws InvalidPathException {
+    Directory parent = traverseFileSystem(path);
+
+    return parent;
+  }
+
+  
+  /** Changes currentDir to the Directory specified by path if it is valid. Otherwise
+   * InvalidPathException is thrown.
+   * @param path
+   * @throws InvalidPathException
+   */
+  public void changeDirectory(Path path) throws InvalidPathException {
+    Directory changed = traverseFileSystem(path);
+
+    currentDir = changed;
+  }
+
+  
+  /** Returns the value of currentDir.
+   * @return Directory
+   */
+  public Directory getDirectory() {
+    return this.currentDir;
+  }
+
+  
+  /**  Returns the value of history.
+   * @return ArrayList<String>
+   */
+  public ArrayList<String> getHistory() {
+    return this.history;
+  }
+
+  
+  /** Adds s to history.
+   * @param s
+   */
+  public void addHistory(String s) {
+    this.history.add(s);
+  }
+
+  
+  /** Pushes d to dirStack.
+   * @param d
+   */
+  public void stackPush(Directory d) {
+    dirStack.push(d);
+  }
+
+  
+  /** Returns the popped value of dirStack if it is non-empty.
+   * Throws EmptyStackException if there is nothing in the stack.
+   * @return Directory
+   * @throws EmptyStackException
+   */
+  public Directory stackPop() {
+    Directory d = null;
+    try {
+      d = dirStack.pop();
+    }
+    catch (EmptyStackException e) {
+      System.err.println("No directory currently in stack");
+    }
+    return d;
+  }
+
+  
+  /** 
+   * If d is an invalid directory, InvalidPathException is thrown.
+   * @param d
+   * @throws InvalidPathException
+   */
+  private void checkForInvalidPath(Directory d) throws InvalidPathException{
+    if(d == null){
+      throw new InvalidPathException("Path is invalid.");
+    }
+  }
+
+}

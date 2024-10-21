@@ -1,0 +1,79 @@
+// **********************************************************
+// Assignment2:
+// Student1: 
+// UTORID user_name: khanyus7
+// UT Student #: 1006330329
+// Author: Yusuf Khan
+//
+// Student2:
+// UTORID user_name: wuyulu10
+// UT Student #: 1004912785
+// Author: Yulun Wu
+//
+// Student3:
+// UTORID user_name: lujia34
+// UT Student #: 1006173196
+// Author: Jia (Arthur) Lu
+//
+// Student4:
+// UTORID user_name:
+// UT Student #:
+// Author:
+//
+//
+// Honor Code: I pledge that this program represents my own
+// program code and that I have coded on my own. I received
+// help from no one in designing and debugging my program.
+// I have also read the plagiarism section in the course info
+// sheet of CSC B07 and understand the consequences.
+// *********************************************************
+
+package driver;
+
+import commands.CommandScanner;
+import commands.Command;
+import commands.CommandHashTable;
+import exceptions.InvalidCommandNameException;
+import exceptions.InvalidParamLengthException;
+import exceptions.InvalidPathException;
+import system.FileSystem;
+
+/**
+ * A mock for real Shell.
+ * 
+ */
+public class JShell {
+  
+  /**
+   * Scans command and argument(s) from user input in console, execute the corresponding 
+   * command with argument(s) specified by user.
+   * 
+   * @throws InvalidCommandNameException If the user provides an invalid command name.
+   * @throws InvalidParamLengthException If the user doesn't provide the right number
+   *        of argument(s) needed for command inputed by user.
+   */
+  public static void main(String[] args) {
+
+    CommandScanner scan = new CommandScanner();
+    FileSystem fs = FileSystem.createFileSystemInstance();
+    CommandHashTable hashTable = new CommandHashTable();
+
+    while (true) {
+      System.out.print("/#: ");
+
+      scan.scanUserInput(fs);
+      scan.parseCommandAndParameter();
+
+      Command c;
+      try {
+        c = scan.getCommand(hashTable);
+        c.executeCommand(fs, scan.getParameter());
+      } catch (InvalidCommandNameException | InvalidParamLengthException e) {
+        System.err.println(e.getMessage());
+      }
+
+
+    }
+
+  }
+}

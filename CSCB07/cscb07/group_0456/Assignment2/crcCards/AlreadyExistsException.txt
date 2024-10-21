@@ -1,0 +1,10 @@
+Class name: AlreadyExistsException
+
+Parent Class: None
+
+Subclasses: None
+
+Responsibilities:
+* Thrown when a File or Directory already exists
+
+Collaborators: None

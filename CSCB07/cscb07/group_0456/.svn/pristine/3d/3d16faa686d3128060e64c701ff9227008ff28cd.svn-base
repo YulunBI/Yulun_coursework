@@ -1,0 +1,51 @@
+package commands;
+
+import exceptions.InvalidParamLengthException;
+import exceptions.InvalidPathException;
+import java.util.ArrayList;
+import system.Directory;
+import system.File;
+import system.FileSystem;
+import system.JPath;
+import system.Path;
+
+public class Copy extends Command {
+  
+  private static final int EXACT_ARG_LENGTH = 2;
+
+  public Copy() {
+    this.setName("cp");
+    this.setDocs("cp OLDPATH NEWPATH\n\tCopy file/directory at OLDPATH to NEWPATH."
+        + "\n\tOLDPATH and NEWPATH can be either relative to the current directory or full paths."
+        + "\n\tIf NEWPATH is a directory, copy OLDPATH into that directory.");
+  }
+  
+  public String executeCommand(FileSystem fs, ArrayList<String> arguments)
+    throws InvalidParamLengthException {
+    if (arguments.size() != EXACT_ARG_LENGTH)
+      throw new InvalidParamLengthException("Invalid parameter length");
+    
+    try {
+      Path oldPath = new JPath(arguments.get(0));
+      
+      if (fs.findFile(oldPath) != null) { //copying a file
+        File oldFile = fs.findFile(oldPath);
+        Path newPath = new JPath(arguments.get(1) + "/" + oldFile.getName());
+        
+        fs.addFile(newPath);
+        File newFile = fs.findFile(newPath);
+        newFile.setText(oldFile.getText());
+        
+      } else if (fs.findDirectory(oldPath) != null) { //copying a directory
+        Directory oldDir = fs.findDirectory(oldPath);
+        Path newPath = new JPath(arguments.get(1) + "/" + oldDir.getName());
+        
+      }
+    } catch (Exception e) {
+      System.err.println(e.getMessage());
+    }
+    
+    return "";
+  }
+  
+}

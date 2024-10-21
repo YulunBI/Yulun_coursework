@@ -1,0 +1,12 @@
+Class name: Exit
+
+Parent Class: Command
+
+Subclasses: None
+
+Responsibilities:
+* Terminates the current program
+
+Collaborators:
+* FileSystem
+* InvalidParamLengthException

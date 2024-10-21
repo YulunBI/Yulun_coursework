@@ -1,0 +1,12 @@
+Class name: Cd
+
+Parent Class: Command
+
+Subclasses: None
+
+Responsibilities:
+* Change current directory to location given by argument
+
+Collaborators: 
+* FileSystem
+* Directory

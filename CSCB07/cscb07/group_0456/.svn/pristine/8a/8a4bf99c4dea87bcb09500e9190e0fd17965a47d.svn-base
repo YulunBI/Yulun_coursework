@@ -1,0 +1,52 @@
+package test;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.*;
+import java.util.ArrayList;
+import org.junit.jupiter.api.Test;
+import commands.Exit;
+import exceptions.InvalidParamLengthException;
+
+class ExitTest {
+
+  /**
+   * Checks for InvalidParamLengthException when param length is invalid.
+   */
+  @Test
+  public void testInvalidParamLengthExecuteCommand() {
+    try {
+
+      Exit exit = new Exit();
+      ArrayList<String> arg = new ArrayList<>();
+      arg.add("1");
+
+      exit.executeCommand(new MockFileSystem(), arg);
+      fail("InvalidParamLengthException not caught");
+
+    } catch (InvalidParamLengthException e) {
+      return;
+    }
+  }
+  
+  /**
+   * Exit with valid param length.
+   */
+  @Test
+  public void testValidParamLengthExecuteCommand() {
+    try {
+
+      Exit exit = new Exit();
+      ArrayList<String> arg = new ArrayList<>();
+
+      String result = exit.executeCommand(new MockFileSystem(), arg);
+      assertEquals("", result);
+    } catch (InvalidParamLengthException e) {
+      fail(e.getMessage());
+    }
+
+  }
+  
+  
+
+}

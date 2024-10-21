@@ -1,0 +1,40 @@
+package commands;
+
+import java.util.HashMap;
+
+public class CommandHashTable {
+
+    private HashMap<String, String> commandHashMap;
+
+    public CommandHashTable() {
+        commandHashMap = new HashMap<String, String>();
+
+        commandHashMap.put("cd", "commands.ChangeDirectory");
+        commandHashMap.put("cat", "commands.Concatenate");
+        commandHashMap.put("echo", "commands.Echo");
+        commandHashMap.put("exit", "commands.Exit");
+        commandHashMap.put("history", "commands.History");
+        commandHashMap.put("ls", "commands.ListFiles");
+        commandHashMap.put("mkdir", "commands.MakeDirectory");
+        commandHashMap.put("man", "commands.Manual");
+        commandHashMap.put("popd", "commands.PopDirectory");
+        commandHashMap.put("pwd", "commands.PrintWorkingDirectory");
+        commandHashMap.put("pushd", "commands.PushDirectory");
+
+    }
+
+    public Command findCommand(String name) {
+        Command command = null;
+
+        Class<?> c;
+        try {
+            c = Class.forName(commandHashMap.get(name));
+            command = (Command) c.getDeclaredConstructor().newInstance();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return command;
+
+    }
+}

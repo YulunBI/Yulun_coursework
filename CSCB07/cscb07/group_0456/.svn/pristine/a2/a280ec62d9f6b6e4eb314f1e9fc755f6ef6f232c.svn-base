@@ -1,0 +1,13 @@
+Class name: Manual
+
+Parent Class: Command
+
+Subclasses: None
+
+Responsibilities:
+* Print documentation for commands
+
+Collaborators: 
+* Command
+* FileSystem
+* CommandHashTable

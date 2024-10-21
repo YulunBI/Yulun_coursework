@@ -1,0 +1,11 @@
+What did I work on in the last three days?
+	- more efficient code for remove
+	- basic versions for cp, mv
+	
+What do I plan to work in the next three days?
+    - finish all use cases for mv, cp
+    - testing for all commands
+
+Am I blocked on anything?
+    - nothing
+    

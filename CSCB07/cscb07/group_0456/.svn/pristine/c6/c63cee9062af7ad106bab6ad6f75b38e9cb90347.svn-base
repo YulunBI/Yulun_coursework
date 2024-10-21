@@ -1,0 +1,61 @@
+package system;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+
+public class Path {
+    private ArrayList<String> location;
+    private Boolean isDirectory;
+
+    public Path(String path) {
+
+        location = new ArrayList<String>(Arrays.asList(path.split("/")));
+
+        // if it ends with a slash, its a directory else its a file
+        if (path.endsWith("/")) {
+            this.isDirectory = true;
+        } else {
+            this.isDirectory = false;
+        }
+        // empty string represents root
+        if (location.isEmpty()) {
+            location.add("");
+            this.isDirectory = true;
+        }
+
+        // if the array list only has one word, then we're looking in current directory
+        if (location.size() == 1 && !(location.get(0).isBlank())) {
+            location.add(0, ".");
+        }
+
+    }
+
+    public String getPath() {
+        String completePath = "";
+        for (String dir : location) {
+            completePath += dir + "/";
+        }
+
+        if (isFile()) {
+            completePath = completePath.substring(0, completePath.length() - 1);
+        }
+        return completePath;
+    }
+
+    public ArrayList<String> getList() {
+        return location;
+    }
+
+    public String getLastElement() {
+        return location.get(location.size() - 1);
+    }
+
+    public Boolean isFile() {
+        return !isDirectory;
+    }
+
+    public Boolean isDirectory() {
+        return isDirectory;
+    }
+
+}

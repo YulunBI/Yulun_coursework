@@ -1,0 +1,13 @@
+What did I work on in the last three days?
+	- added CRC card for Redirector
+    - Finished handling redirection for all commands
+    - Changed executeCommand method for all commands to return a string
+
+What do I plan to work in the next three days?
+    - Start implementing Search
+    - Start implementing Tree
+    - Work on sprint 2 backlog
+
+Am I blocked on anything?
+    - nothing
+    

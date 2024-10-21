@@ -1,0 +1,21 @@
+package test;
+
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.util.ArrayList;
+import exceptions.InvalidParamLengthException;
+import system.FileSystem;
+
+public class MockLoadJShell {
+  
+  public String executeCommand(FileSystem fs, ArrayList<String> arguments)
+      throws InvalidParamLengthException {
+    try {
+      String realCurrDir = System.getProperty("user.dir");
+      FileInputStream fileIn = new FileInputStream(realCurrDir + arguments + ".ser");
+    } catch (IOException e) {
+      return ("Fail");
+    }
+    return "Executed command";
+  }
+}

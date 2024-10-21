@@ -1,0 +1,43 @@
+User Stories												Time Estimate
+
+
+As a user, I can redirect any output a command has to a new file.					2 hours
+
+As a user, I can redirect any output a command has to an existing file.					2 hours
+
+As a user, I can delete a folder and its contents.							1 hour
+
+As a user, I can create a single folder.								1 hour
+
+As a user, I can create more than one folder at the same time.						1 hour
+
+As a user, I can check what is in the subfolders of my desired folder(s).				2 hours
+
+As a user, I can move a folder to a new location.							2 hours
+
+As a user, I can move a file to a new location.								2 hours
+
+As a user, I can copy and paste a file to new location.							2 hours
+
+As a user, I can copy and paste a folder and its contents to new location.				2 hours
+
+As a user, I can display the contents of multiple files at the same time.				1 hour
+
+As a user, I can download a file from the internet.							2 hours
+
+As a user, I can print documentation for a single command.						1 hour
+
+As a user, I can save my current session of the shell to a file on my computer.				2 hours
+
+As a user, I can load my saved session of the shell from a file on my computer.				2 hours
+
+As a user, I can search for all files by name in the directories I provide.				3 hours
+
+As a user, I can search for all directories by name in the directories I provide.			2 hours
+
+As a user, I can see a visualization of the file system as a tree.					3 hours
+
+As a user, I can use the program without any bugs.							5 days
+
+
+

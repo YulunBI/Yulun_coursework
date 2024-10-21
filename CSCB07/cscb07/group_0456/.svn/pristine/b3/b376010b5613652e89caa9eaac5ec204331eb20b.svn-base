@@ -1,0 +1,56 @@
+package test;
+
+import static org.junit.Assert.*;
+import java.util.ArrayList;
+import org.junit.Test;
+import commands.SaveJShell;
+import exceptions.InvalidParamLengthException;
+import system.FileSystem;
+import system.JFileSystem;
+
+public class SaveJShellTest {
+  
+  /**
+   * Checks for InvalidParamLengthException when param length is invalid.
+   */
+  @Test
+  public void testInvalidParamLengthExecuteCommand() {
+    try {
+
+      SaveJShell save = new SaveJShell();
+      ArrayList<String> arg = new ArrayList<>();
+
+      save.executeCommand(new MockFileSystem(), arg);
+      fail("InvalidParamLengthException not caught");
+
+    } catch (InvalidParamLengthException e) {
+      return;
+    }
+  }
+
+  @Test
+  public void testInvalidSaveNameExecuteCommand() throws InvalidParamLengthException{
+    SaveJShell save = new SaveJShell();
+    ArrayList<String> arg = new ArrayList<>();
+    arg.add("");
+    FileSystem fs = JFileSystem.createFileSystemInstance(null,0);
+
+    save.executeCommand(fs, arg);
+    MockLoadJShell load = new MockLoadJShell();
+    String output = load.executeCommand(fs,arg);
+    assertEquals("Fail",output);
+  }
+  
+  @Test
+  public void testValidSaveNameExecuteCommand() throws InvalidParamLengthException{
+    SaveJShell save = new SaveJShell();
+    ArrayList<String> arg = new ArrayList<>();
+    arg.add("1");
+    FileSystem fs = JFileSystem.createFileSystemInstance(null,0);
+
+    save.executeCommand(fs, arg);
+    MockLoadJShell load = new MockLoadJShell();
+    String output = load.executeCommand(fs,arg);
+    assertEquals("Executed command",output);
+  }
+}

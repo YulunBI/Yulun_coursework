@@ -1,0 +1,11 @@
+What did I work on in the last three days?
+    - Working on ListFiles
+    - Completed Exit
+
+What do I plan to work in the next three days?
+    - Finish ListFiles
+    - Get at least 50% Echo done
+
+Am I blocked on anything?
+    - Need method in FileSystem that allow me to go to a directory with given path 
+

@@ -1,0 +1,12 @@
+What did I work on in the last three days?
+    - implemented popd, pushd (partially)
+    - added docs to all commands
+    - added methods in FileSystem for use in history, pushd, popd
+
+What do I plan to work in the next three days?
+    - finish implementation of popd, pushd
+    - clean up unnecessary/repetitive methods/code structure
+
+Am I blocked on anything?
+    - might need cd implemented for popd/pushd
+    

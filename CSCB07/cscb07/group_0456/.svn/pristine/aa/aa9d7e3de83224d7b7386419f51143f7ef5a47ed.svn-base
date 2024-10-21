@@ -1,0 +1,29 @@
+User Stories				Time Estimate
+
+As a user, I can exit the program.	30 min
+
+As a user, I can change the directory.	1 hour
+
+As a user, I can create a new folder.   1 hour
+
+As a user, I can check the content in my folder.   1 hour
+
+As a user, I can check if my desired file is in the folder   1 hour
+
+As a user, I can check which folder I am in.   1 hour
+
+As a user, I can save my current location and continue work on somewhere else.   1 hour
+
+As a user, I can go to my saved location.   1 hour
+
+As a user, I can view my operation history.   2 hour
+
+As a user, I can view my files.   1 hour
+
+As a user, I can overwrite my files.   1 hour
+
+As a user, I can append text to my files.   1 hour
+
+As a user, I can print documentation for my files.   1 hour
+
+As a user, I can print text to shell.   1 hour

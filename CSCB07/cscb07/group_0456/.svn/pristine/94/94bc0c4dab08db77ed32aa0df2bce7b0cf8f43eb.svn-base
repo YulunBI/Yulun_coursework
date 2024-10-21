@@ -1,0 +1,9 @@
+package commands;
+
+public class PushDirectory extends Command {
+  public PushDirectory() {
+    this.setName("pushd");
+    this.setDocs("pushd DIR\n\tPushes current working directory to top of stack, then changes " +
+        "working directory to DIR.");
+  }
+}

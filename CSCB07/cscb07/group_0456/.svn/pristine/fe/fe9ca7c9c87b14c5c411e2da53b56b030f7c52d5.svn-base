@@ -1,0 +1,10 @@
+Class name: InvalidCommandNameException
+
+Parent Class: None
+
+Subclasses: None
+
+Responsibilities:
+* Thrown when an invalid command name is inputed by the user
+
+Collaborators: None

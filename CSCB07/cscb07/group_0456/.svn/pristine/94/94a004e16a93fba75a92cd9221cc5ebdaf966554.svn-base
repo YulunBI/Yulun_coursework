@@ -1,0 +1,135 @@
+package system;
+
+import java.util.ArrayList;
+
+import commands.*;
+
+public class FileSystem {
+    private Directory root;
+    private Directory currentDir;
+    private ArrayList<Command> commands;
+    private ArrayList<String> history;
+
+    public FileSystem() {
+
+        root = new Directory("", new Path("/"), null);
+        commands = new ArrayList<Command>();
+        currentDir = root;
+        // add all commands - new command constructors to be added
+       // commands.add(new ChangeDirectory());
+       // commands.add(new Concatenate());
+        commands.add(new MakeDirectory());
+       // commands.add(new PrintWorkingDirectory());
+
+    }
+
+    private Directory traverseFileSystem(Path path) {
+
+        // keeps track of directory that we're looking at
+        Directory selected;
+        String selectedName = path.getList().get(0);
+        Boolean dirFound = false;
+
+        // determining the first selected directory
+        if (selectedName.matches(".")) {
+            selected = currentDir;
+
+        } else if (selectedName.matches("..")) {
+            selected = currentDir.getParent();
+        } else if (selectedName.isEmpty()) {
+            selected = root;
+        } else {
+            return null;
+        }
+
+        int length = path.getList().size();
+
+        // go through every directory in the path
+        for (int i = 1; i < length; i++) {
+            if (selected == null) {
+                return null;
+            }
+
+            selectedName = path.getList().get(i);
+            dirFound = false;
+
+            if (selectedName.matches("..")) {
+                // selected directory is parent
+                selected = selected.getParent();
+                dirFound = true;
+                continue;
+
+            } else if (selectedName.matches(".")) {
+                // selected directory is the same
+                dirFound = true;
+                continue;
+            }
+
+            for (Directory dir : selected.getChildren()) {
+                if (selectedName.matches(dir.getName())) {
+                    selected = dir;
+                    dirFound = true;
+                    break;
+                }
+            }
+
+            // if the directory doesn't change, then return null
+            if (dirFound == false) {
+                return null;
+            }
+        }
+
+        return selected;
+    }
+
+    public void addFile(Path path) {
+
+        Directory parent = traverseFileSystem(path.getParentPath());
+        String name = path.getLastElement();
+        System.out.println(name);
+
+        if (parent == null)
+            return; // throw Invalid path error
+
+        System.out.println(parent.getPath() + name);
+
+        // addSubFile must check if file exists already
+        parent.addSubFile(name);
+    }
+
+    public void addDirectory(Path path) {
+        // go through path and add dir
+        Directory parent = traverseFileSystem(path.getParentPath());
+        String name = path.getLastElement();
+
+        if (parent == null)
+            return; // throw Invalid path error
+
+        // addSubDirectory must check if directory exists already
+        parent.addSubDictionary(name);
+
+    }
+
+    public void changeDirectory(Path path) {
+
+    }
+
+    public Command findCommand(String name) {
+        for (Command c : commands) {
+            if (c.getName().matches(name)) {
+                return c;
+            }
+
+        }
+        return null;
+    }
+
+    public ArrayList<String> getHistory() {
+        return this.history;
+    }
+
+    public void addHistory(String s) {
+        this.history.add(s);
+    }
+
+}

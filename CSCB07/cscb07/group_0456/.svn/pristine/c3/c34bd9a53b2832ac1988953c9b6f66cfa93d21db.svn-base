@@ -1,0 +1,54 @@
+package commands;
+
+import java.util.ArrayList;
+import javax.naming.InvalidNameException;
+import exceptions.AlreadyExistsException;
+import exceptions.InvalidParamLengthException;
+import exceptions.InvalidPathException;
+import system.FileSystem;
+import system.Path;
+
+public class MakeDirectory extends Command {
+  /** 
+    * The number of arguments required to execute this command
+    */
+  private static final int EXACT_ARG_LENGTH = 2;
+
+  public MakeDirectory() {
+    this.setName("mkdir");
+    this.setDocs("mkdir DIR1 DIR2\n\tCreate two directories. May be specified with full path "
+        + "or relative path. Will not create DIR2 if DIR1 creation fails.");
+  }
+
+  
+  /** 
+   * Creates two new Directories in fs given by arguments. If the Directory being created 
+   * has an invalid name, already exist or the path specified by the argument is invalid,
+   * the Directory isn't created and the method terminates. InvalidParamLengthException is 
+   * thrown if there are not exactly EXACT_ARG_LENGTH arguments provided.
+   * @param fs
+   * @param arguments
+   * @throws InvalidParamLengthException
+   */
+  public void executeCommand(FileSystem fs, ArrayList<String> arguments)
+      throws InvalidParamLengthException {
+    if (arguments.size() != EXACT_ARG_LENGTH) {
+      throw new InvalidParamLengthException("Invalid parameter length");
+    }
+
+    this.setArguments(arguments);
+    Path first = new Path(arguments.get(0));
+    Path second = new Path(arguments.get(1));
+
+    try {
+      fs.addDirectory(first);
+      fs.addDirectory(second);
+    } catch (InvalidPathException | InvalidNameException | AlreadyExistsException e) {
+      System.err.println(e.getMessage());
+    }
+
+
+
+  }
+
+}

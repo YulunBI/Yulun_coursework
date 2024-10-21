@@ -1,0 +1,59 @@
+package a2;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Scanner;
+
+public class CommandScanner {
+  
+  private String inputString = "";
+  private String command = "";
+  private String[] inputStringList;
+  private ArrayList<String> parameter; 
+  
+  
+  public CommandScanner() {
+    parameter = new ArrayList<String>();
+  }
+  
+  
+  public void scanUserInput() {
+    Scanner userInput = new Scanner(System.in);
+    inputString = userInput.nextLine();
+  }
+
+  private void divideInput() {
+    inputStringList = inputString.split("\s+");
+  }
+  
+  private void removeSpacesInInput() {
+    inputString.trim();
+    String regex = "^\\s+";
+    inputString = inputString.replaceAll(regex, "");
+  }
+  
+  public void parseCommandAndParameter() {
+    removeSpacesInInput();
+    divideInput();
+    ArrayList<String> commandAndParameter = new ArrayList<String>(Arrays.asList(inputStringList));
+    command = commandAndParameter.get(0);
+    commandAndParameter.remove(0);
+    parameter = commandAndParameter;
+  }
+  
+  public String getCommand() {
+    return command;
+  }
+  
+  public ArrayList<String> getParameter() {
+    return parameter;
+  }
+  
+  public static void main(String[] args) {
+    CommandScanner c = new CommandScanner();
+    c.scanUserInput();
+    c.parseCommandAndParameter();
+    System.out.println("command:"+c.getCommand());
+    System.out.println(c.getParameter());
+  }
+}

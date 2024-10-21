@@ -1,0 +1,120 @@
+==== A2 phase I marking ====
+
+Group number: 0456
+UTORID usernames of members: lujia34, khanyus7, wuyulu10
+Total deductions: 2
+Grade: A- -> 84
+
+Your team's Phase II grade is based on this scale:
+
+    https://www.transcripts.utoronto.ca/transcriptguide/
+When converting from letter grade to numerical grade, we will use the higher end of the letter grade to convert your mark.
+--For example, the higher end of A+ is 100.
+--For example, the higher end of A is 89.
+.
+.
+.
+In the event that you get a F, your conversion from letter grade to numerical grade will be based on the discretion of the instructor. 
+
+The way we graded is as follows: your team starts with an A+. When errors and
+problems are found, you will lose 0, 1, 2, or 3 letter steps, depending on the
+severity. As an example, if you lost two steps, your team would earn an A-:
+
+     A+ -> A
+     A -> A-
+
+You were asked to follow the Scrum process. A big part of that is to maintain
+a product backlog and a sprint backlog. 
+
+==== Product and Sprint backlogs ==== [up to -6]
+
+Several steps can be lost for these kinds of issues:
+
+- [ ]  No evidence of Product or Sprint backlog -6
+- [ ]  No evidence of team assigning tasks to team members -3
+- [ ]  SB items not taken directly from PB -1
+- [ ]  SB items not broken down into smaller steps -1
+- [ ]  PB, SB uses noticeably bad grammar and/or spelling -2
+
+TA COMMENTS: Good work!
+
+==== Java Style ==== [up to -6]
+
+Steps can be lost for these kinds of issues:
+
+- [ ]  Java naming conventions not followed (camelCase, no_underscores) -1
+- [ ]  Instance variable names not meaningful (e.g., "Label1" is not a good name) -1
+- [ ]  Bad indentation -1
+- [ ]  Lack of consistency in style across files -1
+- [ ]  Bad use of whitespace: too much or too little -1
+- [ ]  Class names are frequently not noun phrases -1
+- [ ]  Method names are frequently not verb phrases -1
+- [ ]  Not following the 80character column width limit. -1
+
+TA COMMENTS: Good work!
+
+==== Design ==== [up to -6]
+
+Several steps can be lost for these kinds of issues:
+
+- [ ]  public instance variables instead of setters and getters -1 to -2
+- [ ]  not a good breakdown of classes and methods (everything static;) -1
+- [ ]  long methods exist (more than roughly 30 lines from brace to brace) -1
+- [ ]  hard to add new commands -1
+- [ ]  no unified path handling mechanism -2 (Only taking half)
+- [ ]  redirection doesn't easily incorporate new commands -2
+
+TA COMMENTS: Good work!
+
+==== Javadoc ==== [up to -3]
+
+Several steps can be lost for these kinds of issues:
+
+- [ ]  Missing Javadoc on methods -1 for infrequent problems, up to -3 for frequent
+- [ ]  Missing Javadoc on class -1
+- [ ]  No Javadoc on instance vars -1
+- [ ]  Missing use @param and @return tags -1
+- [ ]  Unclear English: bad grammar, bad spelling up to -2
+
+TA COMMENTS: Good work!
+
+==== Testing ==== [up to -6] 
+Several steps can be lost for these kinds of issues:
+
+- [ ]  No test cases exist for public methods -6
+- [ ]  Some testing done for all classes and methods, but not thoroughly up to -3
+- [ ]  Test quality is inadequate or tests uninformative -1 to -2
+        e.g., testing using lots of print statements instead of assert calls
+- [ ]  Code not written to be testable -2
+
+TA COMMENTS: 
+
+==== Correctness ==== [up to -6] (-2 from test cases)
+
+- [ ]  Code doesn't compile without modification (if the fix is simple) -1
+- [x]  Code that is complete (from the SB) doesn't work completely: up to -2
+- [ ]  Code crashes: -3
+- [ ]  Each missing/incomplete feature -1
+
+TA COMMENTS:
+Code didn't compile. The following error was printed on the console:
+Buildfile: C:\Users\Sakina Shabbir\Desktop\Assignments\group_0456\Assignment2\build.xml
+
+compile:
+    [javac] C:\Users\Sakina Shabbir\Desktop\Assignments\group_0456\Assignment2\build.xml:11: warning: 'includeantruntime' was not set, defaulting to build.sysclasspath=last; set to false for repeatable builds
+    [javac] Compiling 23 source files to C:\Users\Sakina Shabbir\Desktop\Assignments\group_0456\Assignment2\bin
+    [javac] C:\Users\Sakina Shabbir\Desktop\Assignments\group_0456\Assignment2\src\commands\CommandScanner.java:125: error: text blocks are a preview feature and are disabled by default.
+    [javac]         inputString = inputString.replaceAll("\s*>>\s*(?=(?:\"[^\"]*\"|[^\"])*$)"
+    [javac]                                                ^
+    [javac]   (use --enable-preview to enable text blocks)
+    [javac] 1 error
+
+BUILD FAILED
+C:\Users\Sakina Shabbir\Desktop\Assignments\group_0456\Assignment2\build.xml:11: Compile failed; see the compiler error output for details.
+
+https://docs.google.com/spreadsheets/d/1CNJl-kAQrSY6Kx-ehWa05rNoQsVKyqiI0hvF1bHQj6s/edit?usp=sharing
+Test cases in the spreadsheet above.
+Failed tests: 0
+Total deductions: floor(0/3) = 0
+
+Note: Some test cases were tweaked for your benefit to not penalize you based on previous failed test cases. 

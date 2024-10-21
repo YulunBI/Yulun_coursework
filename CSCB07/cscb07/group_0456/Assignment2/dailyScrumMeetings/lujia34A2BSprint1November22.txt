@@ -1,0 +1,12 @@
+What did I work on in the last three days?
+	- modified man to only work for one argument
+	- added rm + related methods in FileSystem and Directory
+	
+What do I plan to work in the next three days?
+    - junit testing for rm
+    - add mv
+    - add cp
+
+Am I blocked on anything?
+    - nothing
+    

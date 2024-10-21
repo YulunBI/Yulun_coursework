@@ -1,0 +1,18 @@
+What did I work on in the last three days?
+    - Finished Concatenation
+    - handle invalid file names (with default Exception)
+    - handle invalid directory names (with default Exception)
+    - handle invalid paths (with default Exception)
+    - started brainstroming custom exception classes
+
+
+What do I plan to work in the next three days?
+    - Finish making Sprint3Backlog
+    - Follow singleton design pattern for FileSystem
+    - Remove CommandPrinter
+    - Finish CommandHashTable 
+    - Start creating custom exception classes 
+
+Am I blocked on anything?
+    - Nope
+

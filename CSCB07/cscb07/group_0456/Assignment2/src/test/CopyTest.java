@@ -1,0 +1,249 @@
+// **********************************************************
+// Assignment2:
+// Student1:
+// UTORID user_name: khanyus7
+// UT Student #: 1006330329
+// Author: Yusuf Khan
+//
+// Student2:
+// UTORID user_name: wuyulu10
+// UT Student #: 1004912785
+// Author: Yulun Wu
+//
+// Student3:
+// UTORID user_name: lujia34
+// UT Student #: 1006173196
+// Author: Jia (Arthur) Lu
+//
+// Student4:
+// UTORID user_name:
+// UT Student #:
+// Author:
+//
+//
+// Honor Code: I pledge that this program represents my own
+// program code and that I have coded on my own. I received
+// help from no one in designing and debugging my program.
+// I have also read the plagiarism section in the course info
+// sheet of CSC B07 and understand the consequences.
+// *********************************************************
+
+package test;
+
+import static org.junit.Assert.*;
+
+import commands.Copy;
+import exceptions.InvalidParamLengthException;
+import exceptions.InvalidPathException;
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+import system.File;
+import system.FileSystem;
+import system.JFileSystem;
+import system.JPath;
+import system.Path;
+
+public class CopyTest {
+  
+  private FileSystem fs;
+
+  @Before
+  public void setUp() throws Exception {
+    fs = JFileSystem.createFileSystemInstance(null, 0);
+  }
+
+  @After
+  public void tearDown() throws Exception {
+    Field field = (fs.getClass()).getDeclaredField("fs");
+    field.setAccessible(true);
+    field.set(null, null);
+  }
+
+  /**
+   * Test that InvalidParamLengthException is thrown when given wrong number of args.
+   */
+  @Test
+  public void testInvalidParamLengthExecuteCommand() {
+    Copy cp = new Copy();
+    ArrayList<String> args = new ArrayList<String>();
+    
+    try {
+      cp.executeCommand(new MockFileSystem(), args); // too few args
+      fail("InvalidParamLengthException was not thrown");
+    } catch (InvalidParamLengthException e) {
+      assertTrue(true);
+    } catch (Exception e) {
+      fail(e.getMessage());
+    }
+    
+    args.add("foo");
+    args.add("foobar");
+    args.add("bar");
+    try {
+      cp.executeCommand(new MockFileSystem(), args); // too many args
+      fail("InvalidParamLengthException was not thrown");
+    } catch (InvalidParamLengthException e) {
+      assertTrue(true);
+    } catch (Exception e) {
+      fail(e.getMessage());
+    }
+  }
+  
+  /**
+   * Test that command does not execute when given nonexistent targets.
+   */
+  @Test
+  public void testInvalidExecuteCommand() {
+    Copy cp = new Copy();
+    ArrayList<String> args = new ArrayList<String>();
+    
+    args.add("foo");
+    args.add("bar");
+    try {
+      cp.executeCommand(fs, args);
+      assertTrue(true); // nothing broke
+    } catch (Exception e) {
+      fail(e.getMessage());
+    }
+  }
+  
+  /**
+   * Test that command can copy existing file into existing directory (case 7).
+   */
+  @Test
+  public void testValidFileIntoDirExecuteCommand() {
+    Copy cp = new Copy();
+    ArrayList<String> args = new ArrayList<String>();
+    Path p = new JPath("/foo/");
+    try {
+      fs.addDirectory(p); // add directory /foo
+      p = new JPath("/file1");
+      fs.addFile(p); // add file file1
+      
+      args.add("file1");
+      args.add("foo");
+      cp.executeCommand(fs, args);
+      p = new JPath("/foo/file1");
+      if (fs.findFile(p) != null)
+        assertTrue(true); // check if file exists at /foo/file1
+      else
+        fail("Did not copy file");
+    } catch (Exception e) {
+      fail(e.getMessage());
+    }    
+  }
+  
+  /**
+   * Test that command can copy existing dir into existing dir (case 8) recursively.
+   */
+  @Test
+  public void testValidDirIntoDirExecuteCommand() {
+    Copy cp = new Copy();
+    ArrayList<String> args = new ArrayList<String>();
+    Path p = new JPath("/bar/");
+    try {
+      fs.addDirectory(p); // add directory /bar
+      p = new JPath("/bar/file2");
+      fs.addFile(p); // add file /bar/file2
+      p = new JPath("/foobar/");
+      fs.addDirectory(p);
+
+      args.add("bar");
+      args.add("foobar");
+      cp.executeCommand(fs, args);
+      
+      if (fs.findDirectory(new JPath("/foobar/bar/")) != null &&
+          fs.findFile(new JPath("/foobar/bar/file2")) != null) {
+        assertTrue(true); //folder and contained file was copied
+      } else {
+        fail("File/directory was not copied");
+      }
+    } catch (Exception e) {
+      fail(e.getMessage());
+    }
+  }
+  
+  /**
+   * Test that command can overwrite contents of existing file (case 9).
+   */
+  @Test
+  public void testValidFileIntoFileExecuteCommand() {
+    Copy cp = new Copy();
+    ArrayList<String> args = new ArrayList<String>();
+    Path p = new JPath("/oldfile");
+    try {
+      fs.addFile(p);
+      File f = fs.findFile(p);
+      f.setText("hello world"); // add file oldfile with contents 'hello world'
+      p = new JPath("/newfile");
+      fs.addFile(p);
+      f = fs.findFile(p);
+      f.setText("goodbye"); // add file newfile with contents 'goodbye'
+      
+      args.add("oldfile");
+      args.add("newfile");
+      cp.executeCommand(fs, args);
+      
+      assertEquals("hello world", f.getText());
+      
+    } catch (Exception e) {
+      fail(e.getMessage());
+    }    
+  }
+  
+  /**
+   * Test that command can create a new copy of an existing file (case 10).
+   */
+  @Test
+  public void testValidFileNewFileExecuteCommand() {
+    Copy cp = new Copy();
+    ArrayList<String> args = new ArrayList<String>();
+    Path p = new JPath("/exists");
+    try {
+      fs.addFile(p);
+      File f = fs.findFile(p);
+      f.setText("foobar"); // add file exists with contents 'foobar'
+      
+      args.add("exists");
+      args.add("dne");
+      cp.executeCommand(fs, args);
+      
+      p = new JPath("/dne");
+      f = fs.findFile(p);
+      assertEquals("foobar", f.getText()); // check that new file dne exists with contents 'foobar'
+    } catch (Exception e) {
+      fail(e.getMessage());
+    }
+  }
+  
+  /**
+   * Test that dir is not allowed to be copied into a file (case 11).
+   */
+  @Test
+  public void testValidDirIntoFileExecuteCommand() {
+    Copy cp = new Copy();
+    ArrayList<String> args = new ArrayList<String>();
+    Path p = new JPath("/testDir/");
+    try {
+      fs.addDirectory(p); // add directory /testDir/
+      p = new JPath("/testFile");
+      fs.addFile(p); // add file /testFile
+      
+      args.add("testDir");
+      args.add("testFile");      
+      cp.executeCommand(fs, args);
+      
+      p = new JPath("/testFile/testDir/");
+      try {
+        fs.findDirectory(p);
+      } catch (InvalidPathException e) {
+        assertTrue(true); // didn't somehow put dir into file
+      }        
+    } catch (Exception e) {
+      fail(e.getMessage());
+    }
+  }
+}

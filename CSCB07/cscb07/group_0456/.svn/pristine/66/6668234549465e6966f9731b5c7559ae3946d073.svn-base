@@ -1,0 +1,13 @@
+Class name: FileSystem
+
+Parent Class: None
+
+Subclasses: None
+
+Responsibilities:
+* Representation of all files in root directory
+* Store current working directory
+* Stores command history
+* Stores all the commands, so they can be used
+
+Collaborators: Directory, File

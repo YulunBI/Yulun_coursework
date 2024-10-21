@@ -1,0 +1,12 @@
+Class name: CommandHashTable
+
+Parent Class: None
+
+Subclasses: None
+
+Responsibilities:
+* Represents a hash map that maps command names to command class names
+* Get an instance of a command, if you give its name
+
+Collaborators: 
+* Command

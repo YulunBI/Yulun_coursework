@@ -1,0 +1,12 @@
+Class name: CopyFile
+
+Parent Class: Command
+
+Subclasses: None
+
+Responsibilities:
+* Copy file with path specified by first argument to path specified by second argument
+
+Collaborators: 
+* FileSystem
+* File

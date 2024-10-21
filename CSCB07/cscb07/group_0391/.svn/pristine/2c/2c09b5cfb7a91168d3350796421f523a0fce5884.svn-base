@@ -1,0 +1,4 @@
+Class name: EchoParent class (if any): CommandSubclasses (if any): List all the subclasses separated by a comma.
+Responsibilities:* Appends to or overwrites a file with a given string
+* Create a new file if target file doesn't exist
+Collaborators:*FileSystemExplorer*k*l

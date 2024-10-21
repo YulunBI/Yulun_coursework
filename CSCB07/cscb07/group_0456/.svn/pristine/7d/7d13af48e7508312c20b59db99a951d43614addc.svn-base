@@ -1,0 +1,54 @@
+package commands;
+
+
+import java.util.ArrayList;
+import exceptions.InvalidParamLengthException;
+import exceptions.InvalidPathException;
+import system.FileSystem;
+import system.Path;
+
+/**
+ * Command for changing the current working directory in the FileSystem.
+ * 
+ */
+public class ChangeDirectory extends Command {
+
+  /** 
+    * The number of arguments required to execute this command
+    */
+  private static final int EXACT_ARG_LENGTH = 1;
+
+  public ChangeDirectory() {
+    this.setName("cd");
+    this.setDocs("cd DIR\n\tChange current directory to DIR. Can be full or relative path."
+        + "\n\t'..' refers to parent directory.\n\t'.' refers to current directory.");
+  }
+
+  
+  /** Changes the current Directory of fs if the path specified by the first element of 
+   * arguments is valid. 
+   * InvalidParamLengthException is thrown if there are not exactly EXACT_ARG_LENGTH 
+   * arguments provided.
+   * 
+   * @param fs the FileSystem associated with the shell this command is running in
+   * @param arguments the list of arguments provided by the user 
+   * @throws InvalidParamLengthException
+   */
+  public void executeCommand(FileSystem fs, ArrayList<String> arguments)
+      throws InvalidParamLengthException {
+    if (arguments.size() != EXACT_ARG_LENGTH) {
+      throw new InvalidParamLengthException("Invalid parameter length");
+    }
+
+    Path changedPath = new Path(arguments.get(0));
+
+    try {
+      fs.changeDirectory(changedPath);
+    } catch (InvalidPathException e) {
+      System.err.println(e.getMessage());
+    }
+
+
+  }
+
+}

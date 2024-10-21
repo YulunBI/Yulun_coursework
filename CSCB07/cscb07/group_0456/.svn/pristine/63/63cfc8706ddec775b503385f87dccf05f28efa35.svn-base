@@ -1,0 +1,15 @@
+Class name: Move
+
+Parent Class: Command
+
+Subclasses: None
+
+Responsibilities:
+* Move given file/directory to a new location
+
+Collaborators: 
+* FileSystem
+* File
+* Path
+* InvalidParamLengthException
+* InvalidPathException

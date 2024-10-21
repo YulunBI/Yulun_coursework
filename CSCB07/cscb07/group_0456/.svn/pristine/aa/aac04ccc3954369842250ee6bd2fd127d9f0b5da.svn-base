@@ -1,0 +1,81 @@
+// **********************************************************
+// Assignment2:
+// Student1:
+// UTORID user_name: khanyus7
+// UT Student #: 1006330329
+// Author: Yusuf Khan
+//
+// Student2:
+// UTORID user_name: wuyulu10
+// UT Student #: 1004912785
+// Author: Yulun Wu
+//
+// Student3:
+// UTORID user_name: lujia34
+// UT Student #: 1006173196
+// Author: Jia (Arthur) Lu
+//
+// Student4:
+// UTORID user_name:
+// UT Student #:
+// Author:
+//
+//
+// Honor Code: I pledge that this program represents my own
+// program code and that I have coded on my own. I received
+// help from no one in designing and debugging my program.
+// I have also read the plagiarism section in the course info
+// sheet of CSC B07 and understand the consequences.
+// *********************************************************
+
+package system;
+
+import java.util.ArrayList;
+
+import javax.naming.InvalidNameException;
+
+import exceptions.AlreadyExistsException;
+import exceptions.InvalidPathException;
+
+public class Redirector {
+
+    private String specifier;
+    private String fileName;
+
+    public Redirector(){
+        this.specifier = "";
+        this.fileName = "";
+    }
+
+    public void removeSymbol(ArrayList<String> arguments) {
+        if (arguments.size() < 2) {
+            return;
+        }
+
+        String last = arguments.get(arguments.size()-1);
+        String secondLast =  arguments.get(arguments.size()-2);
+        
+        if (secondLast.equals(">") || secondLast.equals(">>")) {
+            this.specifier = secondLast;
+            this.fileName = last;
+
+            arguments.remove(arguments.size()-1);
+            arguments.remove(arguments.size()-1);
+        }
+    }
+
+    public String redirectOutput(String output, FileSystem fs) {
+        if(specifier.isBlank() || output.isBlank()){
+            return output;
+        }
+
+        try {
+            fs.redirect(specifier, output, fileName);
+        } catch (InvalidNameException | IllegalArgumentException | 
+                InvalidPathException | AlreadyExistsException e) {
+            System.err.println(e.getMessage());
+        }
+        return "";
+    }
+  
+}

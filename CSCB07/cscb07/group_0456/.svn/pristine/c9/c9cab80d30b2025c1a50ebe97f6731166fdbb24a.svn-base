@@ -1,0 +1,51 @@
+package test;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
+import java.util.ArrayList;
+import org.junit.Test;
+import commands.PrintWorkingDirectory;
+import exceptions.InvalidParamLengthException;
+
+public class PrintWorkingDirectoryTest {
+
+  /**
+   * Checks for InvalidParamLengthException when param length is invalid
+   */
+  @Test
+  public void testInvalidParamLengthExecuteCommand() {
+    try {
+
+      PrintWorkingDirectory pwd = new PrintWorkingDirectory();
+      ArrayList<String> arg = new ArrayList<>();
+
+      arg.add("random arg");
+
+      String output = pwd.executeCommand(new MockFileSystem(), arg);
+      fail("InvalidParamLengthException not caught");
+
+    } catch (InvalidParamLengthException e) {
+      return;
+    }
+
+  }
+
+  /**
+   * Tries to retrieve the working directory from the FileSystem
+   */
+
+  public void testGettingWorkingDirectoryExecuteCommand() throws InvalidParamLengthException {
+
+
+    PrintWorkingDirectory pwd = new PrintWorkingDirectory();
+    ArrayList<String> arg = new ArrayList<>();
+
+    String output = pwd.executeCommand(new MockFileSystem(), arg);
+
+    assertEquals("CD Path", output);
+
+
+
+  }
+
+}

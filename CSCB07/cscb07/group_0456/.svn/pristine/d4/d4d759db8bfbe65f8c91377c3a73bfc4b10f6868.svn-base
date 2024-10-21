@@ -1,0 +1,57 @@
+package commands;
+
+import java.util.ArrayList;
+import exceptions.InvalidParamLengthException;
+import exceptions.InvalidPathException;
+import system.*;
+
+/**
+ * A command for pushing the current directory on top of the directory stack, then
+ * switching to a new directory specified by the user.
+ * 
+ */
+public class PushDirectory extends Command {
+  
+  /** 
+   * The number of arguments required to execute this command
+   */
+  private static final int EXACT_ARG_LENGTH = 1;
+
+  /**
+   * Creates an instance of the PushDirectory object and initializes the command name and docs.
+   */
+  public PushDirectory() {
+    this.setName("pushd");
+    this.setDocs("pushd DIR\n\tPushes current working directory to top of stack, then changes "
+        + "working directory to DIR.");
+  }
+
+  /**
+   * Sends the current directory of fs to the top of the stack stored in fs and changes the new
+   * current directory of fs to the directory provided by arguments.
+   * InvalidParamLengthException is thrown if there are not exactly EXACT_ARG_LENGTH arguments
+   * provided.
+   * InvalidPathException is thrown if the proposed new current directory is not valid for fs.
+   * 
+   * @param fs The FileSystem which will have its current directory changed.
+   * @param arguments List of strings provided by user input. Should include only a single path.
+   * @throws InvalidParamLengthException
+   * @throws InvalidPathException
+   */
+  public void executeCommand(FileSystem fs, ArrayList<String> arguments)
+      throws InvalidParamLengthException {
+    if (arguments.size() != EXACT_ARG_LENGTH) {
+      throw new InvalidParamLengthException("Invalid parameter length");
+    }
+    
+    Directory d = fs.getDirectory(); // store current dir
+    
+    Path p = new Path(arguments.get(0));
+    try {
+      fs.changeDirectory(p);
+      fs.stackPush(d);
+    } catch (InvalidPathException e) {
+      System.err.println(e.getMessage());
+    }
+  }
+}

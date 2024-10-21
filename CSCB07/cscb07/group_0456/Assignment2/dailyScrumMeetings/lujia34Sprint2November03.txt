@@ -1,0 +1,12 @@
+What did I work on in the last three days?
+    - implemented popd, pushd
+    - cleaned up history, manual (allows for different/various user inputs, fixed order of history)
+    - preliminary testing of history, manual
+
+What do I plan to work in the next three days?
+    - testing of commands (esp. pushd/popd)
+    - prevent manual from crashing on invalid input (see below)
+
+Am I blocked on anything?
+    - need hashtable so history can work off of command names, not class names + avoid errors
+    

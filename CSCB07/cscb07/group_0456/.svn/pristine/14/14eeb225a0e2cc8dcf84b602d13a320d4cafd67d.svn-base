@@ -1,0 +1,15 @@
+Class name: Copy
+
+Parent Class: Command
+
+Subclasses: None
+
+Responsibilities:
+* Copy given file/directory to a new location
+
+Collaborators: 
+* FileSystem
+* File
+* Path
+* InvalidParamLengthException
+* InvalidPathException

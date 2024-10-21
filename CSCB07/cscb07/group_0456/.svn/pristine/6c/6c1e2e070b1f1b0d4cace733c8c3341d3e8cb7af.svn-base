@@ -1,0 +1,14 @@
+What did I work on in the last three days?
+    - adjusted names of classes/CRC cards for commands
+    - brainstormed formatting for command documentation
+    - brainstormed implementation of FileSystem class
+    - created team photo
+
+What do I plan to work in the next three days?
+    - begin implementing commands
+    - create FileSystem class
+
+Am I blocked on anything?
+    - Need Command class created in order to start implementing Manual, History
+    - Need Directory, File classes created in order to start implementing FileSystem
+    

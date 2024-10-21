@@ -1,0 +1,16 @@
+Class name: Search
+
+Parent Class: Command
+
+Subclasses: None
+
+Responsibilities:
+* Searches given paths recursively for Files called a name given by the user
+* Searches given paths recursively for Directories called a name given by the user
+
+Collaborators: 
+* FileSystem
+* File
+* Directory
+* Path
+

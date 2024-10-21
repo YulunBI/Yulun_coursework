@@ -1,0 +1,65 @@
+package commands;
+
+import java.util.ArrayList;
+import exceptions.InvalidParamLengthException;
+import exceptions.InvalidPathException;
+import system.File;
+import system.FileSystem;
+import system.Path;
+
+/**
+ * 
+ * Prints contents of file(s) into Shell.
+ */
+public class Concatenate extends Command {
+  
+  /** 
+   * The minimum number of arguments required to execute this command
+   */
+  private static final int MIN_ARG_LENGTH = 1;
+  
+  public Concatenate() {
+    this.setName("cat");
+    this.setDocs("cat FILE1 [FILE2 ...]\n\tDisplay the contents of FILE1 and other files "
+        + "concatenated in the shell. Each file's contents is separated by three line breaks.");
+  }
+
+  /**
+   * Prints the contents of the files with path specified by arguments into the console. 
+   * The user can enter any number of file path, each separated by space, to have the contents of
+   * the file printed out in the console and with each file separated by three newlines.
+   * InvalidParamLengthException is thrown if there are less than MIN_ARG_LENGTH arguments provided.
+   * InvalidPathException is thrown if path specified by argument is invalid.
+   * 
+   * @param fs the FileSystem associated with the shell this command is running in
+   * @param arguments the list of arguments provided by the user 
+   * @throws InvalidParamLengthException
+   * @throws InvalidPathException
+   */
+  public void executeCommand(FileSystem fs, ArrayList<String> arguments)
+      throws InvalidParamLengthException {
+    if (arguments.size() < MIN_ARG_LENGTH) {
+      throw new InvalidParamLengthException("Invalid parameter length");
+    }
+
+    try {
+
+      for (String path : arguments) {
+
+        Path p = new Path(path);
+        File f = fs.findFile(p);
+
+        //change this later
+        if(f == null){
+          throw new InvalidPathException("Path is invalid.");
+        }
+
+        System.out.println(f.getText() + "\n\n\n");
+      }
+
+    } catch (InvalidPathException e) {
+      System.err.println(e.getMessage());
+    }
+
+  }
+}

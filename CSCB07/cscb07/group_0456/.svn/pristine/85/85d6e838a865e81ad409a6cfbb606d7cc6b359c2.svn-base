@@ -1,0 +1,26 @@
+package system;
+
+public class File {
+  
+  private String name;
+  private String text;
+  private Path location;
+  
+  public File(String name,String location) {
+    this.location = new Path(location);
+    text = new String();
+    this.name = name;
+  }
+  
+  public void setText(String text) {
+    this.text = text;
+  }  
+  
+  public String getText() {
+    return text;
+  }
+  
+  public String getName() {
+    return name;
+  }
+}

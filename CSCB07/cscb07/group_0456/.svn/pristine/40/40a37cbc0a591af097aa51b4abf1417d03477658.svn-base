@@ -1,0 +1,12 @@
+Class name: CommandScanner
+
+Parent Class: None
+
+Subclasses: None
+
+Responsibilities:
+* Read commands entered by the user
+* Parse the command entered by the user
+
+Collaborators: 
+* Command

@@ -1,0 +1,49 @@
+package test;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
+import java.util.ArrayList;
+import org.junit.Test;
+import commands.Tree;
+import exceptions.InvalidParamLengthException;
+
+public class TreeTest {
+
+  /**
+   * Checks for InvalidParamLengthException when param length is invalid
+   */
+  @Test
+  public void testInvalidParamLengthExecuteCommand() {
+    try {
+
+      Tree t = new Tree();
+      ArrayList<String> arg = new ArrayList<>();
+
+      arg.add("random arg");
+
+      String output = t.executeCommand(new MockFileSystem(), arg);
+      fail("InvalidParamLengthException not caught");
+
+    } catch (InvalidParamLengthException e) {
+      return;
+    }
+
+  }
+
+  /**
+   * Tries to get the tree under normal conditions
+   */
+  @Test
+  public void testGettingTreeExecuteCommand() throws InvalidParamLengthException {
+
+    Tree t = new Tree();
+    ArrayList<String> arg = new ArrayList<>();
+
+    String output = t.executeCommand(new MockFileSystem(), arg);
+
+    assertEquals("Normal Tree", output);
+
+
+  }
+
+}

@@ -1,0 +1,92 @@
+//A2B Sprint 1 Backlog.  
+November 16 to November 22
+
+
+User Stories from Product Backlog that we will address in this sprint:
+a) As a user, I can redirect any output a command has to a new file.		
+
+b) As a user, I can redirect any output a command has to an existing file.					
+
+c) As a user, I can delete a folder and its contents.							
+
+d) As a user, I can create a single folder.								
+
+e) As a user, I can create more than one folder at the same time.						
+
+f) As a user, I can check what is in the subfolders of my desired folder(s).				
+
+g) As a user, I can move a folder to a new location.						
+
+h) As a user, I can copy and paste a file to new location.							
+
+i) As a user, I can copy and paste a folder and its contents to new location.			
+
+j) As a user, I can display the contents of multiple files at the same time.				
+
+k) As a user, I can download a file from the internet.							
+
+l) As a user, I can print documentation for a single command.						
+
+m) As a user, I can save my current session of the shell to a file on my computer.				
+
+n) As a user, I can load my saved session of the shell from a file on my computer.				
+
+o) As a user, I can search for all files by name in the directories I provide.			
+
+p) As a user, I can search for all directories by name in the directories I provide.
+
+q) As a user, I can see a visualization of the file system as a tree.
+
+r) As a user, I can move a file to a new location.
+
+ 		
+Specific tasks to be accomplished:
+a-1. (Redirector) Make CRC card for Redirectory class
+a-2. (Redirector) Begin coding the structure of the Redirector class
+a-3. (Redirector) Remove all code from echo which has to do with redirection
+a-4. (CommandScanner) Change regex to account for >> and >
+a-5. (JShell) Add a new Redirector
+a-6. (All) Change all commands to return a String instead
+b-1. (Redirector) Add method to output to existing file 
+c-1. (Delete) Make CRC card for Delete class
+c-2. (Delete) Begin coding the structure of the Delete class
+c-3. (CommandHashTable) Add the Delete command to the CommandHash
+d-1. (MakeDirectory) Modify class to take in 1 argument
+e-1. (MakeDirectory) Modify class to take in greater than or equal to 1 arguments
+f-1. (List) Modify ls to take in -R parameter, which recurisvely lists all subdirectories
+g-1. (Move) Make CRC card for Move class
+g-2. (Move) Begin coding the structure of the Move class
+g-3. (Move) Add a method to move a folder to a location
+g-3. (CommandHashTable) Add the Move command to the CommandHashTable
+h-1. (Copy) Make CRC card for Copy class
+h-2. (Copy) Begin coding the structure of the Copy class
+h-3. (CommandHashTable) Add the Copy command to the CommandHashTable
+h-4. (Copy) Add a method to copy a file to a location
+i-1. (Copy) Add a method to copy a folder to a location
+j-1. (Concatenation) Modify class to display contents of all listed Files
+k-1. (Curl) Make CRC card for Curl class
+k-2. (Curl) Begin coding the structure of the Curl class
+l-1. (Manual) Modify class to only print documentation for 1 command
+m-1. (SaveJShell) Make CRC card for SaveJShell class
+m-2. (SaveJShell) Begin coding the structure of the SaveJShell class
+n-1. (LoadJShell) Make CRC card for LoadJShell class
+n-2. (LoadJShell) Begin coding the structure of the LoadJShell class
+o-1. (Search) Make CRC card for Search class
+o-2. (Search) Begin coding the structure of the Search class
+o-3. (Search) Add functionalitiy to search for a File
+p-1. (Search) Add functionalitiy to search for a Directory
+q-1. (Tree) Make CRC card for Tree class
+q-2. (Tree) Begin coding the structure of the Tree class
+r-1. (Move) Add a method to move a file to a location
+
+These tasks are assigned as follows:
+
+User: Yulun Wu
+Tasks: k-1, k-2, m-1, m-2, n-1, n-2
+
+User: Arthur Lu
+Tasks: c-1, c-2, c-3, d-1, e-1, g-1, g-2, g-3, h-1, h-2, h-3, h-4, i-1, j-1, l-1, r-1
+
+User: Yusuf Khan
+Tasks: a-1, a-2, a-3, a-4, a-5, a-6, b-1, f-1, o-1, o-2, o-3. p-1, q-1, q-2
+

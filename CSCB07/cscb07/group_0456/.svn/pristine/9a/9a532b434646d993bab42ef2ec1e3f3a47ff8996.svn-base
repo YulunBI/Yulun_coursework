@@ -1,0 +1,56 @@
+package commands;
+
+import system.*;
+import java.util.*;
+
+import exceptions.InvalidParamLengthException;
+import exceptions.InvalidPathException;
+
+/**
+ * A command for making the directory on top of the directory stack the current directory.
+ * 
+ */
+public class PopDirectory extends Command {
+  
+  /** 
+   * The number of arguments required to execute this command.
+   */
+  private static final int EXACT_ARG_LENGTH = 0;
+
+  /**
+   * Creates an instance of the PopDirectory object and initializes the command name and docs.
+   */
+  public PopDirectory() {
+    this.setName("popd");
+    this.setDocs("popd\n\tRemoves top entry from directory stack and performs cd with it.");
+  }
+  
+  /**
+   * Changes the current directory of fs to the directory stored on top of the directory stack
+   * of fs, if the stack is non-empty.
+   * InvalidParamLengthException is thrown if there are not exactly EXACT_ARG_LENGTH arguments
+   * provided.
+   * InvalidPathException is thrown if the directory on the stack is not valid for fs.
+   * 
+   * @param fs The FileSystem which will have its current directory changed.
+   * @param arguments List of strings provided by user input. Should be empty.
+   * @throws InvalidParamLengthException
+   * @throws InvalidPathException
+   */
+  public void executeCommand(FileSystem fs, ArrayList<String> arguments) 
+      throws InvalidParamLengthException {
+    if (arguments.size() != EXACT_ARG_LENGTH) {
+      throw new InvalidParamLengthException("Invalid parameter length");
+    }
+
+    Directory d = fs.stackPop();
+    if (d == null)
+      return;
+    Path p = new Path(d.getPath());
+    try {
+      fs.changeDirectory(p);
+    } catch (InvalidPathException e) {
+      System.err.println(e.getMessage());
+    }
+  }
+}

@@ -1,0 +1,13 @@
+Class name: SaveJShell
+
+Parent Class: Command
+
+Subclasses: None
+
+Responsibilities:
+* Save the session of the JShell in file given by argument.
+
+Collaborators: 
+* File
+* FileSystem
+

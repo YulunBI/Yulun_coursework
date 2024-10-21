@@ -1,0 +1,7 @@
+package exceptions;
+
+public class InvalidParamLengthException extends Exception{
+    public InvalidParamLengthException(String errorMessage) {
+        super(errorMessage);
+    }
+}

@@ -1,0 +1,4 @@
+CopyPasteClass name: ChangeDirectoryParent class (if any): CommandSubclasses (if any): None
+Responsibilities:* Change the directory to given location
+Collaborators:* FileSystemExplorer
+

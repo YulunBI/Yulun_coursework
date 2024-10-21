@@ -1,0 +1,293 @@
+// **********************************************************
+// Assignment2:
+// Student1:
+// UTORID user_name: khanyus7
+// UT Student #: 1006330329
+// Author: Yusuf Khan
+//
+// Student2:
+// UTORID user_name: wuyulu10
+// UT Student #: 1004912785
+// Author: Yulun Wu
+//
+// Student3:
+// UTORID user_name: lujia34
+// UT Student #: 1006173196
+// Author: Jia (Arthur) Lu
+//
+// Student4:
+// UTORID user_name:
+// UT Student #:
+// Author:
+//
+//
+// Honor Code: I pledge that this program represents my own
+// program code and that I have coded on my own. I received
+// help from no one in designing and debugging my program.
+// I have also read the plagiarism section in the course info
+// sheet of CSC B07 and understand the consequences.
+// *********************************************************
+
+package system;
+
+import exceptions.AlreadyExistsException;
+import java.nio.file.InvalidPathException;
+import java.util.ArrayList;
+import java.util.Iterator;
+import javax.naming.InvalidNameException;
+
+/** 
+  * Represention of a Directory in the FileSystem, as a tree node.
+  */
+public class JDirectory implements java.io.Serializable, Directory {
+
+  /**
+   * 
+   */
+  private static final long serialVersionUID = 1357874300528120447L;
+
+  /**
+   * Represents the parent directory for this directory.
+   */
+  private Directory superDirectory;
+
+  /**
+   * Represents directories contained in this directory.
+   */
+  private ArrayList<Directory> subDirectory;
+
+  /**
+   * Represents files contained in this directory.
+   */
+  private ArrayList<File> subFile;
+
+  /**
+   * Represents the name of this directory.
+   */
+  private String name;
+
+  /**
+   * Represents the full path of this directory.
+   */
+  private Path location;
+
+  /**
+   * string containing all characters forbidden in directory paths.
+   */
+  private static final String FORB_CHAR = ".*[/.!@#$%^&*(){}~|<>?].*";
+
+  /**
+   * Creates a new JDirectory object with the specified name, path, and parent. Also creates
+   * two empty lists to hold this Directory's child directories and files.
+   * 
+   * @param name The specified name for this directory.
+   * @param location The full specified path for this directory.
+   * @param superDirectory The specified parent of this directory.
+   */
+  public JDirectory(String name, Path location, Directory superDirectory) {
+    this.superDirectory = superDirectory;
+    subDirectory = new ArrayList<Directory>();
+    subFile = new ArrayList<File>();
+    this.name = name;
+    this.location = location;
+  }
+
+  /**
+   * Returns a string containing the name of this directory.
+   * 
+   * @return name A string containing the name of this directory.
+   */
+  public String getName() {
+    return name;
+  }
+
+  /**
+   * Returns a list of all the child directories contained in this directory.
+   * 
+   * @return subDirectory Containing all this directory's children.
+   */
+  public ArrayList<Directory> getChildren() {
+    return subDirectory;
+  }
+
+  /**
+   * Returns a list of all the files contained in this directory.
+   * 
+   * @return subFile Containing all this directory's files.
+   */
+  public ArrayList<File> getFile() {
+    return subFile;
+  }
+  
+  /**
+   * Removes a file from this directory's children files.
+   * 
+   * @param f Target File to be removed.
+   */
+  public void removeChild(File f) {
+    this.subFile.remove(f);
+  }
+  
+  /**
+   * Removes a directory from this directory's children directories.
+   * 
+   * @param d Target Directory to be removed.
+   */
+  public void removeChild(Directory d) {
+    this.subDirectory.remove(d);
+  }
+  
+  /**
+   * Removes all of this directory's children.
+   * 
+   */
+  public void removeChildren() {
+    for (File f: this.subFile) // remove all child files
+      removeChild(f);
+    for (Iterator<Directory> iter = this.subDirectory.iterator(); iter.hasNext();) {
+      Directory d = iter.next();
+      d.removeChildren();
+      iter.remove();
+    }
+  }
+  
+  /**
+   * Makes this directory a copy of newDir, including recursively copying all its children.
+   * 
+   * @param newDir The directory to copy to this directory.
+   */
+  public void replaceThis(Directory newDir) {
+    try {
+      for (File f : newDir.getFile()) { // copies sub Files over
+        addSubFile(f.getName());
+        for (File thisF : getFile()) {
+          if (thisF.getName().equals(f.getName())) {
+            thisF.setText(f.getText()); // copy the text over
+            break;
+          }            
+        }
+      }
+      
+      for (Directory d : newDir.getChildren()) { // copies sub Directories over
+        addSubDictionary(d.getName());
+        for (Directory thisD : getChildren()) {
+          if (thisD.getName().equals(d.getName())) {
+            thisD.replaceThis(d); // copy all children over
+            break;
+          }
+        }
+      }
+      
+    } catch (Exception e) {
+      System.err.println(e.getMessage());
+    }
+  }
+
+  /**
+   * Adds a Directory to the list of this Directory's subdirectories, named subDictName. Throws
+   * InvalidNameException if subDictName contains invalid characters or formatting for a directory
+   * name. Throws AlreadyExistsException if this directory already has a subdirectory named
+   * subDictName.
+   * 
+   * @param subDictName A string representing the name of the proposed subdirectory.
+   * @throws AlreadyExistsException If this directory already has a subdirectory named subDictName.
+   * @throws InvalidNameException If subDictName contains invalid characters or 
+   *        formatting for a directory name.
+   */
+  public void addSubDictionary(String subDictName)
+      throws InvalidNameException, AlreadyExistsException {
+    checkForInvalidName(subDictName);
+    checkForDuplicates(subDictName);
+    subDirectory.add(new JDirectory(subDictName, new JPath(location.toString() + subDictName), this));
+  }
+
+  /**
+<<<<<<< .mine
+   * Adds a File to the list of this Directory's subfiles, named subFileName.
+   * Throws AlreadyExistsException if this directory already has a subfile named subFileName.
+   * Throws InvalidNameException if subFileName contains invalid characters or formatting for a
+   * file name.
+   * 
+   * @param subFileName A string representing the name of the proposed subfile.
+   * @throws AlreadyExistsException If this directory already has a subfile named subFileName.
+   * @throws InvalidNameException If subFileName contains invalid characters or 
+   *        formatting for a file name.
+   */
+  public void addSubFile(String subFileName) throws AlreadyExistsException, InvalidNameException {
+    checkForInvalidName(subFileName);
+    checkForDuplicates(subFileName);
+    subFile.add(new JFile(subFileName, location.toString()));
+  }
+
+  /**
+   * Returns a Directory representing this directory's parent.
+   * 
+   * @return superDirectory A Directory object representing this directory's parent.
+   */
+  public Directory getParent() {
+    return superDirectory;
+  }
+
+  /**
+   * Returns a String containing the full path of this directory.
+   * 
+   * @return location.toString() A String containing the full path of this directory.
+   */
+  public String getPath() {
+    return location.toString();
+  }
+
+  /**
+   * Returns a specific Directory from this directory's subdirectories, as specified by name. If no
+   * subdirectory is found with a matching name, returns null.
+   * 
+   * @param name A String representing the name of the subdirectory to find.
+   * @return d The specific Directory with a matching name to be returned.
+   */
+  public Directory getSubDirectory(String name) {
+    for (Directory d : subDirectory) {
+      if (d.getName().equals(name)) {
+        return d;
+      }
+    }
+
+    return null;
+  }
+
+  /**
+   * Throws AlreadyExistsException if there is any child file or directory already in this directory
+   * with name.
+   * 
+   * @param name A String representing the name to search this directory's children for.
+   * @throws AlreadyExistsException If there is any child file or directory already i
+   *        n this directory with name.
+   */
+  private void checkForDuplicates(String name) throws AlreadyExistsException {
+    for (Directory d : subDirectory) {
+      if (d.getName().equals(name)) {
+        throw new AlreadyExistsException(name + " already exists.");
+      }
+    }
+    for (File f : subFile) {
+      if (f.getName().equals(name)) {
+        throw new AlreadyExistsException(name + " already exists.");
+      }
+    }
+  }
+
+  /**
+   * Throws InvalidNameException if name contains any characters not allowed in a file or directory
+   * name.
+   * 
+   * @param name A String representing the name to check for invalid characters.
+   * @throws InvalidNameException If name contains any characters not allowed in 
+   *        a file or directory name.
+   */
+  private void checkForInvalidName(String name) throws InvalidNameException {
+
+    if (name.matches(FORB_CHAR)) {
+      throw new InvalidNameException(name + " is an invalid name.");
+    }
+
+  }
+}

@@ -1,0 +1,30 @@
+package commands;
+
+import exceptions.InvalidParamLengthException;
+import exceptions.InvalidPathException;
+import java.util.ArrayList;
+import system.File;
+import system.FileSystem;
+import system.Path;
+
+public class Remove extends Command {
+  
+   private static final int EXACT_ARG_LENGTH = 1;
+   
+   public Remove() {
+     this.setName("rm");
+     this.setDocs("rm DIR\n\tRemoves directory DIR from the file system, along with\n\t"
+         + "any other files or directories inside DIR.");
+   }
+   
+   public String executeCommand(FileSystem fs, ArrayList<String> arguments)
+       throws InvalidParamLengthException {
+     if (arguments.size() != EXACT_ARG_LENGTH) {
+       throw new InvalidParamLengthException("Invalid parameter length");       
+     }
+     
+     //TODO delete DIR
+     
+     return "";
+   }
+}

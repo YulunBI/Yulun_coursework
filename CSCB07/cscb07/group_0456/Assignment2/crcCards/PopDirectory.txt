@@ -1,0 +1,13 @@
+Class name: PopDirectory
+
+Parent Class: None
+
+Subclasses: None
+
+Responsibilities:
+* Retrieve most recently saved Directory and make it into the current working directory
+
+Collaborators: 
+* FileSystem
+* Path
+* InvalidParamLengthException

@@ -1,0 +1,16 @@
+What did I work on in the last three days?
+	- Added Tree crc card
+	- Finished Tree
+	- Added Search crc card
+	- Finished most of Search
+	- Made sprint 2 backlog
+
+What do I plan to work in the next three days?
+	- Finish ListFiles for recursive case
+	- Simplifiy search
+	- Handle invalid parameters for search
+	- Start junit testing for MakeDirectory, PrintWorkingDirectory, Tree, ChangeDirectory
+
+Am I blocked on anything?
+    - nothing
+    

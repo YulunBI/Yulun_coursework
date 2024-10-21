@@ -1,0 +1,67 @@
+// **********************************************************
+// Assignment2:
+// Student1:
+// UTORID user_name:
+// UT Student #:
+// Author:
+//
+// Student2:
+// UTORID user_name:
+// UT Student #:
+// Author:
+//
+// Student3:
+// UTORID user_name:
+// UT Student #:
+// Author:
+//
+// Student4:
+// UTORID user_name:
+// UT Student #:
+// Author:
+//
+//
+// Honor Code: I pledge that this program represents my own
+// program code and that I have coded on my own. I received
+// help from no one in designing and debugging my program.
+// I have also read the plagiarism section in the course info
+// sheet of CSC B07 and understand the consequences.
+// *********************************************************
+package driver;
+
+import system.FileSystem;
+import a2.CommandScanner;
+import commands.Command;
+import commands.CommandPrinter;
+
+public class JShell {
+
+  public static void main(String[] args) {
+
+    CommandScanner scan = new CommandScanner();
+    CommandPrinter print = new CommandPrinter();
+    FileSystem fs = new FileSystem();
+
+    while (true) {
+      System.out.print("/#: ");
+
+      scan.scanUserInput();
+      scan.parseCommandAndParameter();
+
+      Command c = scan.getCommand(fs);
+      if (c != null) {
+        // execute command
+        c.executeCommand(fs, scan.getParameter());
+
+        // print out command output using CommandPrinter
+        print.printOutput(c);
+
+      } else {
+        // make this an exception
+        System.out.println("Invalid command name");
+      }
+
+    }
+
+  }
+}

@@ -1,0 +1,4 @@
+Class name: LsParent class (if any): CommandSubclasses (if any): List all the subclasses separated by a comma.
+Responsibilities:*Print the names of files and directories in the current directory, with a new line following each of them*h*i
+Collaborators:*FileSystemExplorer*k*l
+

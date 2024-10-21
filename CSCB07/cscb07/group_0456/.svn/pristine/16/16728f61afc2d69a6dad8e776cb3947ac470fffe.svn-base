@@ -1,0 +1,12 @@
+Class name: Ls
+
+Parent Class: Command
+
+Subclasses: None
+
+Responsibilities:
+* Print names of files and directories in current directory on separate lines
+
+Collaborators: 
+* FileSystem
+* File

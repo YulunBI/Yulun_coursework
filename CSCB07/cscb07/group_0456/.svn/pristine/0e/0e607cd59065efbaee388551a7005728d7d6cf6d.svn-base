@@ -1,0 +1,10 @@
+package exceptions;
+
+ /** 
+   * Exception for when a path on the FileSystem is invalid
+   */
+public class InvalidPathException extends Exception{
+    public InvalidPathException(String errorMessage) {
+        super(errorMessage);
+    }
+}

@@ -1,0 +1,53 @@
+package commands;
+
+import java.util.ArrayList;
+import exceptions.InvalidParamLengthException;
+import system.FileSystem;
+
+public class History extends Command {
+  
+  /** 
+   * The maximum number of arguments required to execute this command
+   */
+  private static final int MAX_ARG_LENGTH = 1;
+  
+  public History() {
+    this.setName("history");
+    this.setDocs("history [number]\n\tPrints out history of last [number] commands.");
+  }
+
+  /**
+   * Prints the previous inputs by the user back into the console, with the most recent one
+   * displayed last. Prints all previous inputs if no argument is given, or the last n inputs
+   * where the given argument is an integer n.
+   * InvalidParamLengthException is thrown if there are more than MAX_ARG_LENGTH arguments provided.
+   * NumberFormatException is thrown if the provided argument is not an integer.
+   * 
+   * @param fs The FileSystem which this command will get the history of.
+   * @param arguments List of arguments provided by the user. Should be a single integer.
+   * @throws InvalidParamLengthException
+   * @throws NumberFormatException
+   */
+  public void executeCommand(FileSystem fs, ArrayList<String> arguments)
+      throws InvalidParamLengthException {
+    if (arguments.size() > MAX_ARG_LENGTH) {
+      throw new InvalidParamLengthException("Invalid parameter length");
+    }
+
+    // by default print all history, otherwise print the number indicated by count
+    int count = fs.getHistory().size();
+    if (arguments.size() == 1) {
+      try {
+        count = Math.min(Integer.parseInt(arguments.get(0)), fs.getHistory().size());
+      } catch (NumberFormatException e) {
+        System.err.println("Invalid input type");
+        return;
+      }
+    }
+
+    for (int i = fs.getHistory().size() - count; i < fs.getHistory().size(); i++) {
+      System.out.println((i + 1) + ".\t " + fs.getHistory().get(i));
+    }
+  }
+
+}

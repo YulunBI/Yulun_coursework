@@ -1,0 +1,73 @@
+package test;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
+import java.util.ArrayList;
+import org.junit.Test;
+import commands.ChangeDirectory;
+import exceptions.InvalidParamLengthException;
+import system.FileSystem;
+
+public class ChangeDirectoryTest {
+
+  /**
+   * Checks for InvalidParamLengthException when param length is invalid
+   */
+  @Test
+  public void testInvalidParamLengthExecuteCommand() {
+    try {
+
+      ChangeDirectory cd = new ChangeDirectory();
+      ArrayList<String> arg = new ArrayList<>();
+      arg.add("1");
+      arg.add("2");
+
+      cd.executeCommand(new MockFileSystem(), arg);
+      fail("InvalidParamLengthException not caught");
+
+    } catch (InvalidParamLengthException e) {
+      return;
+    }
+
+  }
+
+  /**
+   * Changing the directory with an valid path
+   */
+  @Test
+  public void testValidPathExecuteCommand() {
+    ChangeDirectory cd = new ChangeDirectory();
+    ArrayList<String> arg = new ArrayList<>();
+    FileSystem mfs = new MockFileSystem();
+
+    arg.add("Valid Path");
+    try {
+      cd.executeCommand(mfs, arg);
+    } catch (InvalidParamLengthException e) {
+      fail(e.getMessage());
+    }
+
+    assertEquals("Changed Directory", mfs.getDirectory().getName());
+  }
+
+  /**
+   * Changing the directory with an invalid path
+   */
+  @Test
+  public void testInvalidPathExecuteCommand() {
+    ChangeDirectory cd = new ChangeDirectory();
+    ArrayList<String> arg = new ArrayList<>();
+    FileSystem mfs = new MockFileSystem();
+
+    arg.add("Invalid Path");
+    try {
+      cd.executeCommand(mfs, arg);
+    } catch (InvalidParamLengthException e) {
+      fail(e.getMessage());
+    }
+
+    assertEquals("Old CD", mfs.getDirectory().getName());
+  }
+
+
+}

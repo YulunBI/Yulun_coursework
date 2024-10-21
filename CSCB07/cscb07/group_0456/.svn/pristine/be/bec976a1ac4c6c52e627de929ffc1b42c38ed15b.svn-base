@@ -1,0 +1,12 @@
+Class name: Concatenate
+
+Parent Class: Command
+
+Subclasses: None
+
+Responsibilities:
+* Print contents of file with path specified by argument
+
+Collaborators: 
+* FileSystem
+* File

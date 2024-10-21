@@ -1,0 +1,11 @@
+What did I work on in the last three days?
+    - Continue working on CommandScanner
+    - Completed Directory and File
+
+What do I plan to work in the next three days?
+    - finish CommandScanner
+    - Start tasks in sprint2
+
+Am I blocked on anything?
+    - need method in FileSystem like addHistory to complete CommandScanner
+

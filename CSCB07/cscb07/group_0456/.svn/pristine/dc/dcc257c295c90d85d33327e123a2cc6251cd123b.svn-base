@@ -1,0 +1,15 @@
+Class name: Echo
+
+Parent Class: Command
+
+Subclasses: None
+
+Responsibilities:
+* Overwrite file at path specified by second argument with 
+	string delimited by "" given by first argument if operator '>' is used
+* Append string delimited by "" given by first argument to end of
+	 file at path specified by second argument if operator '>>' is used
+
+Collaborators: 
+* FileSystem
+* File

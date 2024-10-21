@@ -1,0 +1,10 @@
+What did I work on in the last three days?
+    - Completed crc cards for ClientUrl, SaveJShell, LoadJShell.
+
+
+What do I plan to work in the next three days?
+    - Finish SaveJShell and LoadJShell(currently trying the approach suggested on Piazza).
+
+Am I blocked on anything? 
+    - Not really, just trying to learn serialization and deserialization.
+

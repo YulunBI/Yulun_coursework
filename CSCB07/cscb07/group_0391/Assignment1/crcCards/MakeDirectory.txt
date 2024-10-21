@@ -1,0 +1,2 @@
+Class name: MakeDirectoryParent class (if any): CommandSubclasses (if any): None
+Responsibilities:* Create a directory in given pathCollaborators:* FileSystemExplorer

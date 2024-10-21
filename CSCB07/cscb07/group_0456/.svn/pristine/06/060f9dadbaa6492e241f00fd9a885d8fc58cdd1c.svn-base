@@ -1,0 +1,121 @@
+package commands;
+
+import exceptions.InvalidParamLengthException;
+import exceptions.InvalidPathException;
+import java.util.*;
+import system.*;
+import system.File;
+
+public class Move extends Command {
+  
+  private static final int EXACT_ARG_LENGTH = 2;
+  
+  public Move() {
+    this.setName("mv");
+    this.setDocs("mv OLDPATH NEWPATH\n\tMove file/directory at OLDPATH to NEWPATH."
+        + "\n\tOLDPATH and NEWPATH can be either relative to the current directory or full paths."
+        + "\n\tIf NEWPATH and OLDPATH are both files, overwrite NEWPATH's contents with OLDPATH."
+        + "\n\tIf NEWPATH doesn't exist, rename OLDPATH to NEWPATH.");
+  }
+  
+  public String executeCommand(FileSystem fs, ArrayList<String> arguments)
+    throws InvalidParamLengthException {
+    if (arguments.size() != EXACT_ARG_LENGTH)
+      throw new InvalidParamLengthException("Invalid parameter length");
+    
+    try {
+      Path oldPath = new JPath(arguments.get(0));
+      Path newPath = new JPath(arguments.get(1));
+      
+      if (fs.findFile(oldPath) != null) { //moving a file
+        
+        File f = fs.findFile(oldPath);
+        try {          
+          if (fs.findFile(newPath) != null) { // case 6: overwrite target with f
+            
+            File target = fs.findFile(newPath);
+            target.setText(f.getText());
+            removeThis(fs, f); // remove original
+            
+          } else if (fs.findDirectory(newPath) != null) { // case 1: move f into newPath
+            newPath = new JPath("./" + arguments.get(1) + "/" + f.getName());
+            fs.addFile(newPath);
+            File target = fs.findFile(newPath);
+            target.setText(f.getText());
+            removeThis(fs, f); // remove original
+          }
+          
+        } catch (InvalidPathException e1) { // when no file/dir exists at newpath
+          // case 5: rename f if possible
+          try {
+            fs.addFile(newPath); // try adding new file, will fail if >1 dir in path dne
+            File target = fs.findFile(newPath);
+            target.setText(f.getText());
+            removeThis(fs, f); // remove original
+          } catch (InvalidPathException e) {
+            System.err.println(e.getMessage());
+          }
+        }
+        
+      } else if (fs.findDirectory(oldPath) != null) { //moving a directory
+        
+        Directory d = fs.findDirectory(oldPath);
+        
+        if (fs.getDirectory().getPath().toString().contains(oldPath.toString()))
+          throw new IllegalArgumentException("Can't move current working directory");
+        else if (d.equals(fs.getRoot()))
+          throw new IllegalArgumentException("Can't move the root directory");
+        else if (arguments.get(1).contains(arguments.get(0)))
+          throw new IllegalArgumentException("Can't move parent to child directory");
+        
+        try {
+          if (fs.findFile(newPath) != null) {
+            throw new IllegalArgumentException("Can't move directory into a file");
+          } else if (fs.findDirectory(newPath) != null) { // case 2: move d into newPath
+            newPath = new JPath("./" + arguments.get(1) + "/" + d.getName());
+            fs.addDirectory(newPath);
+            Directory target = fs.findDirectory(newPath);
+            target.replaceThis(d);
+            removeThis(fs, d); // remove original
+          }
+        } catch (InvalidPathException e1) { // when no file/dir exists at newpath
+          // case 3: rename d if possible
+          try {
+            fs.addDirectory(newPath); // try adding new file, will fail if >1 dir in path dne
+            Directory target = fs.findDirectory(newPath);
+            target.replaceThis(d);
+            removeThis(fs, d); // remove original
+          } catch (InvalidPathException e) {
+            System.err.println(e.getMessage());
+          }
+        } catch (IllegalArgumentException arge) {
+          System.err.println(arge.getMessage());
+        }
+                
+      }
+    } catch (Exception e) {
+      System.err.println(e.getMessage());
+    }
+    
+    return "";
+  }
+  
+  private void removeThis(FileSystem fs, File f) {
+    try {
+      Directory par = fs.findDirectory(f.getLocation());
+      par.removeChild(f); // remove original
+    } catch (InvalidPathException e) {
+      System.err.println(e.getMessage());
+    } 
+  }
+  
+  private void removeThis(FileSystem fs, Directory d) {
+    try {
+      Directory par = d.getParent();
+      par.removeChild(d); // remove original
+    } catch (Exception e) {
+      System.err.println(e.getMessage());
+    }
+  }
+
+}

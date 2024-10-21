@@ -1,0 +1,38 @@
+package commands;
+
+import java.util.ArrayList;
+import system.FileSystem;
+
+public class ListFiles extends Command{
+  public ListFiles() {
+    this.setName("ls");
+    this.setDocs("ls [PATH ...]\n\tIf no paths are given, print the contents of current directory,"+ 
+        "\n\twith a new line following each file/directory." + 
+        "\n\tOtherwise, for each path p:" + 
+        "\n\t\tIf p specifies a file, print p." +
+        "\n\t\tIf p specifies directory, print p + ':' + contents of directory + newline.");
+  }
+  
+  public void executeCommand(FileSystem fs, ArrayList<String> arguments) {
+    if (arguments.size() == 0) {
+      printContentInCurrentDirectory(fs);     
+    } 
+  }
+  
+  private void printContentInCurrentDirectory(FileSystem fs) {
+    // get subDirectory and subFile list from FileSystem
+    // print them one by one each followed by a newline
+  }
+  
+  private void printSpecifiedFile(FileSystem fs) {
+    // print file specified by argument
+    
+  }
+  
+  private void printSpecifiedDirectoryAndContent(FileSystem fs) {
+    // print specified directory
+    
+    // and content in it
+    printContentInCurrentDirectory(fs);
+  }
+}

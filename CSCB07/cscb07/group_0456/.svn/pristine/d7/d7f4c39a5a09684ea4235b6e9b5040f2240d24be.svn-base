@@ -1,0 +1,71 @@
+//Sprint 2 Backlog.  
+October 28 to November 3
+
+
+User Stories from Product Backlog that we will address in this sprint:
+a) As a user, I can type commands into the shell.	
+b) As a user, I can view my all of my recent commands. 
+c) As a user, I can see the documentation for the command, so that I know how to use them.
+d) As a user, I can exit the shell.										
+e) As a user, I can change the folder that I'm currently in.			
+f) As a user, I can create two new folders.  						
+g) As a user, I can check the content in my current folder. 						
+h) As a user, I can check the content in any folder I list.						
+i) As a user, I can check if my desired file is in the folder   						
+j) As a user, I can check which folder I am in.   								
+k) As a user, I can save my current location and continue work on somewhere else.				
+l) As a user, I can go to my saved locations starting with my most recent saved location.   									
+m) As a user, I can view a specific amount of my recent commands if I provide a number. 				
+n) As a user, I can view my files on the console.   							
+o) As a user, I can overwrite my files with the text I want.   						
+p) As a user, I can create a new file with the text I want.						
+q) As a user, I can append text to my files.   								
+r) As a user, I can print text to shell. 
+s) As a user, I can see any errors that happen if my command is unsuccessful.	
+
+Specific tasks to be accomplished:
+a-1. (CommandScanner) Add command to command history in FileSystem
+a-2. (CommandScanner) Return a new a reference command from the FileSystem
+a-3. (FileSystem) Store an array of commands in FileSystem
+a-4. (JShell) Execute the command
+a-5. (JShell) Print out what happens after the command is executed (using CommandPrinter)
+a-6. (Command) Add protected method, which changes the name of the command
+a-7. (Command) Add arguments in executeCommand() method
+b-1. (History) Finish implementing History
+c-1. (All Commands) Finish writing documentation for all Commands
+c-2. (Man) Print out command documentation for all Commands
+d-1. (Exit) Exit the program
+e-1. (ChangeDirectory and FileSystem) Implement change directory, by changing it in the FileSystem class
+f-1 (MakeDirectory and FileSystem) Make a 2 new directories in the FileSystem
+g-1. (List and FileSystem) List contents of current directory using FileSystem
+h-1. (List and FileSystem) List contents of any directory, using FileSystem
+i-1. (List) Set the output of the command as the contents of the directory
+j-1. (PrintWorkingDirectory and FileSystem) Set the out of the command to the current working directory of FileSystem
+k-1. (FileSystem) Make a directory stack in the FileSystem class
+k-2 (PushDirectory and FileSystem) Save the any directory to Directory stack on FileSystem
+l-1. (PopDirectory and FileSystem) Get the most recent directory saved to the Directory stack on the FileSystem
+m-1. (History) Make history take in a specific number
+n-1. (List) Set output of list, to the contents of provided file
+o-1. (Echo) Change contents of user file to text input
+p-1. (Echo)  Make a new file, using the text input provided
+q-1. (Echo) Use the text input provided and add it to the provided file
+q-2. (Cat) Add all the text of provided files and set output as combination of them
+r-1. (Echo) Print text to shell, if no file provided
+s-1. Start brainstroming Exception ideas
+s-2. (File) Handle invalid file name
+s-3. (Directory) Handle invalid directory name
+s-4. (Path) Handle invalid path
+s-5. Error if File already exists
+s-6. Error if Directory already exists
+
+These tasks are assigned as follows:
+
+User: Yulun Wu
+Tasks: d1, g1, h1, i1, n1, o1, p1, q1, r1  
+
+User: Arthur Lu
+Tasks: b1, c1, c2, k1, k2, l1, m1
+
+User: Yusuf Khan
+Tasks: a1, a2, a3, a4, a5, a6, a7, e1, f1, j1, q2, s1, s2, s3, s4, s5, s6
+

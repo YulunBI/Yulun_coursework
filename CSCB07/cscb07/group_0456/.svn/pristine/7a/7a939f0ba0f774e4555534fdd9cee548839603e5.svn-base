@@ -1,0 +1,10 @@
+package exceptions;
+
+ /** 
+   * Exception for when entered command name is not valid
+   */
+public class InvalidCommandNameException extends Exception{
+    public InvalidCommandNameException(String errorMessage) {
+        super(errorMessage);
+    }
+}

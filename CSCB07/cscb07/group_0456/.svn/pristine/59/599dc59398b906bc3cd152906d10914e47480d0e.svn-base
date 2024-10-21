@@ -1,0 +1,10 @@
+package exceptions;
+
+ /** 
+   * Exception for when a Directory or File already exists in the FileSystem
+   */
+public class AlreadyExistsException extends Exception{
+    public AlreadyExistsException (String errorMessage) {
+        super(errorMessage);
+    }
+}

@@ -1,0 +1,27 @@
+package commands;
+
+import system.*;
+import java.util.*;
+
+public class PushDirectory extends Command {
+  public PushDirectory() {
+    this.setName("pushd");
+    this.setDocs("pushd DIR\n\tPushes current working directory to top of stack, then changes " +
+        "working directory to DIR.");
+  }
+  
+  public void executeCommand(FileSystem fs, ArrayList<String> arguments) {
+    if (arguments.size() != 1) {
+      this.setOutput("Invalid parameter length");
+      return;
+    }
+    fs.stackPush(fs.getDirectory());
+    Path p = new Path(arguments.get(0));
+    try {
+      fs.changeDirectory(p);
+    } catch (Exception e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
+  }
+}

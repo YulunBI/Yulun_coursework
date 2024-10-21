@@ -1,0 +1,20 @@
+package commands;
+
+public class Manual extends Command {
+
+  public Manual() {
+    this.setName("man");
+    this.setDocs("man CMD [CMD2 ...]\n\tPrint documentation for CMD(s).");
+  }
+
+  public void executeCommand() {
+    try {
+      Command c = (Command) Class.forName(this.getArguments().get(1)).getDeclaredConstructor()
+          .newInstance(); // create temporary command object, this is probably bad
+      System.out.println(c.getDocs());
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+  }
+
+}

@@ -1,0 +1,19 @@
+package commands;
+
+import java.util.ArrayList;
+import system.FileSystem;
+
+public class Exit extends Command{
+  public Exit() {
+    this.setName("exit");
+    this.setDocs("Quit the program.");
+  }
+  
+  public void executeCommand(FileSystem fs, ArrayList<String> arguments) {
+    try {
+      System.exit(0);
+    } catch(Exception e) {
+      e.printStackTrace();
+    }
+  }
+}
