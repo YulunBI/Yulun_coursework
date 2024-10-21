@@ -1,0 +1,83 @@
+---
+title: "STAC67A1Q1Q6"
+author: "Yulun Wu"
+date: "29/01/2022"
+output: pdf_document
+number_sections: true
+---
+
+# Q1
+## (a)
+```{r}
+set.seed(1004912785)
+Y = rnorm(20, mean=2, sd=5)
+Y_bar = mean(Y)
+Y_bar
+sd_Y_bar = sqrt(sum((Y-Y_bar)^2)/20)
+sd_Y_bar
+StandardErr = sd_Y_bar/(sqrt(19)) # here is SE of mean
+StandardErr
+```
+
+## (b)
+```{r}
+model = lm(Y ~ 1)
+summary(model)
+```
+## These provide the same mean as (a) because E(Y) = $\beta_0$.
+
+## (c)
+```{r}
+Y = replicate(10000,rnorm(20, mean=2, sd=5))
+Y_bar = rowMeans(Y)
+Y_bar
+Y_bar_hist = hist(Y_bar)
+Y_bar_hist
+lines(density(Y_bar))
+```
+# Q6
+## (a)
+```{r}
+Vote = read.table("vote.txt", header=T)
+library(ggplot2)
+ggplot(data=Vote,aes(growth,vote)) + geom_point() + stat_smooth(method="lm")
+```
+## (b)
+```{r}
+fit = lm(vote~growth, data=Vote)
+summary(fit)
+```
+## $\hat{\beta_0}$ = 46.2476
+## $\hat{\beta_1}$ = 3.0605
+
+## (c)
+
+```{r}
+46.2476 + 0.1*3.0605
+predict(fit,data.frame(growth = 0.1))
+```
+## The incumbent party's vote in 2008 is predicted to be 46.55365 by hand and 46.5537 by R, based on this result, "Obama" will win the election.
+
+## (d)
+$H_0:\beta_1=0$ vs $H_a:\beta_1>0$
+$t=\hat{\beta_1}/SE(\hat{\beta_1})=3.0605/0.6963=`r round(3.0605/0.6963,2)`\newline$
+$P-value=P(t>4.40) = `r 1-pt(4.40,14)`\newline$
+So, there is an extreamly strong evidence that there is a signficant positive association between incumbent party's vote share and economical growth.
+
+## (e)
+```{r}
+3.0605 + c(-1,1)*qt(0.975,14)*0.6963
+```
+95% CI by hand = (1.567085,4.553915)
+
+95% CI by R:
+```{r}
+confint(fit)
+```
+
+## (f)
+```{r}
+1-pt(1/0.6963,14)
+pt(-1/0.6963,14)
+```
+The probability that $P(|\hat{\beta_1}-\beta_1|>1)$ is 0.08646192.

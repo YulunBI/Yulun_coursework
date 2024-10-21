@@ -1,0 +1,246 @@
+---
+title: "STAC67A2"
+author: "Yulun Wu"
+date: "24/02/2022"
+output: pdf_document
+number_sections: true
+---
+
+# Q1
+## (a)
+```{r}
+set.seed(1004912785)
+Vote = read.table("vote-1.txt", header=T)
+X = Vote$growth
+error = rnorm(16, 0, sd=3.9)
+Y  = 46.3 +4*X +error
+df = data.frame(Y,X)
+fit = lm(Y~X, data=df)
+beta = fit$coefficients
+beta 
+Y0 = 47.516039 + 0.1*3.731923
+Y0
+predict(fit,data.frame(X = 0.1))
+Sxx = sum((X-mean(X))^2)
+Y0 + c(-1,1)*qnorm(0.975)*sqrt(1/16 + (0.1-mean(X))^2/Sxx)*3.9
+predict(fit, newdata = data.frame(X = 0.1), interval = "confidence")
+
+```
+$\hat{\beta_0}$ = 47.516039
+$\hat{\beta_1}$ = 3.731923
+E(Y|$X_0$=0.1) is 47.88923 by hand and 47.88923 by R built-in function.
+The 95% CI for E(Y|$X_0$=0.1) is (44.70896, 51.06950) by hand and (43.93035, 51.84812) by R built-in function.
+
+## (b)
+```{r}
+beta0 = rep(0, 10000)
+beta1 = rep(0, 10000)
+
+set.seed(1004912785)
+
+for(i in 1:10000){
+error = rnorm(16, 0, sd=3.9)
+Y  = 46.3 +4*X +error
+df = data.frame(Y,X)
+fit = lm(Y~X, data=df)
+fit = lm(Y~X)
+beta = fit$coefficients
+beta0[i] = beta[1]
+beta1[i] = beta[2]
+}
+
+par(mfrow=c(1, 2))
+hist(beta0,freq = FALSE) # overlay hist with line
+lines(density(beta0))
+hist(beta1,freq = FALSE) 
+lines(density(beta1))
+result = c(mean(beta0),sd(beta0), mean(beta1), sd(beta1))
+names(result) = c("Mean of Beta0", "SD of Beta0", "Mean of Beta1", "SD of Beta1")
+result
+
+Sxx = sum((X-mean(X))^2)
+sd.beta0 = sqrt((1/16 + mean(X)^2/Sxx)*3.9^2)
+sd.beta1 = sqrt(3.9^2/Sxx)
+True.value = c(46.3, sd.beta0, 4, sd.beta1)
+data.frame(True.value, result)
+```
+The estimated value is really closed to the theoretical value for both $\beta_0$ and $\beta_1$.
+
+##(c)
+``` {r}
+#Q1(c)
+set.seed(1004912785)
+count = 0
+for(i in 1:10000){
+
+Vote = read.table("vote-1.txt", header=T)
+X = Vote$growth
+error = rnorm(16, 0, sd=3.9)
+Y  = 46.3 +4*X +error
+df = data.frame(Y,X)
+fit = lm(Y~X, data=df)
+
+beta = fit$coefficients
+Y0 = 47.516039 + 0.1*3.731923
+
+Sxx = sum((X-mean(X))^2)
+
+N = predict(fit, newdata = data.frame(X = 0.1), interval = "confidence")
+
+L = N[2]
+U = N[3]
+if (L<=47.88923 && 47.88923 <= U )
+{
+  count = count+1
+}
+  
+  
+}
+print('this is the proportion ')
+print(count/10000)
+```
+# Q2
+``` {r}
+x <- c(0:9)
+y <- c(98, 135, 162, 178, 221, 232, 283, 300, 374, 395)
+k2 = prod(y)^(1/10)
+box_cox = function(lambda) {
+  if (lambda == 0) {
+    W = k2*log(y)
+  }
+  else {
+    k1 = 1/(lambda*k2^(lambda-1))
+    W = k1*((y^lambda)-1)
+  }
+  fit = lm(W~x)
+  SSE = sum((fit$residuals)^2)
+  SSE
+  return(SSE)
+}
+
+lambda = optimize(box_cox,interval=c(-2,2))
+lambda
+library(MASS)
+fit = lm(y~x)
+result = boxcox(fit)
+bilambda = result$x[which.max(result$y)]
+bilambda
+```
+The $\lambda$ given by R built-in function is 0.5050505, and the $\lambda$ computed by function writen by me is 0.5159801.
+
+# Q3
+## (a)
+```{r}
+kidiq = read.csv("kidiq.csv", header=T)
+fit = lm(kid.score~mom.iq,data=kidiq)
+summary(fit)
+n = dim(kidiq)[1]
+beta = as.numeric(fit$coefficients)
+Y0 = beta[1] + beta[2]*110
+Sxx = sum((kidiq$mom.iq-mean(kidiq$mom.iq))^2)
+SEY0 = sqrt(anova(fit)$`Mean Sq`[2]*(1/n + (110-mean(kidiq$mom.iq))^2/Sxx))
+Y0 + c(-1, 1)*qt(0.975, n-2)*SEY0
+
+predict(fit, newdata=data.frame(mom.iq=110), interval="confidence", level=0.95)
+
+```
+The 95% CI for or the mean test scores of all kids with their mother’s IQ score = 110 is (90.82506, 94.96890) by hand and (90.82506, 94.9689) by R built-in function.
+## (b)
+```{r}
+Spred = sqrt(anova(fit)$`Mean Sq`[2]*(1+ 1/n + (110-mean(kidiq$mom.iq))^2/Sxx))
+Y0 + c(-1, 1)*qt(0.995, n-2)*Spred
+
+predict(fit, newdata=data.frame(mom.iq=110), interval="predict", level=0.99)
+
+```
+The 99% PI for  new kid’s test score when his or her mother’s IQ score = 110 is (45.55918, 140.23478) by hand and (45.55918, 140.2348) by R built-in function.
+## (c)
+```{r}
+plot(fit$fitted.values, fit$residuals, pch=20, cex=1.5, col="blue")
+abline(c(0,0))
+```
+No assumption violated, residual vs fitted value graph looks like random scatter.
+## (d)
+```{r}
+qqnorm(fit$residuals)
+qqline(fit$residuals)
+shapiro.test(fit$residuals)
+```
+The normal Q-Q plot line is close to y=x line, but p-value=0.00217 < $\alpha$ = 0.05, so we reject the null hypotheses that that sample is from normal population. Sample is not from normal population.
+## (e)
+```{r}
+library(lmtest)
+bptest(fit)
+```
+Since p-value is 0.01398, p-value < $\alpha$ = 0.05, so we reject the null hypotheses that the residuals are distributed with equal variance. The residuals are not distributed with equal variance
+
+## (f)
+```{r}
+result = boxcox(fit)
+bilambda = result$x[which.max(result$y)]
+bilambda
+k2 = prod(kidiq$kid.score^(1/n))
+k1 = 1/(bilambda*k2^(bilambda-1))
+Y_star=k1*((kidiq$kid.score^bilambda)-1)
+fit2 = lm(Y_star~mom.iq,data=kidiq)
+
+qqnorm(fit2$residuals)
+qqline(fit2$residuals)
+shapiro.test(fit2$residuals)
+bptest(fit2)
+```
+Since p-value from Shapiro-Wilk normality test is 0.1556>$\alpha$ = 0.05, so we fail to reject the null hypotheses that the sample is from normal population. Since p-value for Breusch-Pagan test is 0.3859, p-value=0.3859> $\alpha$ = 0.05, so we fail to reject the null hypotheses that the residuals are distributed with equal variance.
+
+# Q4
+## (a)
+```{r}
+x = c(0, 1, 2, 4, 6, 15)
+Y = matrix(c(2.3, 4.2, 5.2, 5.9, 6.3, 7.2),nrow = 6)
+X = matrix(rep(1,6),nrow = 6)
+X = cbind(X,x)
+X
+Y
+```
+##(b)
+```{r}
+Beta_hat = solve(t(X)%*%X)%*%t(X)%*%Y
+Beta_hat
+Y_hat = X%*%Beta_hat
+Y_hat
+residual = Y-Y_hat
+residual
+```
+##(c)
+```{r}
+Var_hat_beta_hat = (sum(residual^2)/4)*solve(t(X)%*%X)
+Var_hat_beta_hat
+```
+##(d)
+```{r}
+H = X%*%solve(t(X)%*%X)%*%t(X)
+H
+library(psych)
+tr(H)
+```
+$\sum_{i=1}^{6} h_{ii} = 2$  which is the size of $\hat{\beta}$ vector.
+
+##(e)
+```{r}
+Var_hat_residual = (sum(residual^2)/4)*(diag(6)-H)
+Var_hat_residual
+plot(dpois(x=1:5,lambda=1))
+1-ppois(3,lambda=1)
+1-ppois(4,lambda=1)
+1-ppois(2,lambda=1)
+1-ppois(1,lambda=1)
+(0.05-0.01898816)/(0.0803014-0.01898816)
+1-ppois(2,lambda=1)-(1-ppois(3,lambda=1))
+1-ppois(3,lambda=0.5)
+(1-ppois(2,lambda=0.5))-(1-ppois(3,lambda=0.5))
+0.001751623+0.01263606
+1-0.01438768
+```
+                                                                                                                                                                                                                                                                                                                                                                            
+
+
+

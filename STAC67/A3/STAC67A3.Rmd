@@ -1,0 +1,153 @@
+---
+title: "STAC67A3"
+author: "Yulun Wu"
+date: "20/03/2022"
+output: pdf_document
+number_sections: true
+---
+
+# Q3
+## (a)
+```{r}
+DataQ3 = read.table("SENIC.txt", header=F,
+                    col.names = c("I","Y","X1","X2","X3","X4","X5","Z1","Z2","X6","X7","X8"))
+quantdata = data.frame(DataQ3$Y,DataQ3$X1,DataQ3$X2,DataQ3$X3,
+                       DataQ3$X4,DataQ3$X5,DataQ3$X6,DataQ3$X7,DataQ3$X8)
+colnames(quantdata) = c("Y","X1","X2","X3","X4","X5","X6","X7","X8")
+fitQ31 = lm(quantdata$Y~quantdata$X1+quantdata$X2+quantdata$X3+
+              quantdata$X4+quantdata$X5+quantdata$X6+quantdata$X7+
+              quantdata$X8)
+
+summary(fitQ31)
+#X5 = factor(DataQ3[,8])
+#Z= factor(DataQ3[,9])
+
+```
+## (b)
+Since p-value of $\beta_0$, $\beta_3$, $\beta_8$ are greater than 0.05, they are not significantly different from 0.
+
+## (c)
+``` {r} 
+pairs(quantdata)
+cor(quantdata)
+```
+There is concern about multicollinearity, the correlation between some pair of X variables are too high. For example, cor(X5,X6)=0.98099774, cor(X5,X7)=0.91550415, cor(X6,X7)=0.90789698.
+
+## (d)
+``` {r} 
+fitQ32 = lm(quantdata$Y~quantdata$X1+quantdata$X2+
+              quantdata$X3+quantdata$X4+quantdata$X6+
+              quantdata$X7+quantdata$X8)
+
+summary(fitQ32)
+```
+$R^2$ before I dropped X5 is 0.5568, after I dropped X5 is 0.5269. $R^2$ didn't change much after dropping X5, means that adding X5 to our model does not improve the prediction on Y much.
+
+# Q4  
+## (a)
+```{r}
+DataQ4 = read.csv("kidiq-1.csv", header=T)
+colnames(DataQ4) = c("Y","Z1","X1","Z2","X2")
+fitQ4a = lm(Y~Z1,data=DataQ4)
+summary(fitQ4a)
+```
+$\beta_0$: When kids' mother not graduated from high school, we expect kids' iq score to be 77.548. When kids' mother graduated from high school, we expect kids' iq score to be 89.319.  
+$\beta_1$: The kid's iq is 11.771 bigger for Kids with mother graduated from high school compared to Kids with mother not graduated from high school.  
+## (b)
+```{r}
+fitQ4b = lm(Y~Z1+X1,data=DataQ4)
+summary(fitQ4b)
+```
+$\beta_0$: When mother of kid is not graduated from high school and has 0 iq score, we expect the kids' iq score to be 25.73154.    
+$\beta_1$: The iq score of kids is expected to be 5.95012 bigger for kids with mother graduated from high school compared to kids with mother not graduated from high school, for any given level of mothers' iq score.    
+$\beta_2$: The kid's iq score will increase by 0.56391 if mother's iq score is increased by 1 for kids with mother that has any of two graduation status.  
+## (c)
+```{r}
+fitQ4c = lm(Y~Z1+X1+Z1:X1,data=DataQ4)
+summary(fitQ4c)
+library(ggplot2)
+ggplot(data=DataQ4, aes(x=X1,y=Y,color=factor(Z1),shape=factor(Z1))) + geom_point() +
+  geom_smooth(method='lm',formula=y~x)
+```  
+$\beta_0$: When mother of kid is not graduated from high school and has 0 iq, we expect the kids' iq to be -11.4820.  
+$\beta_1$: The iq of kids is expected to be 51.2682 bigger for kids with mother graduated from high school compared to Kids with mother not graduated from high school, for any given level of mothers' iq.   
+$\beta_2$: The kid's iq score will increase by 0.9689 if kids' mother's iq score is increased by 1 for kids with mother not graduated from high school. 
+$\beta_3$: The kids' iq score will have additional decrease of 0.4843 if kids' mother's iq score is increased by 1 for kids with mother graduated from high school compared to kids with mother not graduated from high school that have the same level of mother's iq score.  
+Children of mothers who are graduated from high school: Y=39.7862+0.4846*X1  
+Children of mothers who are not graduated from high school: Y=-11.4820+0.9689*X1   
+## (d)
+p-value for coefficient of interaction term is 0.002994<0.05, so we reject the null hypothesis that coefficient of interaction term is 0. We can conclude that slopes relating mother’s IQ to child test scores depends on maternal high school indicator.  
+## (e)
+```{r}
+fitQ4e = lm(Y~Z1+X1+Z1:X1+factor(Z2)+X2,data=DataQ4)
+fitQ4e_r1 = lm(Y~Z1+X1+Z1:X1+X2,data=DataQ4)
+summary(fitQ4e)
+anova(fitQ4e_r1, fitQ4e)
+anova(fitQ4c, fitQ4e)
+```
+Test whether mom’s work status is a significant predictor with $\alpha$ =
+0.05: p-value of F-test of full model(Y ~ Z1 + X1 + Z1:X1 + factor(Z2) + X2) against reduced model(Y ~ Z1 + X1 + Z1:X1 + X2) is  0.4052>0,05, so we fail to reject the null hypothesis that mom’s work status is not a significant predictor. Therefore, we conclude that mom’s work status is not a significant predictor.  
+Test whether both mom’s work status and mom’s age are significant
+predictors with $\alpha$ = 0.05: p-value of F-test of full model(Y ~ Z1 + X1 + Z1:X1 + factor(Z2) + X2) against reduced model(Y ~ Z1 + X1 + Z1:X1) is  0.3993>0,05, so we fail to reject the null hypothesis that both mom’s work status and mom’s age are not significant predictor. Therefore, we conclude that both mom’s work status and mom’s age are not significant predictor.   
+
+# Q5  
+## (a)
+```{r}
+DataQ5 = read.table("StrengthWool.txt", header=T)
+fitQ5a = lm(Cycles~factor(Len)+factor(Amp)+factor(Load),data=DataQ5)
+plot(fitQ5a$fitted.values, fitQ5a$residuals, pch=20, cex=1.5, col="blue")
+abline(c(0,0))
+qqnorm(fitQ5a$residuals)
+qqline(fitQ5a$residuals)
+library(lmtest)
+shapiro.test(fitQ5a$residuals)
+bptest(fitQ5a)
+```
+The residual vs fitted value graph looks like a quadratic graph, so linearity assumption is violated. The normal Q-Q plot line is not really close to y=x line, but p-value for SW test is 0.08234 > $\alpha$ = 0.05, so we fail to reject the null hypothesis that that sample is from normal population. Since p-value for BP test is 0.1348 > $\alpha$ = 0.05, so we fail to reject the null hypothesis that the residuals are distributed with equal variance.   
+
+## (b)
+```{r}
+fitQ5b = lm(Cycles~factor(Len)+factor(Amp)+factor(Load)+
+              factor(Len):factor(Amp) +factor(Len):factor(Load)+
+              factor(Amp):factor(Load),data=DataQ5)
+plot(fitQ5b$fitted.values, fitQ5b$residuals, pch=20, cex=1.5, col="blue")
+abline(c(0,0))
+qqnorm(fitQ5b$residuals)
+qqline(fitQ5b$residuals)
+shapiro.test(fitQ5b$residuals)
+bptest(fitQ5b)
+```
+The residual vs fitted value graph looks like it has more variability when fitted value is small, so equal variance assumption may be violated. The normal Q-Q plot line is not really close to y=x line, but p-value for SW test is 0.6331 > $\alpha$ = 0.05, so we fail to reject the null hypothesis that that sample is from normal population. Since p-value for BP test is .2174, p-value > $\alpha$ = 0.05, so we fail to reject the null hypothesis that the residuals are distributed with equal variance. This model doesn't really fit better than model in (a).  
+
+## (c)
+```{r}
+library(MASS)
+result = boxcox(fitQ5a)
+mylambda = result$x[which.max(result$y)]
+mylambda
+Y_star=log(DataQ5$Cycles)
+fitQ5c = lm(Y_star~factor(Len)+factor(Amp)+factor(Load),data=DataQ5)
+summary(fitQ5c)
+plot(fitQ5c$fitted.values, fitQ5c$residuals, pch=20, cex=1.5, col="blue")
+abline(c(0,0))
+qqnorm(fitQ5c$residuals)
+qqline(fitQ5c$residuals)
+shapiro.test(fitQ5c$residuals)
+bptest(fitQ5c)
+```
+The residual vs fitted value graph now looks like a scatter plot. The normal Q-Q plot line is now closer to y=x line, and p-value for SW test is 0.9458 > $\alpha$ = 0.05, so we fail to reject the null hypothesis that that sample is from normal population. Since p-value for BP test is 0.06208 > $\alpha$ = 0.05, so we fail to reject the null hypothesis that the residuals are distributed with equal variance.   
+
+## (d)
+```{r}
+fitQ5d = lm(Y_star~factor(Len)+factor(Amp)+factor(Load)+
+              factor(Len):factor(Amp) +factor(Len):factor(Load)+
+              factor(Amp):factor(Load),data=DataQ5)
+summary(fitQ5d)
+plot(fitQ5d$fitted.values, fitQ5d$residuals, pch=20, cex=1.5, col="blue")
+abline(c(0,0))
+qqnorm(fitQ5d$residuals)
+qqline(fitQ5d$residuals)
+shapiro.test(fitQ5d$residuals)
+bptest(fitQ5d)
+```
+The residual vs fitted value graph looks like a scatter plot. The normal Q-Q plot line is close to y=x line, and p-value for SW test is 0.4806 > $\alpha$ = 0.05, so we fail to reject the null hypothesis that that sample is from normal population. Since p-value for BP test is 0.1923, p-value > $\alpha$ = 0.05, so we fail to reject the null hypothesis that the residuals are distributed with equal variance. We get the same conclusion from this model compare to model in (c), and compare $R^2$ = 0.9691 from model in (c) is 0.9691 to $R^2$ = 0.9928 from model here, there is no significant improvement on $R^2$, so this model is no better than the model with main effects only.
