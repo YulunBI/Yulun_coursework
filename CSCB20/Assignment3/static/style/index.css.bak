@@ -1,0 +1,184 @@
+html,body,ul
+{	font-family:"Georgia", Times, serif;
+	margin:0;
+	padding:0;
+	list-style:none;
+	height:100%;
+	word-wrap: break-word;
+
+}
+.information
+{
+	margin: 30px;
+}
+
+.section_name
+{
+	margin: 3px;
+}
+a{
+	text-decoration:none; 
+}
+
+.box
+{	position:relative;
+	/*background-color: #FFFFCC;*/
+	min-height:100%;
+}
+/*navigation starts*/
+.navigation  
+{	z-index:150;
+	width:100%;
+	position:fixed;
+	background-color:#ff9900dd;
+	box-shadow: 0px 5px 5px #ff9900dd;
+
+	
+}
+.navigation ul	
+{	display: block; 
+	width:2000px;
+	padding: 10px 10px ;
+	
+}
+.navigation li
+{	
+	float:left;
+	margin: 2px 2px;
+	width:auto;
+	background-color: #ff9900dd;
+	display:block;
+	text-transform:uppercase;
+	transition: background-color 0.5s ease-in;
+}
+.navigation li:hover
+{	background-color: rgb(204, 255, 153);
+
+}
+.navigation li a	
+{	
+	font-size:18px; 
+	color:#336699;
+	padding:5px 20px ;
+	transition: color 0.5s ease-in-out;
+	display:block;
+}
+
+.navigation li a:hover 
+{	color: black;
+}
+/*navigation ends*/
+
+
+
+.content 
+{   padding-top: 60px;
+    padding-bottom: 70px;
+    width: 70%;
+    margin: 0 auto;	
+}
+
+.title {
+    font-size: 36px;
+    margin: 15px 0px;
+    border: 2px solid #FFF;
+    padding: 20px;
+    background: #ff9900dd;
+    
+    color: #336699;
+    text-align: center;
+    font-weight: 300;
+    box-shadow: 0 1px 4px white;
+
+    font-family: 'Roboto', sans-serif;
+		border-style:outset;
+
+}
+.section 
+{
+    box-shadow: 0 1px 4px #336699;
+    background-color:white;
+    margin: 14px 0;
+    margin-bottom: 0;
+	padding: 3px;
+    transition: margin-bottom 0.2 ease-in;
+	border-style:outset;
+}
+.section h2
+{	 
+	box-shadow: 0 1px 4px #336699;
+	padding-left: 10px;
+	margin-top: 5px;
+}
+
+.sm_title /*small title in block*/
+{	font-size:17px;
+	font-weight:bold;
+	text-decoration: underline;
+}
+
+.scrollbox /*scrolling box like lec,tut*/
+{	height:200px;
+	overflow:hidden;
+	padding:0;
+	margin:0;
+	background: white;
+}
+.scrollbox:hover
+{	height:400px;
+	overflow:auto;
+	overflow-x:hidden;
+}
+
+.iframe{ /*calandar box*/
+	display:block;
+	margin:auto;
+}
+.lecture_content
+{	font-weight:bold;
+font-size:13px;
+}
+.quote /*all links*/
+{	font-style:oblique;
+	color:deeppink;
+	transition: transform 0.5s ease-in-out;
+}
+.quote:hover {
+	color:#418E48  ;
+}
+.quote:active
+{	font-size: 25px;
+	color:#E29700 ;
+	
+}
+
+
+.sm_title_in_tut /*small title in tut*/
+{	font-size:17px;
+	font-weight:bold;
+	text-decoration: none;
+}
+.sm_title_in_assignment
+{	font-size:17px;
+	
+	font-style:oblique;
+	text-decoration: underline;
+}
+
+/* Footer */
+.footer
+{	font-size:17px;
+	font-family:"Times New Roman", Times, serif;
+	font-style:oblique;
+	border-style:outset;
+	background:#D7DDC5;
+}
+
+body{
+	background-image:url('../image/123.png');
+}
+
+/*.section{
+	background-image:url('../image/123.png');
+}
+

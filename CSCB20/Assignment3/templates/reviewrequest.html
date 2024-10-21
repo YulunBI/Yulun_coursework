@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% block title %}
+	Hello, {{ parameters[0] }} {{ parameters[1] }}, please check the remark request.
+{% endblock %}
+{% block content %}
+<section class="section">
+    <h2>Remark Request</h2>
+	{% if parameters[0] == 'student' %}
+	<p>Sorry, but you don't have access to this page.</p>
+
+	{% else %}
+	<div class="scrollbox">
+	{% for request in parameters[2] %}
+	<ul id="request_list">
+		<li>Username: {{ request['username'] }}</li>
+		<li>Student's Full Name: {{ request['fullname'] }}</li>
+		<li>Project Name: {{ request['project'] }}</li>
+		<li>Reason: {{ request['reason'] }}</li>
+		<hr>
+	</ul>
+	{% endfor %}
+	</div>
+	
+	{% endif %}
+
+</section>
+
+
+{% endblock %}

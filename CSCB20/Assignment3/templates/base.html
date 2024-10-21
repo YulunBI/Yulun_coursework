@@ -1,0 +1,73 @@
+
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8"> <!--------------------------------------new-->
+    	<!--make the viewport be the ideal viewport-->
+    	<meta name="viewport" content="width=device-width, initial-scale=1"> <!--------------------------------------new-->
+
+		<title>{% block title %}{% endblock %}</title> <!----there was a "CSCB63 Design and Analysis of Data Structures",i delete it -->
+		<link rel="stylesheet" href="../static/style/index.css"/>
+		<script src="../static/script/index.js" type="text/javascript"></script>
+	</head>
+
+	
+	<body>
+		<div class="box">
+			<nav class="navigation">  
+
+                {% block navigation %} <!--------------------------------------new-->
+                
+
+				<ul id="top_menu_upper"> 
+
+					<li><a href="/#">Welcome{{ user }}</a></li>  <!--------------------------------------new-->
+
+					<li><a href="/#home">Home</a></li> 
+					<li><a href="/#calendar">Calendar</a></li>
+					<li><a href="/#discussion">discussion</a></li>
+					<li><a href="/#markus">Markus</a></li>
+					<li><a href="/#lecture">lecture</a></li>
+					<li><a href="/#tutorials">tutorials</a></li>
+	
+				</ul>
+				
+				<ul id="top_menu_lower"> 
+					<li><a href="/#labs">LABS</a></li>
+					<li><a href="/#assignments">assignments</a></li>
+					<li><a href="/#tests">tests</a></li>
+					<li><a href="/#links">Links</a></li>
+					<li><a href="/grade">Grades</a></li>
+					<li><a href="/logout">Log out</a></li> <!--------------------------------------new-->
+					
+				</ul>
+                {% endblock %} <!--------------------------------------new-->
+			</nav>
+			
+			
+	
+			<div class="content">
+
+                {% block content %} <!--------------------------------------new-->
+                {% endblock %} <!--------------------------------------new-->
+
+
+			</div>
+			<!--footer-->
+
+			<footer class="footer">
+				<div><a href="https://www.utsc.utoronto.ca/cms/faculty-of-computer-science" target="blank_">Computer Science Faculty at UTSC
+					</a>
+				</div>
+				<div>Site designed by Yunrong Liu, Yulun Wu, Aike Xie
+				</div>
+			</footer>
+		</div>
+	</body>
+	{% block install %}
+	{% endblock %}
+
+
+
+</html>

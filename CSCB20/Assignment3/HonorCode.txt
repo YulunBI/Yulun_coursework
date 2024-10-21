@@ -1,0 +1,13 @@
+Honor Code: We pledge that this program represents my own program code and that
+We have coded on my own. We received help from no one in designing and debugging
+my program. We have also read the plagiarism section in the course info sheet
+of CSC B20 and understand the consequences.
+
+Stduent 1: Yulun Wu
+Student #: 1004912785
+
+Student 2: Yunrong Liu
+Student #: 1005732735
+
+Student 3:  Aike Xie
+Student #:  1002939724

@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block title %}
+
+{% endblock %}
+
+{% block content %}
+
+<section class="section">
+    <h2>Grades for Students</h2>
+    <h4><p><a href="{{ url_for('reviewrequest')}}">View Remark Request</a></p></h4>
+    <h4><p><a href="{{ url_for('updategrade')}}">Update Grade</a></p></h4>
+      <div class="big_table">
+        <div class="table_by_column1">
+
+          <div class="heading">
+            {% for key in parameters[3] %}
+              <div class="column_cell">
+                  <p>{{ key }}</p>
+              </div>
+            {% endfor %}
+          </div>
+        
+          {% for student in parameters[2] %}
+            <div class="column">
+            {% for grade in student %}
+
+                <div class="column_cell">
+                    <p>{{ student[grade] }}</p>
+                </div>
+            {% endfor %}
+            </div>
+          {% endfor %}
+            
+
+
+        </div>
+      </div>
+  </section>
+
+
+{% endblock %}

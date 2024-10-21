@@ -1,0 +1,25 @@
+# Truth table
+# Generated from circuit ControllerLogic
+# Exported on Mon Mar 01 21:26:28 CST 2021
+
+# Hints and Notes on Formatting:
+# * You can edit this file then import it back into Logisim!
+# * Anything after a '#' is a comment and will be ignored.
+# * Blank lines and separator lines (e.g., ~~~~~~) are ignored.
+# * Keep column names simple (no spaces, punctuation, etc.)
+# * 'Name[N..0]' indicates an N+1 bit variable, whereas
+#   'Name' by itself indicates a 1-bit variable.
+# * You can use 'x' or '-' to indicate "don't care" for both
+#   input and output bits.
+# * You can use binary (e.g., '10100011xxxx') notation or
+#   or hex (e.g., 'C3x'). Logisim will figure out which is which.
+
+Step[2..0] | R1mul R1en R2mul R2en InSel[1..0] ASel[1..0] BSel[1..0] Done NextStep[2..0]
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    000     |   x    0     0    1       00          11         00      0         001      
+    001     |   1    1     x    0       xx          10         10      0         010      
+    010     |   1    1     x    0       01          11         01      0         011      
+    011     |   x    0     1    1       10          11         10      0         100     
+    100     |   0    1     x    0       xx          01         10      0         101
+    101     |   0    1     x    0       11          11         01      0         110
+    110     |   x    0     x    0       xx          xx         xx      1         110

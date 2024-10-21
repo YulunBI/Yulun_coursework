@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% block title %}
+	Hello, {{ parameters[0] }} {{ parameters[1] }}, please check the feedbacks for you.
+{% endblock %}
+{% block content %}
+<section class="section">
+    <h2>Anonymous Feedbacks</h2>
+	{% if parameters[0] == 'student' %}
+	<p>Sorry, but you don't have access to this page.</p>
+	{% else %}
+	<div class="scrollbox">
+	{% for feedback in parameters[2] %}
+	<ul id="feedback_list">
+		<li>Answer1: {{ feedback['Answer1'] }}</li>
+		<li>Answer2: {{ feedback['Answer2'] }}</li>
+		<li>Answer3: {{ feedback['Answer3'] }}</li>
+		<li>Answer4: {{ feedback['Answer4'] }}</li>
+		<br>
+		<hr>
+	</ul>
+	{% endfor %}
+	</div>	
+	{% endif %}
+
+</section>
+
+
+
+{% endblock %}

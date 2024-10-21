@@ -1,0 +1,118 @@
+{% extends 'base.html' %}
+{% block title %}
+	Hello, {{ parameters[0] }} {{ parameters[1] }}.
+{% endblock %}
+{% block content %}
+<section class="section">
+    <h2>Release/Update Marks</h2>
+	{% if parameters[0] == 'student' %}
+	<p>Sorry, but you don't have access to this page.</p>
+	{% else %}
+    <form action = '/searchstudent'>
+        <label for = "searchbox">Quick Search</label>
+        <input id = "searchbox" type = "text" name = "searchbox" placeholder="enter the uesername to search for" style="width: 210px;">
+        <input type = "submit" value="Search">
+    </form>
+    <br>
+    <div class = "table_by_column2">
+        <div class = "heading">
+            <div class = "column_cell">
+                <h3>Username</h3>
+            </div>
+            <div class = "column_cell">
+                <h3>Student Name</h3>
+            </div>
+            <div class = "column_cell">
+                <h3>A1</h3>
+            </div>
+            <div class = "column_cell">
+                <h3>A2</h3>
+            </div>
+            <div class = "column_cell">
+                <h3>A3</h3>
+            </div>
+            <div class = "column_cell">
+                <h3>A4</h3>
+            </div>
+            <div class = "column_cell">
+                <h3>T1</h3>
+            </div>
+            <div class = "column_cell">
+                <h3>T2</h3>
+            </div>
+            <div class = "column_cell">
+                <h3>T3</h3>
+            </div>
+            <div class = "column_cell">
+                <h3>Final Exam</h3>
+            </div>
+            <div class = "column_cell">
+                <h3>Update/Release Marks</h3>
+            </div>
+        </div>
+
+        
+        
+        <div class = "column">
+            {% if parameters[2] != [] %}
+            {% for grade in parameters[2] %}
+            <form action="/updategrade" method="POST">
+            <div class = "column_cell">
+                <input class = "marks" type = "text" name = "username" value = "{{grade}}" style="width: 91px;">
+            </div>
+            <div class = "column_cell">
+                <input class = "marks" type = "text" name = "fullname" value = "{{parameters[2][grade][0]}}" style="width: 83px;">
+            </div>
+            <div class = "column_cell">
+                <input class = "marks" type = "text" name = "{{grade}}+A1" value = "{{parameters[2][grade][1]}}" style="width: 35px;">
+            </div>
+            <div class = "column_cell">
+                <input class = "marks" type = "text" name = "{{grade}}+A2" value = "{{parameters[2][grade][2]}}" style="width: 35px;">
+            </div>
+            <div class = "column_cell">
+                <input class = "marks" type = "text" name = "{{grade}}+A3" value = "{{parameters[2][grade][3]}}"  style="width: 35px;">
+            </div>
+            <div class = "column_cell">
+                <input class = "marks" type = "text" name = "{{grade}}+A4" value = "{{parameters[2][grade][4]}}"  style="width: 35px;">
+            </div>
+            <div class = "column_cell">
+                <input class = "marks" type = "text" name = "{{grade}}+T1" value = "{{parameters[2][grade][5]}}"  style="width: 35px;">
+            </div>
+            <div class = "column_cell">
+                <input class = "marks" type = "text" name = "{{grade}}+T2" value = "{{parameters[2][grade][6]}}"  style="width: 35px;">
+            </div>
+            <div class = "column_cell">
+                <input class = "marks" type = "text" name = "{{grade}}+T3" value = "{{parameters[2][grade][7]}}"  style="width: 35px;">
+            </div>
+            <div class = "column_cell">
+                <input class = "marks" type = "text" name = "{{grade}}+FE" value = "{{parameters[2][grade][8]}}"  style="width: 72px;">
+            </div>
+            <div class = "column_cell">
+                <!--Only available after making the changes.-->
+                <input class = "changing-{{grade}}" type = "submit" value="Update" disabled = true>
+            </div>
+            </form>
+            {% endfor %}
+            {% endif %}
+
+        </div>
+        
+
+
+    </div>
+
+ 
+    
+
+
+
+	
+	{% endif %}
+
+</section>
+
+
+{% endblock %}
+{% block install %}
+<script src="../static/script/index.js"></script>
+{% endblock %}

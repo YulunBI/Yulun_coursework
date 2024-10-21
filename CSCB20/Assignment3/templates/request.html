@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block title %}
+	Welcome to CSCB63, please please leave your remark request below.
+{% endblock %}
+
+
+{% block content %}
+    <section class="section">
+        <form action="/requestremark" method="POST">
+            <select name="Project_id" id="Project_id">
+                {% for grade in grade_detail %}
+                <option value={{grade}}>{{grade}}</option>
+                {% endfor %}
+            </select>
+            <hr>
+            <label for="explain">Please explain your reasons for remark request.</label><br>
+            <textarea name="explanation" placeholder="Please enter your reasons here" rows=10 cols=87></textarea>
+            <br>
+            <br>
+            {% if emsg != "" %} <!-------------------------------------new-->
+            <p id = "error_message"> {{emsg}} </p> <!-------------------------------------new-->
+            {%endif%} 
+            <input type="submit" name="submit" value="Submit">
+        </form>
+        
+    </section>
+{% endblock %}

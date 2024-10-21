@@ -1,0 +1,429 @@
+<DOCTYPE html>
+<html>
+
+	<head>
+		<title>CSCB63 Design and Analysis of Data Structures</title>
+		<link rel="stylesheet" href="../static/style/index.css"/>
+		<script src="../static/script/index.js" type="text/javascript"></script>
+	</head>
+
+
+	<body>
+		<div class="box">
+			<nav class="navigation">  
+				<ul id="top_menu"> 
+
+					<li><a href="#">Welcome{{ user }}</a></li>  <!--------------------------------------new-->
+
+					<li><a href="#home">Home</a></li> 
+					<li><a href="#calendar">Calendar</a></li>
+					<li><a href="#discussion">discussion</a></li>
+					<li><a href="#markus">Markus</a></li>
+					<li><a href="#lecture">lecture</a></li>
+					<li><a href="#tutorials">tutorials</a></li>
+					<li><a href="#labs">LABS</a></li>
+					<li><a href="#assignments">assignments</a></li>
+					<li><a href="#tests">tests</a></li>
+					<li><a href="#links">Links</a></li>
+					
+				</ul>
+			</nav>
+			
+			
+	
+			<div class="content">
+				 <div>
+					 	<a NAME="home"></a>
+					    <h1 class="title"><b>CSCB63 Design and Analysis of Data Structures</h1>
+				 </div></b>
+				<section class="section"><!--section-->
+					
+					<div class="section_name">
+					<li><a href="#">Welcome{{ user }}</a></li> <!-------------------------------------new-->
+						<h2>Course Description
+					</h2>
+					</div>
+					<div class="information">
+					<p>Design, analysis, implementation and comparison of efficient data structures for common abstract data types. Priority queues: heaps and mergeable heaps. Dictionaries: balanced binary search trees, B-trees, hashing. Amortization: data structures for managing dynamic tables and disjoint sets. Data structures for representing graphs. Graph searches.</p>
+					
+					<p class = "sm_title">Exclusion</p>
+					<p>CSC263H, CSC265H, (CSCC78H)</p>
+					<p class = "sm_title">Prerequisite</p>
+					<p>CSCB36H or (CSCB38H) & [CGPA 2.75 or enrolment in a CSC subject POSt]</p>
+					<p class = "sm_title"><a class ="quote" href="PDF/Syllabus.pdf" target="blank_">Syllabus</a></p>
+			
+					</div>
+					<div class="section_name">
+						<h2>Instructor</h2>
+					</div>
+					<div class="information">
+						<p>Dr. Anna Bretscher</p>
+						<p>Email: anna.bretscher@utoronto.ca</p>
+						<p>Office: IC 493</p>
+					</div>
+						<div class="section_name"><h2>Timetable</h2></div>
+						<div class="information"><li><a class ="quote" href="https://www.utsc.utoronto.ca/registrar/timetable" target="blank_">UTSC calandar</a></li></div>
+
+						<div class="section_name"><h2>Lectures</h2></div>
+						<div class="information">
+							<p>Wednesdays 3-4pm Zoom Link</p><p> Thursdays 9:10-11:00 Zoom Link</p>
+						</div>
+						<div class="section_name"><h2>Office Hours</h2></div>
+						<div class="information">
+							<a NAME="calendar"></a>
+							<p>Usually Mondays 11:00-12:30, Friday 10:40-11:30. Please see the calendar for weekly changes.</p>
+						</div>
+
+				</section>
+
+				<section class="section">
+					<div class="section_name"><h2>Calendar</h2></div>
+					
+					<div class="information">
+					<p>If you wish to subscribe to the calendar the address is: <a href="Calendar/basic.ics">basic.ics</a>
+					</p>
+					<a NAME="discussion"></a>
+					<iframe src="https://calendar.google.com/calendar/embed?src=fts0ro16u8dbtrng5agvg1tbg8%40group.calendar.google.com&ctz=America%2FToronto" width="800" height="600" frameborder="0" scrolling="no"></iframe>
+					</div>
+				</section>
+
+				<section class="section">
+					<a NAME="markus"></a>
+					<div class="section_name"><h2>Discussion board</h2></div>
+					
+					<div class="information">
+					<li><a class ="quote" href="https://piazza.com/class/kju7e2uwa8p3sf" target="blank_">Piazza</a></li>
+					</div>
+				</section>
+			
+				<section class="section">
+					<div class="section_name"><h2>Markus</h2></div>
+					
+					<div class="information">
+					<a NAME="lecture"></a>	
+					<a class ="quote" href="https://markus.utsc.utoronto.ca/cscb63w21" target="blank_">Markus UTSC CSCB63</a>
+					</div>
+				</section>
+			
+				<section class="section">
+					<div class="section_name"><h2>Lectures</h2></div>
+					
+					<div class="information"> 
+					<div class="scrollbox">
+					 <!--spilt,here is lec content----------------------------------------------------------------------------------------->
+					 <p class="sm_title">Week 1: Intro, Worst Case Complexity 
+					 </p>
+						 <p class="lecture_content">Pre reading: CLRS 3.1 (not including little "oh") 
+							or watch<a class ="quote" href="https://www.youtube.com/watch?v=__vX2sjlpXU">Big Oh Video </a>/<a class ="quote" href="https://www.youtube.com/watch?v=JU767SDMDvA">Insertion Sort Video</a>
+						 </p>
+						 <p class="lecture_content">Slides and Video  
+							 Wednesday:<a class ="quote" href="PDF/lecweds.pdf#page=1"> Slides</a> 
+							  Thursday:<a class ="quote" href="PDF/worksheetthur.pdf#page=1"> Worksheet</a>
+							 /<a class ="quote" href="https://utoronto.zoom.us/rec/play/w5Ims_xwzyJUVhutTMqNBT0caqXCWYyMWx5X-FJvA1dFPpCrjdO8V5osw6hsxEM74HVTmX9jZ2jdwCLj.qvnXbtIQPChGF0bo">Zoom</a>
+						 </p>
+				     <!--spilt-->
+					 <p class="sm_title">Week 2: Balanced Trees (AVL)
+					 </p>
+						 <p class="lecture_content">Pre reading: Refresh your understanding of binary search trees<a class ="quote" href="https://www.youtube.com/watch?v=mtvbVLK5xDQ">Video </a>
+						 /<a class ="quote" href="https://www.cs.usfca.edu/~galles/visualization/BST.html">visualization applet</a>
+						 </p>
+						 <p class="lecture_content">Slides and Video  
+							 Wednesday:<a class ="quote" href="PDF/worksheet.pdf#page=1">Worksheet</a>
+							 /<a class ="quote" href="https://utoronto.zoom.us/rec/play/cPkKVMthfBjSNh8C9arS5iU0ZBNtkUX8etKMklUCM8aPpiVtnl2_Y5YR_cWddFB2vlWa0jkGSEqWNEhk.hNVzvFkr8380FGns">Zoom Recording</a>
+							  Thursday:<a class ="quote" href="PDF/worksheetthur.pdf#page=2"> Worksheet</a>
+							/<a class ="quote" href="PDF/lecthur.pdf#page=1">Slides</a>
+							/<a class ="quote" href="https://utoronto.zoom.us/rec/play/YJYxBNbdKY8lIY98qjI_jHY5ZC73gSUeFCtAKmy6xJF6GEtw_VWFTFGr_guqhthaDEoRhYogPHBbR3fa.c5lUGL0uWjqS5aUX">Zoom Recording</a>
+						 </p>
+
+				     <!--spilt-->
+					 <p class="sm_title">Week 3: AVL Trees height, and Augment. Interval Trees
+					 </p>
+						 <p class="lecture_content">Pre reading:None
+						 </p>
+						 <p class="lecture_content">Slides and Video  
+							 Wednesday:
+							 <a class ="quote" href="PDF/lecweds.pdf#page=2">Worksheet</a>
+							  /<a class ="quote" href="https://utoronto.zoom.us/rec/play/xe3-BWhQIa99HuA6ar-kqNg028IUwxpfPnCN0r4sFtxP0_-MDbeK6coEm-bLm7b8GzO6FTwMXr9uqcMf.IvWbqDbkC9o5p3R1">Zoom Recording</a>
+							  Thursday:<a class ="quote" href="PDF/worksheetthur.pdf#page=3"> Worksheet</a>
+							/<a class ="quote" href="https://utoronto.zoom.us/rec/play/79LC30arivLpru-P863qalDb3ZjdsfdFrBMQPw-LuxDxxyvhcF_SURRw1zHHzgoW4UaVzrkNw-akYHC9.z4jw34MXv1txuaEo">Zoom Recording</a>
+						 </p>
+
+				     <!--spilt-->
+					 <p class="sm_title">Week 4: Finish Interval Trees, Heaps and Graph Search Algorithms
+					 </p>
+						 <p class="lecture_content">Pre reading:Chapter 6.1-6.4
+						 </p>
+						 <p class="lecture_content">Slides and Video  
+							 Wednesday:<a class ="quote" href="PDF/lecweds.pdf#page=3">Worksheet</a>
+							 /<a class ="quote" href="https://utoronto.zoom.us/rec/play/zpBKZxDPmhHRldejrZ0fnXt1Cvrp0ofjSzjzXwQiDCrBze29y1GDemjGLp8uMLg0txf5m4_Sl_j8Zg0g.17AKCDIZldEHg825">Zoom link</a>
+							  
+							  Thursday:<a class ="quote" href="PDF/lecthur.pdf#page=2"> Slides</a>				
+							/<a class ="quote" href="https://utoronto.zoom.us/rec/play/cdZUm3Uso9zxI5cres_xWo-TFx4FObO-q42FyWdkhqHY3GtHnxdXVUldc8YjVobpapnvkGGfbRHntZKV.DpkZreT6rHqqcwT2">Zoom Link</a>
+						 </p>
+
+
+				     <!--spilt-->
+					 <p class="sm_title">Week 5: Graph Searches and Minimum Spanning Trees
+					 </p>
+						 <p class="lecture_content">Term Test Wed
+						 </p>
+						 <p class="lecture_content">Slides and Video  
+							 Wednesday: None.
+							  
+							  Thursday:<a class ="quote" href="PDF/lecthur.pdf#page=3">Slides</a>
+							/<a class ="quote" href="PDF/worksheetthur.pdf#page=4">Worksheet</a>
+							/<a class ="quote" href="https://utoronto.zoom.us/rec/play/SCnzsPIBWdq0QN1KR9XM6yNQrRbY0n7iQwRZWlzycAsmUBJ0Qo0BlSLbE3jDoBP0TXfExU3mQcmS0jwS.5o01Wyhv502R1fm9">Zoom Link</a>
+						 </p>
+
+					  <!--spilt-->
+					 <p class="sm_title">Week 6: Proof of Prims, Dijkstra's Algorithm, Strongly Connected Components
+					 </p>
+						 <p class="lecture_content">Pre reading:Ch 24.3, Practice Prims algorithm./ 22.5, Review DFS - make sure you understand it
+						 </p>
+						 <p class="lecture_content">Slides and Video  
+							 Wednesday:<a class ="quote" href="PDF/lecweds.pdf#page=4">Slides</a>
+							 /<a class ="quote" href="PDF/worksheet.pdf#page=3">Worksheet</a>
+							 /<a class ="quote" href="https://utoronto.zoom.us/rec/play/s8HE2dtGwcl7OWtfMMlQ9I_ivR3mmbieSP3lPhYygBqdIj7Do-uExVtGY5Ln-f0Pj9whkVdMS5w8hIU4.Glja1FlY-UeG3zYv">Zoom Link</a>
+			
+							  
+							  Thursday:<a class ="quote" href="https://utoronto.zoom.us/rec/play/-Trk15VmueBwP8g1ewUUDeMIp-jSbJT8RDztfFgbkbVvsJBFNTLr6h4ootD2bC7jyX9HiQomclqYqbYH.XEg8QLRQfSMQ0iv4">Zoom Link</a>
+						 </p>
+
+					  <!--spilt-->
+					 <p class="sm_title">Week 7: Amortized Analysis
+					 </p>
+						 <p class="lecture_content">Pre reading:Ch. 17.4, Ch. 21
+						 </p>
+						 <p class="lecture_content">Slides and Video  
+							 Wednesday:<a class ="quote" href="PDF/lecweds.pdf#page=5">Slides</a>
+							 /<a class ="quote" href="https://utoronto.zoom.us/rec/play/Ms9uZypiMbcYSes1jevEOJZf8cqMq_PBybH85r2rEdaARuXQOQcWF3dYgiaidZqGQTuaqchmJ1-hax4D.JS_0iOHyLPMjt66M">Zoom Link</a>
+			
+							  
+							  Thursday:<a class ="quote" href="PDF/lecthur.pdf#page=4"> Slides</a>
+							/<a class ="quote" href="https://utoronto.zoom.us/rec/play/CkJgpEBfL2nrdOuItJHlNO5xC3Uvy4-yYQePug3l-GEWE0h1ANwKM3H-pIrUfDv8WMUcJRXbFdaSUHi3.AmfGlBo6OeKxBGrb">Zoom Link</a>
+						 </p>
+
+
+					  <!--spilt-->
+					 <p class="sm_title">Week 8：Disjoint Sets, Fibonacci Heaps
+					 </p>
+						 <p class="lecture_content">Pre reading:Ch. 20
+						 </p>
+						 <p class="lecture_content">Slides and Video  
+							 Wednesday:<a class ="quote" href="PDF/lecweds.pdf#page=6">Slides</a>
+							 /<a class ="quote" href="BM5ICZEeNZV0HlYeDiza1zvzCOPstKNpe6uxOw2pmw5Uq20Upz23r89scLKdSj6fgk033vB2RMclIV85.1ydcqiZ09BXwkTNh">Zoom Link</a>
+
+			
+							  
+							  Thursday:<a class ="quote" href="PDF/lecthur.pdf#page=5"> Slides</a>
+							/<a class ="quote" href="https://utoronto.zoom.us/rec/play/1xPM9-18oaFDzYKGHkwns_sBKZzpnpzgFDLvUyus1pdvP2FaYswyK4MTs329Hdq9_f_xpA8we7vb1JVy.yEqV7pl8ySuN6K__">Zoom Link</a>
+						 </p>
+
+
+
+					</div>
+					</div>
+					  <!--spilt, lec content ends,tut contents starts------------------------------------------------------------------------------------------->
+						
+
+				</section>
+			
+
+				<section class="section">
+					<a NAME="tutorials"></a>
+					<div class="section_name"><h2>Tutorials</h2></div>
+					
+					<div class="information">
+					<div class="scrollbox">
+					 <p class="sm_title_in_tut">Week 1: No tutorial 
+					 </p>
+
+						 <p class="lecture_content">Handout
+							: None. 
+							  Solution: None
+
+						 </p>
+				  <!--spilt-->
+					 <p class="sm_title_in_tut">Week 2: Worst Case Complexity
+					 </p>
+
+						 <p class="lecture_content">Handout :
+							 <a class ="quote" href="PDF/labs.pdf#page=1"> Here. </a> 
+							  Solution:<a class ="quote" href="PDF/labsol.pdf"> Here</a>
+
+						 </p>
+
+				  <!--spilt-->
+					 <p class="sm_title_in_tut">Week 3: AVL Trees Insert/Delete
+					 </p>
+
+						 <p class="lecture_content">Handout :
+							 <a class ="quote" href="PDF/labs.pdf#page=2"> Here. </a> 
+							  Solution: None
+
+						 </p>
+
+				  <!--spilt-->
+					 <p class="sm_title_in_tut">Week 4: Practice Term test format
+					 </p>
+
+						 <p class="lecture_content">Handout :
+							: None.
+							  Solution: None
+
+						 </p>
+
+				  <!--spilt-->
+					 <p class="sm_title_in_tut">Week 5: Graph Search Algorithms
+					 </p>
+
+						 <p class="lecture_content">Handout :
+							 <a class ="quote" href="PDF/labs.pdf#page=3"> Here </a> 
+							  Solution: None
+
+						 </p>
+
+				  <!--spilt-->
+					 <p class="sm_title_in_tut">Week 6: MSTs and Prims Algorithm
+					 </p>
+
+						 <p class="lecture_content">Handout :
+							 <a class ="quote" href="PDF/labs.pdf#page=4"> Here. </a> 
+							  Solution: None
+
+						 </p>
+
+				  <!--spilt-->
+					 <p class="sm_title_in_tut">Week 7: Dijkstra
+					 </p>
+
+						 <p class="lecture_content">Handout :
+							 <a class ="quote" href="PDF/labs.pdf#page=5"> Here. </a> 
+							  Solution: None
+
+						 </p>
+
+				  <!--spilt-->
+					 <p class="sm_title_in_tut">Week 8: Amortized Analysis - Binary Counter
+					 </p>
+
+						 <p class="lecture_content">Handout :
+							 <a class ="quote" href="PDF/labs.pdf#page=6"> Here. </a> 
+							  Solution: None
+
+						 </p>
+				
+				  <!--spilt-->
+					 <p class="sm_title_in_tut">Week 9: Probability
+					 </p>
+
+						 <p class="lecture_content">Handout :
+							 <a class ="quote" href="PDF/labs.pdf#page=7"> Here. </a> 
+							  Solution: None
+
+						 </p>
+
+					</div>
+					</div>
+				</section>
+				<!--spilt,  tut content ends------------------------------------->
+				<section class="section">
+					<a NAME="labs"></a>
+					<div class="section_name"><h2>Labs</h2></div>
+					
+					<div class="information">
+					 <p>Week1</p>
+
+					<p><a class ="quote" href="PDF/labs.pdf#page=1" target="blank_">Week2</a></p>
+					
+					<p><a class ="quote" href="PDF/labs.pdf#page=2" target="blank_">Week3</a></p>
+					<p>Week4</p>
+					<p><a class ="quote" href="PDF/labs.pdf#page=3" target="blank_">Week5</a></p>
+					<p><a class ="quote" href="PDF/labs.pdf#page=4" target="blank_">Week6</a></p>
+					<p><a class ="quote" href="PDF/labs.pdf#page=5" target="blank_">Week7</a></p>
+					<p><a class ="quote" href="PDF/labs.pdf#page=6" target="blank_">Week8</a></p>
+					<a NAME="assignments"></a>
+					<p><a class ="quote" href="PDF/labs.pdf#page=7" target="blank_">Week9</a></p>
+
+					</div>
+				</section>
+
+				<section class="section">
+					<div class="section_name"><h2>Assignments</h2></div>
+					
+					<div class="information">
+					 
+					<p class="sm_title_in_assignment">A1
+					 </p>
+
+					<p class="lecture_content">To be submitted to gradescope.
+					</p>
+					<p><a class ="quote" href="PDF/Assignments.pdf#page=1"> a1.pdf, </a> 
+						/<a class ="quote" href="https://mathlab.utsc.utoronto.ca/bretscher/b63/assignments/a1.tex"> a1.tex . </a> 
+							 Small update Jan. 27 
+
+					</p>
+					
+					<p class="sm_title_in_assignment">A2
+
+					<p class="lecture_content">To be submitted to gradescope.
+					</p>
+					<p><a class ="quote" href="PDF/Assignments.pdf#page=2"> a2.pdf, </a> 
+						/<a class ="quote" href="https://mathlab.utsc.utoronto.ca/bretscher/b63/assignments/a2.tex"> a2.tex  . </a> 
+							Note new due date.
+
+					</p>
+
+					<p class="sm_title_in_assignment">A3
+					 </p>
+
+					<p class="lecture_content">To be submitted to gradescope.
+					</p>
+					<p><a class ="quote" href="PDF/Assignments.pdf#page=3	`"> a3.pdf, </a> 
+						/<a class ="quote" href="https://mathlab.utsc.utoronto.ca/bretscher/b63/assignments/a3/a3.tex"> a3.tex . </a> 
+							 Note new due date (Sunday March 21 at noon).
+
+					</p>
+
+
+
+					</div>
+				</section>
+			
+
+				<section class="section">
+					<a NAME="tests"></a>
+					<div class="section_name"><h2>Tests</h2></div>
+					
+					<div class="information">
+					 No tests available
+					</div>
+				</section>
+
+				<section class="section">
+					<a NAME="links"></a>
+					<div class="section_name"><h2>Links</h2></div>
+					
+					<div class="information">
+					  <p><a class ="quote" href="https://forms.gle/e53URoPYjVE66Z4NA" target="blank_">Anonymous Feedback</a></p>
+						<p><a class ="quote" href="PDF/Course Team.pdf" target="blank_">CourseTeam</a></p>
+					</div>
+				</section>
+
+
+			</div>
+			<!--footer-->
+
+			<footer class="footer">
+				<div><a href="https://www.utsc.utoronto.ca/cms/faculty-of-computer-science" target="blank_">Computer Science Faculty at UTSC
+					</a>
+				</div>
+				<div>Site designed by Yunrong Liu, Yulun Wu
+				</div>
+			</footer>
+		</div>
+	</body>
+
+
+
+</html>
